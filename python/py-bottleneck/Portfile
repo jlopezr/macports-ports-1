@@ -4,14 +4,12 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-bottleneck
-python.rootname     Bottleneck
-version             1.3.7
-revision            0
+version             1.6.0
+revision            1
 categories-append   math
 license             BSD
 
-python.versions     27 36 37 38 39 310 311
-python.pep517       yes
+python.versions     39 310 311 312 313
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -23,22 +21,21 @@ long_description    Bottleneck is a set of NumPy ufuncs rewritten in \
 
 homepage            https://github.com/pydata/bottleneck
 
-checksums           rmd160  d40f5cea5c32a123af99e4f4c3a4c1720bc7884b \
-                    sha256  e1467e373ad469da340ed0ff283214d6531cc08bfdca2083361a3aa6470681f8 \
-                    size    103067
+checksums           rmd160  fefc2c4fea3fe82ace970928ad8247f8bdba4c77 \
+                    sha256  028d46ee4b025ad9ab4d79924113816f825f62b17b87c9e1d0d8ce144a4a0e31 \
+                    size    104311
 
 if {${name} ne ${subport}} {
-    if {${python.version} < 37} {
-        version             1.3.2
-        revision            1
-        distname            ${python.rootname}-${version}
-        checksums           rmd160  965ff15f3525811d075781f44adb77a034f1417b \
-                            sha256  20179f0b66359792ea283b69aa16366419132f3b6cf3adadc0c48e2e8118e573 \
-                            size    88246
-        python.pep517       no
-    } else {
-        patchfiles-append   patch-pyproject.toml.diff
+    if {${python.version} == 39} {
+        version     1.5.0
+        revision    1
+        checksums   rmd160  8edb7c11d91b8b8b81917a29012d749cd49689ca \
+                    sha256  c860242cf20e69d5aab2ec3c5d6c8c2a15f19e4b25b28b8fca2c2a12cefae9d8 \
+                    size    104177
     }
+
+    depends_build-append \
+                        port:py${python.version}-versioneer
 
     depends_lib-append  port:py${python.version}-numpy
 

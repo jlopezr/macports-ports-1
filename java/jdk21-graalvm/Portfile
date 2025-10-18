@@ -2,10 +2,16 @@
 
 PortSystem       1.0
 
-name             jdk21-graalvm
+set feature 21
+name             jdk${feature}-graalvm
 categories       java devel
-maintainers      {breun.nl:nils @breun} openmaintainer
-platforms        {darwin any}
+maintainers      {breun @breun} openmaintainer
+
+# JVMMinimumSystemVersion in Contents/Info.plist is set to macOS 10.12.0 for x86_64:
+# /usr/libexec/PlistBuddy -c "Print :JavaVM:JVMMinimumSystemVersion" Contents/Info.plist
+# Mapping to Darwin version: https://trac.macports.org/wiki/PortfileRecipes#compare-osx-darwin-version
+platforms        {darwin any >= 16 }
+
 # GraalVM Free Terms and Conditions: https://www.oracle.com/downloads/licenses/graal-free-license.html
 # This port uses prebuilt binaries; 'NoMirror' makes sure MacPorts doesn't mirror/distribute these third-party binaries
 license          GFTC NoMirror
@@ -15,10 +21,11 @@ universal_variant no
 # https://www.oracle.com/java/technologies/downloads/#graalvmjava21-mac
 supported_archs  x86_64 arm64
 
-version     21.0.1
+version     ${feature}.0.8
+set build 12
 revision    0
 
-master_sites https://download.oracle.com/graalvm/21/archive/
+master_sites https://download.oracle.com/graalvm/${feature}/archive/
 
 homepage     https://www.oracle.com/java/graalvm/
 
@@ -27,23 +34,23 @@ livecheck.type  none
 use_configure    no
 build {}
 
-description  Oracle GraalVM for JDK 21
-long_description Oracle GraalVM for JDK 21 compiles your Java applications ahead of time into standalone \
+description  Oracle GraalVM for JDK ${feature}
+long_description Oracle GraalVM for JDK ${feature} compiles your Java applications ahead of time into standalone \
     binaries that start instantly, provide peak performance with no warmup, and use fewer cloud resources.
 
 if {${configure.build_arch} eq "x86_64"} {
     distname     graalvm-jdk-${version}_macos-x64_bin
-    checksums    rmd160  e2ecd742af1fac4d0811a96b4fbd6fb078613415 \
-                 sha256  0647d57ec98d7aa19d2801b3ec58697d7eb44a408df511bd49d39f0150a08f87 \
-                 size    316619362
+    checksums    rmd160  0d51077f9e193c177e1a58239baf96aa46c1809d \
+                 sha256  1a63681c9042f92f27da535c3b0fada62aae094da1f705ecb0ef0270b80f873b \
+                 size    314518262
 } elseif {${configure.build_arch} eq "arm64"} {
     distname     graalvm-jdk-${version}_macos-aarch64_bin
-    checksums    rmd160  7e8696ef1a8d8d5e89da7ed8b35195ee8b56df50 \
-                 sha256  4b5ddffad649b3e64853ba230b6e8f7acd65322bb8f11852e0521ab1bb4d8b03 \
-                 size    329260794
+    checksums    rmd160  c30db96351c9c44953378548e82b06f6c1f1a55f \
+                 sha256  3de4049d254dd3c04fd65a66be904d6cf490dca4ece2e2b5fcdfa91d34760f4f \
+                 size    327463597
 }
 
-worksrcdir   graalvm-jdk-${version}+12.1
+worksrcdir   graalvm-jdk-${version}+${build}.1
 
 variant Applets \
     description { Advertise the JVM capability "Applets".} {}
@@ -74,7 +81,7 @@ test.args   -version
 destroot.violate_mtree yes
 
 set jvms /Library/Java/JavaVirtualMachines
-set jdk ${jvms}/jdk-21-oracle-graalvm.jdk
+set jdk ${jvms}/jdk-${feature}-oracle-graalvm.jdk
 
 destroot {
     xinstall -m 755 -d ${destroot}${prefix}${jdk}

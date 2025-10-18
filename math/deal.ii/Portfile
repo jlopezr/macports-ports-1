@@ -9,7 +9,9 @@ PortGroup                   boost          1.0
 
 name                        deal.ii
 github.setup                dealii dealii 9.4.2 v
-revision                    1
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from         tarball
+revision                    4
 categories                  math science
 license                     LGPL-2.1+
 maintainers                 {mcalhoun @MarcusCalhoun-Lopez} openmaintainer

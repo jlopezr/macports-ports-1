@@ -3,12 +3,12 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        usbids usbids 7963233faf69eb9c80ffca8dfc1f31940f75999f
-version             2023.01.16
+github.setup        usbids usbids ce9a25a2d7d03f6d8151ffa04b83424f527c10bc
+version             2025.01.14
 revision            0
-checksums           rmd160  d7b04cb1221496af4f12f1a29747aa50babac713 \
-                    sha256  9b45e3b9e9850a4015dded8c57f83979c11bf1df95cbf8fdcddb81fdc313798b \
-                    size    265265
+checksums           rmd160  cfbc196aaa20f0e8d9bf2a8090464d96291fa18c \
+                    sha256  465acce2c6bb031aa8958ee9cffbb7940502f5b330eb9324c614118e6c76a8dc \
+                    size    267984
 
 categories          sysutils
 license             {GPL-2+ BSD}
@@ -29,8 +29,7 @@ github.tarball_from archive
 use_configure       no
 build {}
 destroot {
-    system -W ${worksrcpath} "/usr/bin/gzip -9 usb.ids"
-    xinstall -m 644 ${worksrcpath}/usb.ids.gz ${destroot}${prefix}/share
+    xinstall -m 644 ${worksrcpath}/usb.ids ${destroot}${prefix}/share
 }
 
 livecheck.version   ${version}

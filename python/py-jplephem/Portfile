@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-jplephem
-version             2.21
+version             2.23
 revision            0
 categories          python
 license             MIT
@@ -12,20 +12,18 @@ maintainers         {mps @Schamschula} openmaintainer
 description         The package is a Python implementation of the math that standard JPL \
                     ephemerides use to predict raw (x,y,z) planetary positions.
 long_description    {*}${description}
-supported_archs     noarch
-platforms           {darwin any}
 homepage            https://github.com/brandon-rhodes/python-jplephem/
 
-checksums           rmd160  0f7d30fc71497e215fd821e9ed469f1070045fa9 \
-                    sha256  34194b610695f21b89217b9852b8dabadbce80848cb369d9567ef12dc4828d55 \
-                    size    44359
+supported_archs     noarch
+platforms           {darwin any}
 
-python.versions     38 39 310 311
+checksums           rmd160  6fe57c25cef7a838a111ffeacd3bb5cefa830ddf \
+                    sha256  d3fb9477e4bf4c39d10497d4ff15e5271b7ac03fa101e1821aac527d646eccf9 \
+                    size    44989
+
+python.versions     39 310 311 312 313
 
 if {${name} ne ${subport}} {
-    depends_build-append \
-                    port:py${python.version}-setuptools
-
     depends_lib-append  \
                     port:py${python.version}-numpy
 }

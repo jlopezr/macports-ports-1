@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-tempora
-version             5.5.0
+version             5.8.1
 revision            0
 
 categories-append   devel
@@ -19,17 +19,16 @@ long_description    {*}${description}
 
 homepage            https://pypi.python.org/pypi/${python.rootname}
 
-checksums           rmd160  a1e3b110ee96c3ec8c6ad86c281263d14894adae \
-                    sha256  13e4fcc997d0509c3306d6841f03e9381b7e5e46b2bebfae9151af90085f0c26 \
-                    size    20877
+checksums           rmd160  d5d74ad901518c2309baab5c756888a1e2e89d12 \
+                    sha256  abb5d9ec790cc5e4f9431778029ba3e3d9ba9bd50cb306dad824824b2b362dcd \
+                    size    23072
 
-python.versions     37 38 39 310 311 312
-python.pep517       yes
+python.versions     39 310 311 312 313
 
 if {${name} ne ${subport}} {
-    depends_build-append    port:py${python.version}-setuptools_scm
+    depends_build-append    port:py${python.version}-setuptools_scm \
+                            port:py${python.version}-coherent.licensed
     depends_lib-append      port:py${python.version}-jaraco.functools \
-                            port:py${python.version}-tz \
                             port:py${python.version}-setuptools \
                             port:py${python.version}-six \
                             port:py${python.version}-toml
@@ -38,14 +37,4 @@ if {${name} ne ${subport}} {
                         port:py${python.version}-freezegun
 
     test.run            yes
-
-    if {${python.version} == 37} {
-        version         5.2.2
-        revision        0
-        checksums       rmd160  57c37502eb7373d3fe42e9bbbd0925dd9557d6b7 \
-                        sha256  98ee27bc528c91a236f9a5d612ede4ef391b01f7862bf11b483ce549053651c1 \
-                        size    20957
-    }
-
-    livecheck.type none
 }

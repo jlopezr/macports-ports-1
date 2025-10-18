@@ -4,8 +4,8 @@ PortSystem          1.0
 
 PortGroup           golang 1.0
 
-go.setup            github.com/kubernetes/kops 1.28.1 v
-github.tarball_from archive
+go.setup            github.com/kubernetes/kops 1.33.1 v
+go.offline_build    no
 revision            0
 go.package          k8s.io/kops
 
@@ -18,18 +18,13 @@ license             Apache-2
 maintainers         {gmail.com:herby.gillot @herbygillot} \
                     openmaintainer
 
-checksums           rmd160  247845b5fb1ac12915d7cfdce06dffbb2a48a805 \
-                    sha256  ca9e4c504a6541cffb03bf405ae6a2a5b28f77c9650ab6a13358ef4565953d97 \
-                    size    34249253
+checksums           rmd160  8c711166606c233b20fc9847cbaae21b42ef28f7 \
+                    sha256  0dd1a190b35669d28bd6ec8f78497ab4a418911a648bc71d2ed9de98e742bcd9 \
+                    size    39183016
 
-depends_run-append  port:kubectl-1.27
+depends_run-append  port:kubectl-1.32
 
 build.cmd           make
-
-# This project uses vendored sources, which cannot be used with Go modules
-# and the proxy turned off.
-go.offline_build no
-
 build.target        kops
 
 # Do not build on macOS 10.11 and earlier

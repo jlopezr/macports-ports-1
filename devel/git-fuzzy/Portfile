@@ -4,6 +4,8 @@ PortSystem          1.0
 PortGroup           github  1.0
 
 github.setup        bigH git-fuzzy 6bf6db61d3bd9a16203130587ccfbc02f4ca9a57
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 version             20210729
 revision            0
 
@@ -18,6 +20,7 @@ maintainers         {gmail.com:herby.gillot @herbygillot} \
                     openmaintainer
 license             MIT
 supported_archs     noarch
+platforms           any
 
 checksums           rmd160  02f75f3a74220c3c928b3fabaabdb4e5858981d5 \
                     sha256  07f1ee8c60ada136ba6cb7dea226b159ace64c22b21864c2f0c57fef223b286b \

@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-sphinxcontrib-serializinghtml
-version             1.1.9
+version             2.0.0
 revision            0
 
 categories-append   textproc devel
@@ -18,13 +18,11 @@ long_description    sphinxcontrib-serializinghtml is a sphinx extension which ou
 
 homepage            http://sphinx-doc.org/
 
-checksums           md5 84957dfa6d85d2e509181281082c11ee \
-                    rmd160 e7f244236b11fc447c95e623a69f47f21047578e \
-                    sha256 0c64ff898339e1fac29abd2bf5f11078f3ec413cfe9c046d3120d7ca65530b54 \
-                    size 15446
+checksums           rmd160  055e53dbe9e0b08c291d976251c6bdfbd4c2d070 \
+                    sha256  e9d912827f872c029017a53f0ef2180b327c3f7fd23c87229f7a8e8b70031d4d \
+                    size    16080
 
-python.versions     36 37 38 39 310 311 312
-python.pep517       yes
+python.versions     36 37 38 39 310 311 312 313
 
 if {$subport ne $name} {
     if {${python.version} <= 38} {

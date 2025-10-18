@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           texlive 1.0
 
 name                texlive-publishers
-version             66550
+version             74512
 revision            0
 
 categories          tex
@@ -13,20 +13,22 @@ license             Copyleft Permissive
 description         TeX Live: Publisher styles, theses, etc.
 long_description    Publisher styles, theses, etc.
 
-checksums           texlive-publishers-66550-run.tar.xz \
-                    rmd160  c6e49557c193e0ca8665bcaf61a413ce74dee652 \
-                    sha256  79005e89eb3e291621bfb625916e5f50535091f8ccaefc38a61befd1d50154ba \
-                    size    236934908 \
-                    texlive-publishers-66550-doc.tar.xz \
-                    rmd160  0b05ef0b45c6a0b04dbf56bd2c4001ca66e29711 \
-                    sha256  e9106ef7cdb16e6c3d914c31ea861d8a8d5325f7eec31e9f952c565e1b2963b8 \
-                    size    212558912 \
-                    texlive-publishers-66550-src.tar.xz \
-                    rmd160  81fb9917f6ef93a9fe39e803a35d06301aeedd42 \
-                    sha256  03fee20ec59fbba0beb0962ee6677cc444dba03c151ec9a92b7e5c78785d2ae6 \
-                    size    3514520
+checksums           texlive-publishers-74512-run.tar.xz \
+                    rmd160  7c82f384198aa01de5c0e13a4b7acef525c53cc2 \
+                    sha256  5ee8dd49eeb2f969f677802ca43f8d0b939dd8af7accf7bc5d41b7300f5b9147 \
+                    size    22062996 \
+                    texlive-publishers-74512-doc.tar.xz \
+                    rmd160  45f4b40d0a29e6922dd65deeb6435ac04ed52812 \
+                    sha256  c2be89a773702c90aa05767e5bb8d2cddaa505ec7dedfcd564ebf2b27ecd6123 \
+                    size    251774416 \
+                    texlive-publishers-74512-src.tar.xz \
+                    rmd160  232b3d36232b6ddf0d37a7d584cbeeba471067b9 \
+                    sha256  3e986d7943812e3d0fccdbbc365bc4d9dee4630c2fdd6094f025f9daf27caccc \
+                    size    5922160
 
 depends_lib         port:texlive-latex
+
+texlive.binaries    aom-fullref
 
 depends_lib-append  port:texlive-latex-recommended port:texlive-latex-extra
 

@@ -5,7 +5,7 @@ PortGroup           python 1.0
 
 name                py-asdf-coordinates-schemas
 python.rootname     asdf_coordinates_schemas
-version             0.2.0
+version             0.4.0
 revision            0
 license             BSD
 maintainers         {mps @Schamschula} openmaintainer
@@ -13,15 +13,19 @@ description         This package provides ASDF schemas for validating coordinate
 long_description    {*}${description}
 homepage            https://github.com/asdf-format/asdf-coordinates-schemas
 
-checksums           rmd160  790eff492b746fb6d7329aaa13904098bf0e3124 \
-                    sha256  e3f9a50872e13749a7eec2dc3ccb4af93280f5e5e20a8d70a3d83073de8dd5f4 \
-                    size    52510
+supported_archs     noarch
+platforms           {darwin any}
 
-python.versions     38 39 310 311
+checksums           rmd160  5e59e2f6a8552b02d3aa89e28bc06442ce6d3027 \
+                    sha256  7067e46ec898f97525fc6aab585c191a2bb9cad02cf19bda7a9ea045ce0ebcc4 \
+                    size    159239
+
+python.versions     39 310 311 312 313
 
 if {${name} ne ${subport}} {
     depends_build-append \
-                    port:py${python.version}-setuptools
+                    port:py${python.version}-setuptools_scm \
+                    port:py${python.version}-toml
 
     depends_lib-append  \
                     port:py${python.version}-asdf

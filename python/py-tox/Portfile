@@ -5,8 +5,9 @@ PortGroup           python 1.0
 PortGroup           select 1.0
 
 name                py-tox
-version             3.24.4
+version             4.28.4
 revision            0
+
 
 categories-append   devel
 maintainers         {gmail.com:pedro.salgado @steenzout} openmaintainer
@@ -19,30 +20,38 @@ long_description    Tox as is a generic virtualenv management and test command l
 
 homepage            https://tox.readthedocs.io/en/latest/
 
-checksums           rmd160  a57156c64d39c2fb78c1cd68322cc09ccab07a9d \
-                    sha256  c30b57fa2477f1fb7c36aa1d83292d5c2336cd0018119e1b1c17340e2c2708ca \
-                    size    316762
+checksums           rmd160  2e7c141250bfd280925390cb9d53d8a1fcaeaa63 \
+                    sha256  b5b14c6307bd8994ff1eba5074275826620325ee1a4f61316959d562bfd70b9d \
+                    size    199692
 
-python.versions     37 38 39 310 311
+python.versions     39 310 311 312 313
 
 if {${name} ne ${subport}} {
+    python.pep517_backend \
+                    hatch
+
     depends_build-append \
-                    port:py${python.version}-setuptools_scm
+                    port:py${python.version}-hatch-vcs
 
     depends_lib-append \
+                    port:py${python.version}-cachetools \
+                    port:py${python.version}-chardet \
+                    port:py${python.version}-colorama \
                     port:py${python.version}-filelock \
                     port:py${python.version}-packaging \
+                    port:py${python.version}-platformdirs \
                     port:py${python.version}-pluggy \
-                    port:py${python.version}-py \
+                    port:py${python.version}-pyproject_api \
                     port:py${python.version}-setuptools \
                     port:py${python.version}-six \
                     port:py${python.version}-toml \
                     port:py${python.version}-virtualenv \
                     port:tox_select
 
-    if {${python.version} ne 38} {
+    if {${python.version} < 311} {
         depends_lib-append \
-                    port:py${python.version}-importlib-metadata
+                    port:py${python.version}-tomli \
+                    port:py${python.version}-typing_extensions
     }
 
     select.group    tox

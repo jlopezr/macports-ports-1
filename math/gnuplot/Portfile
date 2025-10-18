@@ -6,8 +6,8 @@ PortGroup           xcodeversion    1.0
 PortGroup           wxWidgets       1.0
 
 name                gnuplot
-version             5.4.8
-revision            0
+version             6.0.3
+revision            2
 
 categories          math science
 # the license has some inconvenient requirements that we're not meeting
@@ -15,7 +15,7 @@ categories          math science
 license             Restrictive
 # luckily nothing has to link against this
 installs_libs       no
-maintainers         {mojca @mojca} openmaintainer
+maintainers         {mps @Schamschula} openmaintainer
 
 description         A command-driven interactive function plotting program
 
@@ -26,27 +26,28 @@ long_description    Gnuplot is a command-driven interactive function \
                     Also support for plotting data files, to compare \
                     actual data to theoretical curves.
 
-homepage            http://gnuplot.sourceforge.net/
+homepage            https://gnuplot.sourceforge.net/
 master_sites        sourceforge:project/gnuplot/gnuplot/${version}
 dist_subdir         ${name}/${version}
 
-checksums           rmd160  a469a3089502de08244c78ee6e9f0d7e810bb701 \
-                    sha256  931279c7caad1aff7d46cb4766f1ff41c26d9be9daf0bcf0c79deeee3d91f5cf \
-                    size    5684061
+checksums           rmd160  2c5ff7bbf40bd2e32ba05e4b84e431e6ac07ad9c \
+                    sha256  ec52e3af8c4083d4538152b3f13db47f6d29929a3f6ecec5365c834e77f251ab \
+                    size    7616904
 
 depends_build       port:pkgconfig
 
 depends_lib         port:expat \
                     port:fontconfig \
                     port:gd2 \
-                    port:webp \
-                    path:include/turbojpeg.h:libjpeg-turbo \
                     path:lib/libcaca.dylib:libcaca \
                     port:libcerf \
                     port:libiconv \
+                    path:include/turbojpeg.h:libjpeg-turbo \
                     port:libpng \
                     port:ncurses \
+                    port:openspecfun \
                     port:readline \
+                    port:webp \
                     port:zlib
 
 minimum_xcodeversions \
@@ -70,8 +71,11 @@ configure.args      --with-caca=${prefix} \
                     --without-cairo \
                     --without-latex \
                     --without-lua \
-                    --without-qt \
-                    --with-cwdrc
+                    --without-qt
+
+# the configure script fails to correctly parse pkgconfig/libcerf.pc
+configure.env       LIBCERF_CFLAGS=-I${prefix}/include \
+                    LIBCERF_LIBS=-L${prefix}/lib -lcerf
 
 variant aquaterm description "Enable AquaTerm terminal" {
     depends_lib-append          port:aquaterm
@@ -100,7 +104,11 @@ variant pangocairo description "Enable cairo-based terminals" {
 }
 
 variant wxwidgets description "Enable wxt terminal" {
-    wxWidgets.use               wxWidgets-3.0
+    if {${os.platform} eq "darwin" && ${os.major} >= 16} {
+        wxWidgets.use           wxWidgets-3.2
+    } else {
+        wxWidgets.use           wxWidgets-3.0
+    }
     depends_lib-append          port:${wxWidgets.port}
     configure.args-replace      --disable-wxwidgets --with-wx=${wxWidgets.wxdir}
 }
@@ -118,8 +126,7 @@ variant qt5 conflicts qt description "Enable qt terminal with Qt 5" {
     compiler.cxx_standard       2011
     configure.cxxflags-append   -std=c++11
 
-    qt5.depends_component       qtbase   \
-                                qtsvg    \
+    qt5.depends_component       qtsvg    \
                                 qttools
 
     configure.args-replace      --without-qt --with-qt=qt5
@@ -132,7 +139,14 @@ variant old_bitmap_terminals description "Enable PBM (Portable Bit Map) and othe
     configure.args-replace      --without-bitmap-terminals --with-bitmap-terminals
 }
 
-default_variants                +luaterm +pangocairo +x11
+default_variants                +luaterm +pangocairo
+if {![variant_isset qt] && ![variant_isset qt5]} {
+    if {${os.platform} eq "darwin" && ${os.major} < 19} {
+        default_variants-append +qt
+    } else {
+        default_variants-append +qt5
+    }
+}
 
 # aquaterm is currently not building on 10.4
 if {${os.platform} eq "darwin" && ${os.major} > 8} {

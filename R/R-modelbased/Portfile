@@ -3,18 +3,19 @@
 PortSystem          1.0
 PortGroup           R 1.0
 
-# GitHub version is outdated.
-R.setup             cran easystats modelbased 0.8.6
-revision            1
+R.setup             github easystats modelbased 0.8.9 v
+revision            0
 categories-append   math
+platforms           {darwin any}
 maintainers         {@barracuda156 gmail.com:vital.had} openmaintainer
 license             GPL-3
 description         Methods for correlation analysis
 long_description    {*}${description}
 homepage            https://easystats.github.io/modelbased
-checksums           rmd160  4d137abc771ac0db4e46bd0b95e0581be95e8637 \
-                    sha256  e8b0337c0044bad72c589da8e223c7235833f965b76005860583651b55851251 \
-                    size    1456587
+checksums           rmd160  e425505c035f8a21fc95e8664aa5565adddcc82a \
+                    sha256  9622384148591a10a5ed6f66fd19bfca6aa22332bd728502784bfb2fb9de9e2c \
+                    size    1619592
+github.tarball_from archive
 supported_archs     noarch
 
 depends_lib-append  port:R-bayestestR \
@@ -23,3 +24,26 @@ depends_lib-append  port:R-bayestestR \
                     port:R-insight \
                     port:R-parameters \
                     port:R-performance
+
+depends_test-append port:R-brms \
+                    port:R-coda \
+                    port:R-correlation \
+                    port:R-emmeans \
+                    port:R-gamm4 \
+                    port:R-gganimate \
+                    port:R-ggplot2 \
+                    port:R-glmmTMB \
+                    port:R-knitr \
+                    port:R-lme4 \
+                    port:R-logspline \
+                    port:R-marginaleffects \
+                    port:R-patchwork \
+                    port:R-poorman \
+                    port:R-report \
+                    port:R-rmarkdown \
+                    port:R-rstanarm \
+                    port:R-rtdists \
+                    port:R-see \
+                    port:R-testthat
+
+test.run            yes

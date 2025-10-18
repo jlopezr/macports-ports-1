@@ -2,10 +2,16 @@
 
 PortSystem       1.0
 
-name             openjdk21-sap
+set feature 21
+name             openjdk${feature}-sap
 categories       java devel
-maintainers      {breun.nl:nils @breun} openmaintainer
-platforms        {darwin any}
+maintainers      {breun @breun} openmaintainer
+
+# JVMMinimumSystemVersion in Contents/Info.plist is set to macOS 10.12 for x86_64:
+# /usr/libexec/PlistBuddy -c "Print :JavaVM:JVMMinimumSystemVersion" Contents/Info.plist
+# Mapping to Darwin version: https://trac.macports.org/wiki/PortfileRecipes#compare-osx-darwin-version
+platforms        {darwin any >= 16 }
+
 # This port uses prebuilt binaries; 'NoMirror' makes sure MacPorts doesn't mirror/distribute these third-party binaries
 license          GPL-2 NoMirror
 # This port uses prebuilt binaries for a particular architecture; they are not universal binaries
@@ -14,25 +20,29 @@ universal_variant no
 supported_archs  x86_64 arm64
 
 # https://sap.github.io/SapMachine/latest/21
-version      21.0.1
+version      ${feature}.0.8
 revision     0
 
-description  SAP Machine 21
-long_description An OpenJDK 21 release maintained and supported by SAP
+description  SAP Machine ${feature}
+long_description An OpenJDK ${feature} release maintained and supported by SAP
 
 master_sites https://github.com/SAP/SapMachine/releases/download/sapmachine-${version}/
 
 if {${configure.build_arch} eq "x86_64"} {
-    distname     sapmachine-jdk-${version}_macos-x64_bin
-    checksums    rmd160  bd3406baaabcf5d603a771c7820c14a6bca98415 \
-                 sha256  498bdb5635be4b784ccfe12f83dc4c83f6a5fb2f37666a4fec408a2fd4083afa \
-                 size    194338383
+    set arch_classifier x64
+    checksums    rmd160  56a62ddd23c368b99d2fdc2954fed7d8ef5496c0 \
+                 sha256  243a730ec6a64a25239a1b45adc8c755892d3c8b8584c249dd6cb498d36e7773 \
+                 size    202790307
 } elseif {${configure.build_arch} eq "arm64"} {
-    distname     sapmachine-jdk-${version}_macos-aarch64_bin
-    checksums    rmd160  52f9a18034224aec3a6144aefa1a615b213f1369 \
-                 sha256  8a052e50e4b48e87d6519489b0c7116df1e8f87a52480b81db27fee8259a5cc0 \
-                 size    192017068
+    set arch_classifier aarch64
+    checksums    rmd160  ef3ab9bc50e3ddda4ac60d992684ac09289563db \
+                 sha256  f177c93c35375f7841a243014d896d4931fda1a8d4a1e0570e2de8e5788bc207 \
+                 size    200533691
+} else {
+    set arch_classifier unsupported_arch
 }
+
+distname     sapmachine-jdk-${version}_macos-${arch_classifier}_bin
 
 worksrcdir   sapmachine-jdk-${version}.jdk
 
@@ -40,7 +50,7 @@ homepage     https://sap.github.io/SapMachine/
 
 livecheck.type      regex
 livecheck.url       https://github.com/SAP/SapMachine/releases
-livecheck.regex     sapmachine-jdk-(21\.\[0-9\.\]+)_macos-.*_bin\.tar\.gz
+livecheck.regex     sapmachine-jdk-(${feature}\.\[0-9\.\]+)_macos-.*_bin\.tar\.gz
 
 use_configure    no
 build {}
@@ -74,7 +84,7 @@ test.args   -version
 destroot.violate_mtree yes
 
 set jvms /Library/Java/JavaVirtualMachines
-set jdk ${jvms}/jdk-21-sapmachine.jdk
+set jdk ${jvms}/jdk-${feature}-sapmachine.jdk
 
 destroot {
     xinstall -m 755 -d ${destroot}${prefix}${jdk}

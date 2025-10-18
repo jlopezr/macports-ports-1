@@ -3,19 +3,21 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        ultravideo kvazaar 2.2.0 v
+github.setup        ultravideo kvazaar 2.3.2 v
 github.tarball_from releases
 revision            0
 categories          multimedia devel
 license             BSD
-maintainers         {outlook.com:mohd.akram @mohd-akram} openmaintainer
+maintainers         {makr @mohd-akram} openmaintainer
 
 description         Open-source HEVC encoder
 
 long_description    An open-source HEVC encoder licensed under 3-clause BSD.
 
-depends_build       port:yasm
+checksums           rmd160  cba96f0b11bc7332784bef81d67511ede085a619 \
+                    sha256  b95d2e20f2b0d8d7ed320055740be2e7a730abe28b153b5a788cfca371cc38b2 \
+                    size    1024707
 
-checksums           rmd160  36e351494fba5f81226e66820aafe948e2dc4b32 \
-                    sha256  a3c35dc24f587145afacf537bdc43176b763be48cc05e1f597cce2c4e515689a \
-                    size    1007269
+# implicit declaration of function '_tzcnt_u32' is invalid in C99
+# uses newer intrinsic functions
+compiler.blacklist  {clang < 700} {*gcc-[34].*}

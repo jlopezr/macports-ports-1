@@ -1,7 +1,6 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:filetype=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem          1.0
-PortGroup           compiler_blacklist_versions 1.0
 PortGroup           compilers 1.0
 PortGroup           mpiutil 1.0
 
@@ -20,12 +19,11 @@ PortGroup           mpiutil 1.0
 #===============================================================================
 
 name                openmpi
-version             4.1.4
+version             5.0.7
 revision            0
 
 license             BSD
 categories          science parallel net
-platforms           darwin
 maintainers         {mascguy @mascguy}
 
 description         Message Passing Interface (MPI) Library
@@ -42,9 +40,9 @@ set branch          [join [lrange [split ${version} .] 0 1] .]
 set subdir          ompi/v${branch}/downloads/
 master_sites        https://www.open-mpi.org/software/${subdir}
 
-checksums           rmd160  b156f9f4084bb29b5835384ed82cb7c45d8ce22c \
-                    sha256  92912e175fd1234368c8730c03f4996fe5942e7479bb1d10059405e7f2b3930d \
-                    size    10042839
+checksums           rmd160  3f0cebf521504388dc6bc62576396f96197f0f24 \
+                    sha256  119f2009936a403334d0df3c0d74d5595a32d99497f9b1d41e90019fee2fc2dd \
+                    size    30506871
 
 use_bzip2           yes
 
@@ -72,6 +70,7 @@ dict set clist gcc10   {macports-gcc-10}
 dict set clist gcc11   {macports-gcc-11}
 dict set clist gcc12   {macports-gcc-12}
 dict set clist gcc13   {macports-gcc-13}
+dict set clist gcc14   {macports-gcc-14}
 dict set clist clang11 {macports-clang-11}
 dict set clist clang12 {macports-clang-12}
 dict set clist clang13 {macports-clang-13}
@@ -79,6 +78,9 @@ dict set clist clang14 {macports-clang-14}
 dict set clist clang15 {macports-clang-15}
 dict set clist clang16 {macports-clang-16}
 dict set clist clang17 {macports-clang-17}
+dict set clist clang18 {macports-clang-18}
+dict set clist clang19 {macports-clang-19}
+dict set clist clang20 {macports-clang-20}
 
 # Only enable Xcode clang builds for MacOS 10.7 and later
 if { ${os.major} >= 11 } {
@@ -126,6 +128,12 @@ set subport_enabled \
 # General Subport Logic
 #-------------------------------------------------------------------------------
 
+# TODO: simplify via regex capture group, for clang version
+if {[string match {*-clang1[3-9]} ${subport}]
+    || [string match {*-clang2[0-9]} ${subport}]} {
+    platforms {darwin >= 11}
+}
+
 if {${subport_enabled}} {
     PortGroup select 1.0
     PortGroup muniversal 1.0
@@ -163,13 +171,13 @@ if {${subport_enabled}} {
     # Starting with Clang 8.0, version was included in other standard header files (https://reviews.llvm.org/D51955).
     # With a case-insensitive file system, VERSION is used instead of version.
     # This is an ugly workaround.
-    patchfiles-append   patch-configure.diff
+#    patchfiles-append   patch-configure.diff
 
     configure.dir       ${workpath}/build
     configure.cmd       ${worksrcpath}/configure
     configure.args      --disable-mpi-fortran \
-                        --enable-mpi-cxx \
                         "FFLAGS='' F77=''"
+#    configure.args-append --enable-mpi-cxx
 
     # remove -arch from ldflags, ticket #22833
     configure.ld_archflags
@@ -200,6 +208,7 @@ if {${subport_enabled}} {
     }
 
     configure.args-append   \
+        --disable-silent-rules \
         --bindir=${prefix}/libexec/${name}-${cname} \
         --libdir=${prefix}/lib/${name}-${cname} \
         --sysconfdir=${prefix}/etc/${name}-${cname} \

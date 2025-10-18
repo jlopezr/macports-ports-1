@@ -1,8 +1,8 @@
 PortSystem 1.0
 name             epic5
-version          2.1.12
+version          3.0.3
 categories       irc
-maintainers      {toby @tobypeterson} openmaintainer
+maintainers      nomaintainer
 description      (E)nhanced (P)rogrammable (I)RC-II (C)lient 5
 homepage         http://www.epicsol.org/
 platforms        darwin
@@ -20,19 +20,16 @@ master_sites     http://ftp.epicsol.org/pub/epic/EPIC5-PRODUCTION/ \
                  ftp://ftp.epicsol.org/pub/epic/EPIC5-PRODUCTION/
 use_xz           yes
 
-checksums        rmd160 2e7a6ea91a400ee4bdb8fc80398925b9bdee06b3 \
-                 sha256 c89ae4fc014ddcf0084b748e22f47b46a85ab1ac9bf0b22560360ba8626b6da6 \
-                 size   891200
+checksums        rmd160 f7f628506f6071df3711b4f6a218b4aacfaf02f1 \
+                 sha256 63a411215c14040b65b5d728aff10f7523d55e170f6298fb01e1cf958d79d326 \
+                 size   936240
 
 patchfiles       patch-configure
 
 configure.cflags-append  -I${prefix}/include
 configure.args   --mandir=${prefix}/share/man \
                  --with-iconv \
-                 --without-socks \
-                 --without-socks5 \
                  --without-perl \
-                 --without-tcl \
                  --without-ruby \
                  --without-python
 

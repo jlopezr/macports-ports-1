@@ -6,7 +6,7 @@ PortGroup           github 1.0
 PortGroup           mpi 1.0
 PortGroup           muniversal 1.0
 
-github.setup        hypre-space hypre 2.30.0 v
+github.setup        hypre-space hypre 2.32.0 v
 revision            0
 categories          math
 license             LGPL-2.1
@@ -15,9 +15,9 @@ description         HYPRE is a linear solver
 long_description    HYPRE is a library for solving large, sparse linear \
                     systems of equations on massively parallel computers.
 
-checksums           rmd160  2667bc3d4bd0eb6fed4e2b521a6f1f6d201edb46 \
-                    sha256  8e2af97d9a25bf44801c6427779f823ebc6f306438066bba7fcbc2a5f9b78421 \
-                    size    7459333
+checksums           rmd160  3065e91c7a70883f81839b95f4289d8d806811fc \
+                    sha256  2277b6f01de4a7d0b01cfe12615255d9640eaa02268565a7ce1a769beab25fa1 \
+                    size    7512442
 github.tarball_from archive
 
 cmake.source_dir    ${worksrcpath}/src

@@ -4,30 +4,29 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-requests-file
-version             1.5.1
-revision            1
+python.rootname     requests_file
+version             3.0.0
+revision            0
 license             Apache-2
 maintainers         {mps @Schamschula} openmaintainer
 description         Requests-File is a transport adapter for use with the Requests \
                     Python library to allow local filesystem access via file:// URLs.
 long_description    {*}${description}
+homepage            https://codeberg.org/dashea/requests-file
+
 supported_archs     noarch
 platforms           {darwin any}
 
-python.versions     37 38 39 310 311
+python.versions     39 310 311 312 313 314
 
-# suspect stealth update
-dist_subdir         ${name}/${version}_1
-
-checksums           rmd160  2fdbf0ff8d83c69dab84ff587c3493c8cb70ff8e \
-                    sha256  07d74208d3389d01c38ab89ef403af0cfec63957d53a0081d8eca738d0247d8e \
-                    size    5668
+checksums           rmd160  2329118f231aee61cae0cdbd4ac3b0c3df88581f \
+                    sha256  68789589cfde7098e8933fe3e69bbd864f7f0c22f118937b424d94d0e1b7760f \
+                    size    6897
 
 if {${name} ne ${subport}} {
     depends_build-append \
-                    port:py${python.version}-setuptools
+                    port:py${python.version}-setuptools_scm
 
     depends_lib-append  \
-                    port:py${python.version}-requests \
-                    port:py${python.version}-six
+                    port:py${python.version}-requests
 }

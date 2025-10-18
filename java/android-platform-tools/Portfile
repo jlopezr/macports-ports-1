@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                android-platform-tools
-version             34.0.5
+version             36.0.0
 categories          java devel
 installs_libs       no
 maintainers         {judaew @judaew} openmaintainer
@@ -19,9 +19,9 @@ master_sites        https://dl.google.com/android/repository
 distname            platform-tools_r${version}-darwin
 use_zip             yes
 
-checksums           rmd160  5c3e0f5cf838a317b79e985b6c023e000be64ee2 \
-                    sha256  b2c9757744a9d01fcc616b893ac6236233caf1bdf2ef384d73371ab68bfc4a43 \
-                    size    11194858
+checksums           rmd160  276f20e2fa7225d321c9555a9ffc3707ce0c257d \
+                    sha256  b241878e6ec20650b041bf715ea05f7d5dc73bd24529464bd9cf68946e3132bd \
+                    size    14186209
 
 use_configure       no
 
@@ -67,6 +67,7 @@ subport android-platform-tools-no_sse4 {
     notes-append    "The current version of ${name} requires SSE4.1, which is not \
                     supported by your CPU. The last version compatible with your CPU \
                     (${version}) has been installed instead."
+    livecheck.type  none
 }
 
 subport android-platform-tools-i386 {
@@ -81,6 +82,7 @@ subport android-platform-tools-i386 {
     notes-append    "The current version of ${name} requires a 64-bit CPU. The last \
                     version compatible with your CPU (${version}) has been installed \
                     instead."
+    livecheck.type  none
 }
 
 build {}

@@ -1,15 +1,14 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem 1.0
-PortGroup select 1.0
 PortGroup compilers 1.0
-PortGroup compiler_blacklist_versions 1.0
 PortGroup muniversal 1.0
 PortGroup legacysupport 1.1
+PortGroup openssl 1.0
 
 name                postgresql16
-version             16.1
-revision            2
+version             16.10
+revision            1
 
 categories          databases
 maintainers         {gmail.com:davidgilman1 @dgilman} \
@@ -18,22 +17,34 @@ maintainers         {gmail.com:davidgilman1 @dgilman} \
 license             Permissive
 description         The most advanced open-source database available anywhere.
 long_description    PostgreSQL is Object-Relational Database Management System.\
-    It supports almost all SQL constructs, including transactions, \
-    subselects, and user-defined types and functions. Write-ahead \
-    logging means increased performance while retaining data \
-    integrity.
+                    It supports almost all SQL constructs, including transactions, \
+                    subselects, and user-defined types and functions. Write-ahead \
+                    logging means increased performance while retaining data \
+                    integrity.
 conflicts           postgresql96-doc postgresql10-doc postgresql11-doc postgresql12-doc \
-    postgresql13-doc postgresql14-doc postgresql15-doc
+                    postgresql13-doc postgresql14-doc postgresql15-doc
 
 homepage            https://www.postgresql.org/
 master_sites        postgresql:source/v${version}/
 distname            postgresql-${version}
 
-checksums           rmd160  7d5c28b9e6c987cb11932fced9b4534309635711 \
-                    sha256  ce3c4d85d19b0121fe0d3f8ef1fa601f71989e86f8a66f7dc3ad546dd5564fec \
-                    size    24605482
+checksums           rmd160  ea299923e486c82d15cec94e957d237b05752ae5 \
+                    sha256  de8485f4ce9c32e3ddfeef0b7c261eed1cecb54c9bcd170e437ff454cb292b42 \
+                    size    24977722
 
 use_bzip2           yes
+
+openssl.branch      3
+depends_lib         port:readline port:zlib \
+                    port:libxml2 port:libxslt \
+                    path:lib/pkgconfig/icu-uc.pc:icu \
+                    path:lib/libgssapi_krb5.dylib:kerberos5 \
+                    path:lib/libzstd.dylib:zstd \
+                    path:lib/liblz4.dylib:lz4
+depends_build       port:bison port:pkgconfig \
+                    port:docbook-xml-4.5 port:docbook-xsl-nons
+depends_run         port:postgresql_select-16 \
+                    path:share/curl/curl-ca-bundle.crt:curl-ca-bundle
 
 # https://trac.macports.org/ticket/66060
 # https://trac.macports.org/ticket/67365
@@ -42,27 +53,23 @@ use_bzip2           yes
 platform darwin powerpc {
     patchfiles-append  patch-icu.diff \
                        patch-fix-ppc-asm.diff
+    depends_build-append \
+                        path:bin/perl:perl5
 }
-patchfiles-append   patch-openssl32.diff
-
-depends_lib         port:readline path:lib/libssl.dylib:openssl port:zlib \
-                    port:libxml2 port:libxslt \
-                    path:lib/pkgconfig/icu-uc.pc:icu \
-                    path:lib/libgssapi_krb5.dylib:kerberos5 \
-                    path:lib/libzstd.dylib:zstd \
-                    path:lib/liblz4.dylib:lz4
-depends_build       port:bison port:pkgconfig \
-                    port:docbook-xml-4.5 port:docbook-xsl-nons
-depends_run         port:postgresql_select
 
 legacysupport.newest_darwin_requires_legacy \
                     15
 worksrcdir          postgresql-${version}
 
+if {${universal_possible} && [variant_isset universal]} {
+    set zicpath     ${worksrcpath}-${build_arch}/src/timezone/zic
+} else {
+    set zicpath     ${worksrcpath}/src/timezone/zic
+}
 set libdir          ${prefix}/lib/${name}
 set mandir          ${prefix}/share/doc/${name}/man
 configure.args      PG_SYSROOT=disabled \
-                    ZIC=${worksrcpath}/src/timezone/zic \
+                    ZIC=${zicpath} \
                     --sysconfdir=${prefix}/etc/${name} \
                     --bindir=${libdir}/bin \
                     --libdir=${libdir} \
@@ -114,6 +121,8 @@ livecheck.url       ${homepage}/ftp/source/
 
 post-destroot {
     ln -s ${libdir}/bin/psql ${destroot}${prefix}/bin/psql16
+    # delete buggy symlink - this can be removed 2025/02
+    file delete -force ${portdbpath}/psql16
 
     reinplace -E "s#^CFLAGS =#CFLAGS +=#g" \
         ${destroot}${prefix}/lib/${name}/pgxs/src/Makefile.global
@@ -143,13 +152,10 @@ if {!${universal_possible} || ![variant_isset universal]} {
     }
 }
 
-select.group        postgresql
-select.file         ${filespath}/${name}
-
 variant python3 description {add support for python 3.x} {
     depends_lib-append      port:python311
     configure.args-append   --with-python
-    configure.python        ${prefix}/bin/python3.11
+    configure.python        ${prefix}/bin/python3.13
 }
 
 variant perl description {add Perl support} {
@@ -164,17 +170,12 @@ variant tcl description {add Tcl support} {
 }
 
 variant llvm description {add support for JIT compilation} {
-    set llvm_ver 17
+    set llvm_ver 20
 
     foreach clang ${compilers.clang_variants} {
         if { [variant_exists ${clang}] && [variant_isset ${clang}] } {
             set clang_port_ver [string range ${clang} 5 6]
-
-            if { ${clang_port_ver} >= 50 } {
-                set llvm_ver [string index ${clang} end-1].[string index ${clang} end]
-            } else {
-                set llvm_ver ${clang_port_ver}
-            }
+            set llvm_ver ${clang_port_ver}
         }
     }
 

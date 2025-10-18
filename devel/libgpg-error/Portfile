@@ -15,12 +15,12 @@ if {${os.platform} eq "darwin" && ${os.major} < 18} {
 }
 
 name            libgpg-error
-version         1.47
-revision        1
+version         1.56
+revision        0
 categories      devel
 license         LGPL-2.1+
 maintainers     {mps @Schamschula} openmaintainer
-homepage        https://www.gnupg.org/
+
 description     Common error values for all GnuPG components
 
 long_description \
@@ -28,21 +28,24 @@ long_description \
     Among these are GPG, GPGSM, GPGME, GPG-Agent, libgcrypt, pinentry, SmartCard Daemon \
     and possibly more in the future.
 
+homepage        https://www.gnupg.org
 master_sites    gnupg
 
 use_bzip2       yes
 
-checksums       rmd160  e7e81719f4ab5d2c66f6837ab0688a64315b0959 \
-                sha256  9e3c670966b96ecc746c28c2c419541e3bcb787d1a73930f5e5f5e1bcbbb9bdb \
-                size    1020862
+checksums       rmd160  53e84a127d0550c343e081f144466e53c2e8d00f \
+                sha256  82c3d2deb4ad96ad3925d6f9f124fe7205716055ab50e291116ef27975d169c0 \
+                size    1116017
 
 depends_build   port:gettext
 
 depends_lib     port:gettext-runtime \
                 port:libiconv
 
-# build with gawk 5.0.0 is broken see https://trac.macports.org/ticket/58356
-configure.awk   /usr/bin/awk
+patchfiles      patch-src-spawn-posix.c.diff
+
+use_autoreconf  yes
+autoreconf.args --install --verbose --force
 
 # enable install of deprecated gpg-error-config
 # currently required to configure libgcrypt

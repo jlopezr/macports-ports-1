@@ -72,8 +72,8 @@
 # * add the appropriate configure flags
 #   (depending on the project configuration/requirements)
 #
-# For adding appropirate configure flags you can you use any of the
-# following variables:
+# For adding appropriate configure flags you can use any of the following
+# variables:
 #
 # * wxWidgets.prefix
 # * wxWidgets.wxdir
@@ -115,7 +115,7 @@
 #
 #       -DwxWidgets_wxrc_EXECUTABLE=${wxWidgets.wxrc}
 #
-# Sometimes enviromental variables are required, like:
+# Sometimes environment variables are required, like:
 #
 #   configure.env[-append] \
 #       WX_CONFIG=${wxWidgets.wxconfig}
@@ -132,8 +132,6 @@
 # to minimize problems in case the layout changes in the future.
 # If you switch to a different version of wxWidgets it would also be
 # sufficient to change one single line line with 'wxWidgets.use <name>'.
-
-PortGroup   compiler_blacklist_versions 1.0
 
 options     wxWidgets.name
 options     wxWidgets.port
@@ -161,8 +159,6 @@ wxWidgets.macosx_version_min
 options     wxWidgets.use
 option_proc wxWidgets.use wxWidgets._set
 
-PortGroup   compiler_blacklist_versions 1.0
-
 ## TODO: it would be nice to make the changes reversible
 ##
 ## parameters:
@@ -170,6 +166,7 @@ PortGroup   compiler_blacklist_versions 1.0
 ## - wxGTK-2.8
 ## - wxWidgets-3.0
 ## - wxGTK-3.0
+## - wxGTK-3.0-cxx11
 ## - wxPython-3.0
 ## - wxWidgets-3.0-cxx11
 ## - wxWidgets-3.2
@@ -222,22 +219,10 @@ proc wxWidgets._set {option action args} {
         wxWidgets.name      "wxWidgets"
         wxWidgets.version   "3.0"
         wxWidgets.port      "wxWidgets-3.0"
-        if {${os.major} < 9} {
-            pre-fetch {
-                ui_error "${wxWidgets.port} requires macOS 10.5 or later."
-                return -code error "incompatible macOS version"
-            }
-        }
     } elseif {${args} eq "wxPython-3.0"} {
         wxWidgets.name      "wxPython"
         wxWidgets.version   "3.0"
         wxWidgets.port      "wxPython-3.0"
-        if {${os.major} < 9} {
-            pre-fetch {
-                ui_error "${wxWidgets.port} requires macOS 10.5 or later."
-                return -code error "incompatible macOS version"
-            }
-        }
     # ugly workaround to allow some C++11-only applications to be built on < 10.9
     } elseif {${args} eq "wxWidgets-3.0-cxx11"} {
         global cxx_stdlib
@@ -249,14 +234,18 @@ proc wxWidgets._set {option action args} {
             wxWidgets.version   "3.0"
             wxWidgets.port      "wxWidgets-3.0"
         }
-        if {${os.major} < 9} {
-            pre-fetch {
-                ui_error "${wxWidgets.port} requires macOS 10.5 or later."
-                return -code error "incompatible macOS version"
-            }
-        }
         # this doesn't work
         # PortGroup cxx11 1.1
+    } elseif {${args} eq "wxGTK-3.0-cxx11"} {
+        global cxx_stdlib
+        wxWidgets.name          "wxGTK"
+        if {${cxx_stdlib} eq "libstdc++"} {
+            wxWidgets.version   "3.0-cxx11"
+            wxWidgets.port      "wxgtk-3.0-cxx11"
+        } else {
+            wxWidgets.version   "3.0"
+            wxWidgets.port      "wxgtk-3.0"
+        }
     # preliminary support for wxWidgets 3.1/3.2
     } elseif {${args} eq "wxWidgets-3.2"} {
         wxWidgets.name      "wxWidgets"

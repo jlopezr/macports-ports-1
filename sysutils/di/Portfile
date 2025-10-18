@@ -1,34 +1,38 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:et:sw=4:ts=4:sts=4
 
 PortSystem          1.0
-PortGroup           makefile 1.0
+PortGroup           cmake 1.1
 
 name                di
-version             4.52
+version             6.0.0
 revision            0
 categories          sysutils
-platforms           darwin
 maintainers         {mps @Schamschula} openmaintainer
 license             zlib
 description         disk information utility
 long_description    di is a disk information utility, displaying everything \
                     (and more) than the classic df command does.
 
-homepage            https://gentoo.com/di/
+homepage            https://diskinfo-di.sourceforge.io/
 master_sites        sourceforge:project/diskinfo-di
 
-checksums           rmd160  90bbb8384707356541283e97e4302bb871d50383 \
-                    sha256  b775ea8acb089c3440a8621da684fa8f98f6551c06e705593b79d4fe82b57a1f \
-                    size    226611
+checksums           rmd160  113cc9a037848773524e2a4e3641f5987f389907 \
+                    sha256  7b663e4db044b1fa4986bd018f827c18e96fe6d1f9a36732dcbb0450e7f518cb \
+                    size    133060
 
-depends_build       port:gettext
+depends_build-append \
+                    port:gettext
 
 depends_lib         port:gettext-runtime
 
-patchfiles          patch-Makefile.diff
+# Could use gmp (or tommath when https://trac.macports.org/ticket/71791 is fixed)
+configure.args-append \
+                    -DDI_USE_MATH=DI_INTERNAL
 
-post-patch {
-    reinplace "s|%PREFIX%|${prefix}|g" ${worksrcpath}/Makefile
+if {${os.platform} eq "darwin" && ${os.major} < 14} {
+    # clang: error: unknown argument: '-fstack-protector-strong'
+    configure.args-append \
+                    -DDI_FORTIFY=N
 }
 
 livecheck.type      regex

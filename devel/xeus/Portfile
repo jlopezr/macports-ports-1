@@ -2,10 +2,9 @@
 
 PortSystem              1.0
 PortGroup               cmake 1.1
-PortGroup               compiler_blacklist_versions 1.0
 PortGroup               github 1.0
 
-github.setup            jupyter-xeus xeus 3.1.4
+github.setup            jupyter-xeus xeus 5.2.4
 revision                0
 categories              devel science
 license                 BSD
@@ -16,18 +15,20 @@ long_description        {*}${description} It takes the burden of implementing th
                         Jupyter Kernel protocol so developers can focus on implementing \
                         the interpreter part of the kernel.
 
-checksums               rmd160  d1cb3959b58621ec0f3356e15bc17d0b7c17a037 \
-                        sha256  4e566917358417a1f9827e7b8031172ecf9a879454dd7965f6990e127f6f1ae5 \
-                        size    9029885
+# Change github.tarball_from to 'releases' or 'archive' next update
+# Unfortunately, neither of these options work
+github.tarball_from     tarball
 
-compiler.cxx_standard   2014
-compiler.blacklist-append {clang < 900}
+checksums               rmd160  b0d96eada089af6a51fe448f64a44555aac75c7d \
+                        sha256  87adde4cb3f65d4a11c3c093a1179340f10e5db253c39cff0f6d4bd42b80c662 \
+                        size    9049273
+
+# fatal error: 'any' file not found
+compiler.cxx_standard   2017
 
 depends_build-append    port:pkgconfig \
                         port:cctools
 
-depends_lib-append      port:nlohmann-json \
-                        port:xtl
+depends_lib-append      port:nlohmann-json
 
-configure.args-append   -DCMAKE_PREFIX_PATH=${prefix}/lib/cmake/xtl/xtlConfig.cmake \
-                        -DXEUS_DISABLE_ARCH_NATIVE=ON
+configure.args-append   -DXEUS_DISABLE_ARCH_NATIVE=ON

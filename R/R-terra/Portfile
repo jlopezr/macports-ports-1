@@ -3,22 +3,23 @@
 PortSystem          1.0
 PortGroup           R 1.0
 
-R.setup             cran rspatial terra 1.7-65
-revision            0
+R.setup             cran rspatial terra 1.8-5
+revision            1
 categories-append   gis
-maintainers         {@barracuda156 gmail.com:vital.had} openmaintainer
+maintainers         nomaintainer
 license             GPL-3+
 description         Spatial data analysis
 long_description    {*}${description}
 homepage            https://rspatial.org/terra
-checksums           rmd160  59268948755d5411d2d9f264e72c45f622ef6237 \
-                    sha256  d4cd9f69ba47fea641b566b39e62585a62d0190966a9a9010e341a8aaa2a3a55 \
-                    size    829865
+checksums           rmd160  2acedfb2d6ca8322e203c510e590eb6012916bd3 \
+                    sha256  b05e0fe5e4ec7916b85673498191db48c8ed762cae035bb52dc941f79c8d5f2e \
+                    size    981057
 
 set proj_v          proj9
 
 depends_build-append \
-                    port:pkgconfig
+                    path:bin/pkg-config:pkgconfig
+
 depends_lib-append  path:lib/${proj_v}/lib/pkgconfig/proj.pc:${proj_v} \
                     port:gdal \
                     port:geos \
@@ -28,14 +29,11 @@ depends_lib-append  path:lib/${proj_v}/lib/pkgconfig/proj.pc:${proj_v} \
 compiler.cxx_standard 2017
 
 # configure fails to do its job: https://github.com/r-spatial/sf/issues/2292
-destroot.env-append CPPFLAGS=-I${prefix}/lib/${proj_v}/include
+build.env-append    CPPFLAGS=-I${prefix}/lib/${proj_v}/include
 
-destroot.pre_args-append \
-                    --configure-args=' \
-                        --with-proj-include=${prefix}/lib/${proj_v}/include \
+build.args-append   --configure-args="--with-proj-include=${prefix}/lib/${proj_v}/include \
                         --with-proj-lib=${prefix}/lib/${proj_v}/lib \
-                        --with-proj-share=${prefix}/lib/${proj_v}/share/proj \
-                        '
+                        --with-proj-share=${prefix}/lib/${proj_v}/share/proj"
 
 depends_test-append port:R-deldir \
                     port:R-htmlwidgets \

@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-poetry-plugin-export
-version             1.6.0
+version             1.9.0
 revision            0
 
 categories          python
@@ -19,13 +19,12 @@ homepage            https://python-poetry.org
 
 distname            poetry_plugin_export-${version}
 
-checksums           rmd160  9b7844090b1f443ebb0f68a1f1d85d59c1fc867b \
-                    sha256  091939434984267a91abf2f916a26b00cff4eee8da63ec2a24ba4b17cf969a59 \
-                    size    29265
+checksums           rmd160  0feaedd26d5b39a33c2ea614159e892a18173d88 \
+                    sha256  6fc8755cfac93c74752f85510b171983e2e47d782d4ab5be4ffc4f6945be7967 \
+                    size    30835
 
-python.versions     38 39 310 311
+python.versions     39 310 311 312 313
 
 if {${name} ne ${subport}} {
-    python.pep517       yes
     python.pep517_backend poetry
 }

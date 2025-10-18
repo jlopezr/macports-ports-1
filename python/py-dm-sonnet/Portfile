@@ -5,6 +5,8 @@ PortGroup           github 1.0
 PortGroup           python 1.0
 
 github.setup        deepmind sonnet 2.0.0 v
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 name                py-dm-${github.project}
 revision            0
 
@@ -24,12 +26,9 @@ checksums           rmd160  1df18217856c512efc6d788d3285bcc97b9ea2b3 \
                     sha256  4de05c9a5fd05e7adc1d5b2ceafe0ea8b0de7b6fd377471df5432b73dd912864 \
                     size    8665120
 
-python.versions     37 38 39
+python.versions     39
 
 if {${name} ne ${subport}} {
-    depends_build-append \
-                    port:py${python.version}-setuptools
-
     depends_lib-append \
                     path:${python.pkgd}/tensorflow:py${python.version}-tensorflow
 

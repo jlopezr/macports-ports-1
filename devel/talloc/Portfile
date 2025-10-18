@@ -2,20 +2,22 @@
 
 PortSystem          1.0
 PortGroup           muniversal 1.0
+PortGroup           legacysupport 1.1
+
+# renameat
+legacysupport.newest_darwin_requires_legacy 13
 
 name                talloc
-version             2.3.3
+version             2.4.3
 revision            0
-checksums           rmd160  2c9979b83cfc8729a4904dcde7aeaff89a8bc055 \
-                    sha256  6be95b2368bd0af1c4cd7a88146eb6ceea18e46c3ffc9330bf6262b40d1d8aaa \
-                    size    650493
+checksums           rmd160  f9ae1014ddcac3956a4eb149e262897358b0b005 \
+                    sha256  dc46c40b9f46bb34dd97fe41f548b0e8b247b77a918576733c528e83abd854dd \
+                    size    684092
 
 conflicts           samba3
 set major           [lindex [split ${version} .] 0]
 categories          devel
-# mostly LGPL, but a few files are GPL
-license             GPL-3+
-platforms           darwin
+license             LGPL-3+
 maintainers         nomaintainer
 description         Hierarchical memory allocation library
 long_description    talloc is a hierarchical, reference counted memory pool \
@@ -24,14 +26,19 @@ long_description    talloc is a hierarchical, reference counted memory pool \
 homepage            https://talloc.samba.org
 master_sites        https://www.samba.org/ftp/talloc/
 
-depends_build-append    port:python310
+depends_build-append    port:python313
 
-patchfiles              Makefile.patch
+depends_test-append     port:libiconv
+
+patchfiles          patch-samba-install.diff
+
+# Missing required TLS support in pthread library
+compiler.thread_local_storage   yes
 
 configure.args-append   --disable-python \
                         --with-libiconv=${prefix}
 
-configure.python        ${prefix}/bin/python3.10
+configure.python        ${prefix}/bin/python3.13
 
 build.env-append        PYTHON=${configure.python}
 
@@ -39,11 +46,3 @@ test.run                yes
 test.env                {*}${build.env}
 
 destroot.env            {*}${build.env}
-
-post-destroot {
-    system "install_name_tool -id ${prefix}/lib/libtalloc.${major}.dylib [file join ${destroot}${prefix}/lib [file readlink ${destroot}${prefix}/lib/libtalloc.${major}.dylib]]"
-}
-
-livecheck.type      regex
-livecheck.url       [lindex ${master_sites} 0]
-livecheck.regex     ${name}-(\[0-9.\]+)${extract.suffix}

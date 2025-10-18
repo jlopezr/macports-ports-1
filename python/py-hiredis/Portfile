@@ -4,13 +4,12 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-hiredis
-version             2.2.3
+version             3.2.1
 revision            0
 categories-append   devel databases
 license             BSD
 
-python.versions     37 38 39 310 311
-python.pep517       yes
+python.versions     39 310 311 312 313
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -19,6 +18,6 @@ long_description    ${description}
 
 homepage            https://github.com/pietern/hiredis-py
 
-checksums           rmd160  9e61fcb8751780de47ad0c8e3f580eceacffdbc9 \
-                    sha256  e75163773a309e56a9b58165cf5a50e0f84b755f6ff863b2c01a38918fe92daa \
-                    size    84172
+checksums           rmd160  6ef8770947f4f66cfea4a45a73091822cc61e98c \
+                    sha256  5a5f64479bf04dd829fe7029fad0ea043eac4023abc6e946668cbbec3493a78d \
+                    size    89096

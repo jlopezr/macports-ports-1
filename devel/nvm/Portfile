@@ -3,7 +3,8 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        nvm-sh nvm 0.39.3 v
+github.setup        nvm-sh nvm 0.40.3 v
+github.tarball_from archive
 
 categories          devel
 platforms           any
@@ -14,9 +15,9 @@ maintainers         {@FranklinYu hotmail.com:franklinyu} openmaintainer
 description         Node version manager
 long_description    NVM is a simple shell script to manage multiple active Node.js versions.
 
-checksums           rmd160  566cd1bc694beaf5b5202823cc216796a40e6329 \
-                    sha256  8eb291d2c55608c0b443bf550d44d7bbec49ba700225eac371356ef6f222175b \
-                    size    179791
+checksums           rmd160  6efb5987afd96e9c3f697ac6efb0d828a0b24c3b \
+                    sha256  5f4d6aaa04a177dc93c985e31dbc411ab6b8c6e1e21d8015dbc1372625fcd1d0 \
+                    size    346428
 
 use_configure       no
 

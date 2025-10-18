@@ -3,7 +3,7 @@
 PortSystem          1.0
 PortGroup           R 1.0
 
-R.setup             cran valentint robust 0.7-3
+R.setup             cran valentint robust 0.7-5
 revision            0
 categories-append   math
 maintainers         {@barracuda156 gmail.com:vital.had} openmaintainer
@@ -11,9 +11,10 @@ license             GPL-3+
 description         Methods for robust statistics, a state of the art in the early 2000s, \
                     notably for robust regression and robust multivariate analysis.
 long_description    {*}${description}
-checksums           rmd160  49f6ee62d9e33bb9219a96433506e671c3b340d4 \
-                    sha256  89a712a481883284b72834647949c68aaa74fbeeead01e57d43287706dc4475e \
-                    size    236374
+homepage            https://github.com/valentint/robust
+checksums           rmd160  90472d5f27ee0fa9b26f6669925744680f99b649 \
+                    sha256  a3c02a9c9101b966907cb52b3193c4ef51864928ad99c3351edf5390532c1acc \
+                    size    237556
 
 depends_lib-append  port:R-fit.models \
                     port:R-robustbase \

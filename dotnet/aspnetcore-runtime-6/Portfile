@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                aspnetcore-runtime-6
-version             6.0.25
+version             6.0.32
 revision            0
 categories          dotnet
 license             MIT
@@ -20,21 +20,21 @@ long_description    .NET is a free, cross-platform, open source developer platfo
                     to build for web, mobile, desktop, games, and IoT.
 
 homepage            https://dotnet.microsoft.com/
-platforms           {darwin any}
+platforms           {darwin any} {darwin >= 19}
 supported_archs     x86_64 arm64
 
 switch ${build_arch} {
     x86_64 {
         distname            aspnetcore-runtime-${version}-osx-x64
-        checksums           rmd160  29485b30073dc41ed88e3f8a1584e57006f7c469 \
-                            sha256  a58e0b087f0df833d97659b66d7e952e98451b748cde101b58e2b2327020ba74 \
-                            size    39201726
+        checksums           rmd160  a1d35e636e228a74747b94fa99458983227a4c22 \
+                            sha256  e00b79f6c3d07a130badb949d7eb73407d39a648e7576487a1218e9c0c9c0f3a \
+                            size    39204491
     }
     arm64 {
         distname            aspnetcore-runtime-${version}-osx-arm64
-        checksums           rmd160  38c2fe0d1e14c2887a68f2102b736460241745b8 \
-                            sha256  b919852fa8461f1dfdf1044043b65a47eccfac5f7a9f5106ab4b51cd91698a6d \
-                            size    36948042
+        checksums           rmd160  5ec4ee827176eddff055b4768ae8cb2fcb8b9ecf \
+                            sha256  6f69969cd422c8e72334feb49e00bf5d1e6421d04cf8b754b2213f48ea7a77b0 \
+                            size    36951992
     }
     default {
         known_fail yes
@@ -45,7 +45,7 @@ switch ${build_arch} {
     }
 }
 
-master_sites        https://dotnetcli.azureedge.net/dotnet/aspnetcore/Runtime/${version}/
+master_sites        https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/${version}/
 
 worksrcdir          ${name}-${version}
 extract.mkdir       yes
@@ -66,5 +66,5 @@ destroot {
 }
 
 livecheck.type      regex
-livecheck.url       https://dotnet.microsoft.com/en-us/download/dotnet/6.0
+livecheck.url       https://dotnet.microsoft.com/download/dotnet/6.0
 livecheck.regex     "ASP.NET Core Runtime (\\d+(?:\\.\\d+)*)"

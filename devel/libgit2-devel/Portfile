@@ -11,9 +11,9 @@ conflicts           libgit2
 set my_name         libgit2
 
 # don't forget to update py-pygit2 and libgit2-glib as well
-github.setup        libgit2 libgit2 1.7.1 v
+github.setup        libgit2 libgit2 1.9.1 v
 github.tarball_from archive
-revision            1
+revision            0
 epoch               0
 
 categories          devel
@@ -30,12 +30,12 @@ homepage            https://libgit2.org/
 
 dist_subdir         ${my_name}
 
-checksums           rmd160  5dad52197aaa08f44f5faab10935e566ae51da6b \
-                    sha256  17d2b292f21be3892b704dddff29327b3564f96099a1c53b00edc23160c71327 \
-                    size    7548081
+checksums           rmd160  d1c0c706063114ab665496bd04963d5f140e4d66 \
+                    sha256  14cab3014b2b7ad75970ff4548e83615f74d719afe00aa479b4a889c1e13fc00 \
+                    size    7665631
 
 depends_build-append \
-                    port:pkgconfig
+                    path:bin/pkg-config:pkgconfig
 
 depends_lib-append \
                     port:curl \
@@ -63,6 +63,10 @@ post-patch {
 }
 
 compiler.c_standard  1999
+
+# Force cmake to pass `-std=c99`, otherwise `-std=c90` is used
+# See: https://trac.macports.org/ticket/72428
+cmake.set_c_standard yes
 
 # Clear optflags; controlled by project, via cmake build type
 configure.optflags

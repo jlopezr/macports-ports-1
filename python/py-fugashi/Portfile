@@ -4,37 +4,35 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-fugashi
-version             1.3.0
+version             1.5.1
 revision            0
-categories-append   textproc
 
+categories-append   textproc
 license             MIT
 maintainers         nomaintainer
 
 description         A Cython MeCab wrapper for fast, pythonic Japanese tokenization.
-
 long_description    fugashi is a Cython wrapper for MeCab, a Japanese \
                     tokenizer and morphological analysis tool.
 
-checksums           md5 2dcc59dc082ab0c67a721c504d1dee6a \
-                    rmd160 6bf39a186a71270051a78d2f6e823d591f84f0f6 \
-                    sha256 0deec0ace31859897774238a6d7c136243f83f6fe4f98fdd48e4e770d859c1fc
+checksums           rmd160  c51abeca87a1deeda7bd45fdfed98b476b82fcef \
+                    sha256  3ff9b4d0e40e04d56d7ced906ae8fba6c6fa41aac46f5210de1b56d6626e7a1f \
+                    size    339745
 
-python.versions     37 38 39 310 311
+python.versions     39 310 311 312 313
 
 if {${name} ne ${subport}} {
+    patchfiles      patch-pyproject.toml.diff
+
     depends_build-append \
                     port:py${python.version}-setuptools_scm \
-                    port:py${python.version}-cython-compat
-
-    set compat_path [string replace ${python.pkgd} 0 [string length ${python.prefix}]-1 ${prefix}/lib/py${python.version}-cython-compat]
-    build.env-append    PYTHONPATH=${compat_path}
+                    port:py${python.version}-cython
 
     depends_lib-append \
                     path:lib/libmecab.dylib:mecab-base
 
     depends_test-append \
-                    port:py${python.version}-pytest
+                    port:py${python.version}-ipadic
 
     test.run        yes
 }

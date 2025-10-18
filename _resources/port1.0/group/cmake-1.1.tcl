@@ -167,14 +167,7 @@ proc cmake::handle_generator {option action args} {
                 depends_build-append \
                                 port:ninja
                 build.cmd       ninja
-                # force Ninja to use the exact number of requested build jobs
-                # Need to check use_parallel_build here, as build.jobs is still > 1
-                # even if use_parallel_build=no ....
-                set njobs ${build.jobs}
-                if { ![option use_parallel_build] } {
-                    set njobs 1
-                }
-                build.post_args -j${njobs} -v
+                build.post_args -v
                 destroot.target install
                 # ninja needs the DESTDIR argument in the environment
                 destroot.destdir
@@ -494,7 +487,7 @@ variant debug description "Enable debug binaries" {
         configure.objcxxflags-replace    -O2 -O0
         configure.ldflags-replace        -O2 -O0
         # get most if not all possible debug info
-        if {[string match *clang* ${configure.cxx}] || [string match *clang* ${configure.cc}]} {
+        if {[string match *clang* [file tail ${configure.cxx}]] || [string match *clang* [file tail ${configure.cc}]]} {
             set cmake::debugopts [list -g -fno-limit-debug-info -DDEBUG]
         } else {
             set cmake::debugopts [list -g -DDEBUG]

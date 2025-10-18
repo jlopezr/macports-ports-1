@@ -3,13 +3,15 @@
 PortSystem              1.0
 PortGroup               github 1.0
 
-github.setup            MestreLion git-tools 40f8174bf0f4db100c902be7e883dd70cfd1995f
-version                 20210806
+epoch                   1
+
+github.setup            MestreLion git-tools 2025.08 v
+github.tarball_from     archive
 revision                0
 
-checksums               rmd160  17a570b3644306c3bf1f7fcea7c8d06502f52b70 \
-                        sha256  859504bc65a447352c99d0595a92214d24bd8dd97ebb7e6b3ec3b0c19742dc56 \
-                        size    32998
+checksums               rmd160  6ffd1c725dc0959bef0115abeb3888e8349ed3c9 \
+                        sha256  65eb05f2959861d16e60d132b2175169e6e1aec840ab6e4bae556c6d08a199a7 \
+                        size    39070
 
 maintainers             {@telotortium gmail.com:rirelan} openmaintainer
 platforms               any

@@ -5,33 +5,30 @@ PortGroup           python 1.0
 
 # also update py-pycryptodomex
 name                py-pycryptodome
-version             3.19.0
+version             3.23.0
 revision            0
 
 homepage            https://www.pycryptodome.org
 
 license             BSD
-platforms           darwin
-maintainers         {@catap korins.ky:kirill} openmaintainer
+maintainers         nomaintainer
 
 description         Cryptographic library for Python
 long_description    PyCryptodome is a self-contained Python package of \
                     low-level cryptographic primitives. \
                     PyCryptodome is a fork of PyCrypto.
 
-python.versions     27 37 38 39 310 311 312
+python.versions     27 39 310 311 312 313
 
-checksums           rmd160  d239640f0a70dd89e14d5f01fa939183bdb6927c \
-                    sha256  bc35d463222cdb4dbebd35e0784155c81e161b9284e567e7e933d722e533331e \
-                    size    4778190
+checksums           rmd160  8bd30e694455dda13d11d1fff165bb16e2b04c9b \
+                    sha256  447700a657182d60338bab09fdb27518f8856aecd80ae4c6bdddb67ff5da44ef \
+                    size    4921276
 
 if {${name} ne ${subport}} {
     depends_build-append \
                         port:py${python.version}-setuptools
 
-    livecheck.type      none
-
     test.run            yes
+    python.test_framework
     test.cmd            ${python.bin} setup.py test
-    test.args
 }

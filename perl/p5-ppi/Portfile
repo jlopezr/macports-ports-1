@@ -4,20 +4,19 @@ PortSystem          1.0
 PortGroup           perl5 1.0
 
 perl5.branches      5.28 5.30 5.32 5.34
-perl5.setup         PPI 1.277
+perl5.setup         PPI 1.283
 revision            0
 license             {Artistic-1 GPL}
 maintainers         nomaintainer
-
-description         Parse, Analyze and Manipulate Perl (without perl)
+description         PPI - Parse, Analyze and Manipulate Perl (without perl)
 long_description    {*}${description}
 
 platforms           {darwin any}
 supported_archs     noarch
 
-checksums           rmd160  4062f46840bb6f5c0276d7a511677efb6e62e5a7 \
-                    sha256  87c79f83b6876e206051965d5019d2507c551f819a86750080ec7ec43b2e0af8 \
-                    size    241536
+checksums           rmd160  3018d13f433fffe783c4fda22e81f9c2190e9c8e \
+                    sha256  70becc9dfad8a72d231bbe88d20a82acfd31c13ca03c6fb359703a5ac0004059 \
+                    size    251927
 
 if {${perl5.major} != ""} {
     depends_build-append \
@@ -30,5 +29,8 @@ if {${perl5.major} != ""} {
     depends_lib-append \
                     port:p${perl5.major}-clone \
                     port:p${perl5.major}-params-util \
-                    port:p${perl5.major}-task-weaken
+                    port:p${perl5.major}-safe-isa \
+                    port:p${perl5.major}-task-weaken \
+                    port:p${perl5.major}-version \
+                    port:p${perl5.major}-yaml-pp
 }

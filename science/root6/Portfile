@@ -5,16 +5,17 @@ PortSystem          1.0
 PortGroup           active_variants               1.1
 PortGroup           cmake                         1.1
 PortGroup           compilers                     1.0
-PortGroup           compiler_blacklist_versions   1.0
 PortGroup           github                        1.0
 PortGroup           select                        1.0
-PortGroup           xcodeversion                  1.0
 PortGroup           legacysupport                 1.1
+PortGroup           openssl                       1.0
 
 # Please also check if Gate needs a revbump after root6 update
-github.setup        root-project root 6-30-03 v
+github.setup        root-project root 6-36-04 v
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 version             [string map {- .} ${github.version}]
-revision            1
+revision            0
 livecheck.version   ${github.version}
 
 # Use git commit
@@ -24,9 +25,9 @@ livecheck.version   ${github.version}
 #livecheck.version   6-14-00
 #revision            0
 
-checksums           rmd160  fcaee795c0fa558541991e084ce65098b411ef0e \
-                    sha256  65a6cbd881e7659aa541877090372c6f8e23ec06e0eb7d6abb5a727b0af6e533 \
-                    size    184779567
+checksums           rmd160  4a5c7eccd0dffd9339763820dd06bc40e5885a68 \
+                    sha256  7ba4b0f6d9b17bd07d6f83291eb439d6d3f64c98291d351aaebecf600299ac38 \
+                    size    204815346
 
 # extract major version
 set version_major   [lindex [split ${version} .] 0]
@@ -39,7 +40,7 @@ livecheck.regex     {v(6[-.]\d[02468][-.]\d{2}).tar.gz}
 
 name                root${version_major}
 categories          science
-maintainers         {jonesc @cjones051073} {mojca @mojca}
+maintainers         {jonesc @cjones051073}
 license             LGPL-2.1+
 
 description         ROOT is a data analysis framework from CERN
@@ -48,7 +49,7 @@ long_description    The ROOT system provides a set of frameworks with all \
                     of data in a very efficient way.
 
 homepage            https://root.cern.ch/
-platforms           darwin
+platforms           {darwin >= 17}
 
 dist_subdir         root/${version}
 
@@ -57,12 +58,17 @@ compilers.choose    f90 fc f77
 compilers.setup     require_fortran -g95 -gcc44 -gcc45 -gcc46 -gcc47 -gcc48 -gcc49 -gcc5 -gcc6 -gcc7 -gcc8
 compiler.blacklist-append *gcc* {clang < 920} {macports-clang-3.[0-9]} {macports-clang-[4-6].0}
 
+# c++17 filesystem required, only available in Xcode clang from macOS 10.15
+compiler.blacklist-append {clang < 1200}
+# enabling root7 requires better <memory> support (macOS 12 or newer)
+compiler.blacklist-append {clang < 1400}
+
 # If using MacPorts clang, make sure it's added as a runtime dep as well as cling will need it.
 if {[regexp {macports-clang-(.*)} ${configure.compiler} -> clang_v]} {
     depends_run-append port:clang-${clang_v}
 }
 
-depends_build-append port:pkgconfig
+depends_build-append port:pkgconfig port:ninja
 
 depends_lib-append  port:expat \
                     port:gmp \
@@ -80,17 +86,19 @@ depends_lib-append  port:expat \
                     port:xxhashlib \
                     port:z3 \
                     port:zstd \
-                    path:lib/libopenblas.dylib:OpenBLAS \
-                    path:lib/libssl.dylib:openssl
-
-# Use builtin zlib instead as upstream claims has better performance
-# https://root.cern/content/release-61800
-#                   port:zlib
+                    port:nlohmann-json \
+                    port:zlib \
+                    port:bzip2 \
+                    port:brotli \
+                    path:lib/pkgconfig/librsvg-2.0.pc:librsvg \
+                    path:lib/libopenblas.dylib:OpenBLAS
 
 depends_run-append  port:root_select
 
 cmake.out_of_source yes
-#cmake.generator     Ninja
+cmake.generator     Ninja
+# ROOT needs full path to ninja
+configure.args-append -GNinja -DCMAKE_MAKE_PROGRAM="${prefix}/bin/ninja"
 
 # TODO: the file ${filespath}/${name} would have to be generated on the fly instead
 select.group        root
@@ -99,7 +107,7 @@ select.file         ${filespath}/${name}
 # port specific location
 set install_prefix  ${prefix}/libexec/root${version_major}
 
-patch.pre_args      -p1
+patch.pre_args-replace  -p0 -p1
 
 configure.args-append \
                     -Dgnuinstall=ON \
@@ -112,10 +120,9 @@ configure.args-append \
                     -Dbuiltin_freetype=ON \
                     -Dbuiltin_glew=OFF \
                     -Dbuiltin_pcre=OFF \
-                    -Dbuiltin_zlib=ON \
+                    -Dbuiltin_zlib=OFF \
                     -Dbuiltin_lzma=OFF \
                     -Dbuiltin_tbb=OFF \
-                    -Dbuiltin_afterimage=ON \
                     -Ddavix=OFF \
                     -Dfftw3=OFF \
                     -Dkrb5=OFF \
@@ -135,7 +142,6 @@ configure.args-append \
                     -Dchirp=OFF \
                     -Dhdfs=OFF \
                     -Druby=OFF \
-                    -Dminuit2=ON \
                     -Dtmva=OFF \
                     -Dqt=OFF \
                     -Dqtgsi=OFF \
@@ -145,6 +151,7 @@ configure.args-append \
                     -Dlibcxx=ON \
                     -Dxrootd=OFF \
                     -Dbuiltin_ftgl=ON \
+                    -Dbuiltin_gsl=ON \
                     -Dmathmore=ON \
                     -Dgenvector=ON \
                     -Dunuran=ON \
@@ -154,7 +161,7 @@ configure.args-append \
                     -Dastiff=ON \
                     -Dgeocad=OFF \
                     -Dr=OFF \
-                    -Droot7=OFF \
+                    -Droot7=ON \
                     -Dwebgui=ON \
                     -Dbuiltin_veccore=OFF \
                     -DPNG_LIBRARY=${prefix}/lib/libpng.dylib \
@@ -162,6 +169,11 @@ configure.args-append \
 
 configure.env-append \
                     TBB_ROOT=${prefix}/libexec/tbb
+
+# To be removed in future versions.
+# https://github.com/root-project/root/issues/19327
+configure.args-append \
+                     -DCMAKE_BUILD_WITH_INSTALL_RPATH:BOOL=OFF
 
 # https://root-forum.cern.ch/t/v6-22-00-build-error-on-macos/40239
 configure.args-append -Druntime_cxxmodules=OFF
@@ -189,15 +201,6 @@ if {${os.platform} eq "darwin" && ${os.major} >= 16} {
 # Enable xrootd support by default
 if {${os.platform} eq "darwin" && ${os.major} >= 12} {
     default_variants-append +xrootd
-}
-
-# No longer compiles on Mac OS X 10.6 or older.
-if {${os.platform} eq "darwin" && ${os.major} <= 10} {
-    known_fail yes
-    pre-fetch {
-        ui_error "${name} @${version} requires Mac OS X 10.7 or later"
-        return -code error "Unsupported Mac OS X version"
-    }
 }
 
 if {${os.platform} eq "darwin" && ${os.major} >= 20} {
@@ -231,6 +234,19 @@ pre-configure {
     set pystringtoreplace "/usr/bin/env python"
     foreach f [ exec find ${worksrcpath} -type f -and -not -name "shtest-encoding.py" -and -name "*.py" ] {
         reinplace -q "s|${pystringtoreplace}|/usr/bin/python|g" $f
+    }
+}
+
+post-build {
+    ui_debug "Searching ${workpath}/build for third party build logs ..."
+    foreach log [ exec find ${workpath}/build -type f -and -name "*.log" ] {
+        ui_debug "Contents of ${log} :-"
+        set f [open ${log}]
+        set lines [split [read $f] "\n"]
+        foreach line $lines {
+            ui_debug "${line}"
+        }
+        close $f
     }
 }
 
@@ -384,13 +400,13 @@ variant opengl description {Build with opengl support} {
 # ========================================================================================
 
 # List of possible python versions
-set python_versions { 3.8 3.9 3.10 3.11 }
+set python_versions { 3.9 3.10 3.11 3.12 3.13 }
 # Enable python variant by default on OS X 10.9 and newer.
 # Disabled on older systems due to an issue fetching the source for
 # the various python dependencies due to these systems having out of
 # date SSL versions that are rejected by the upstream server.
 if {${os.platform} ne "darwin" || ${os.major} >= 13} {
-    set default_python_variant +python311
+    set default_python_variant +python313
 } else {
     set default_python_variant ""
 }
@@ -531,24 +547,18 @@ variant sqlite3 description {Build with sqlite3 support} {
     depends_lib-append      port:sqlite3
 }
 
-variant mysql conflicts mariadb percona description {Build with mysql support} {
+variant mysql conflicts mariadb description {Build with mysql support} {
     set ver 57
     configure.args-replace  -Dmysql=OFF -Dmysql=ON
     configure.args-append   -DMYSQL_CONFIG_EXECUTABLE=${prefix}"/lib/mysql${ver}/bin/mysql_config"
     depends_lib-append      port:mysql${ver}
 }
 
-variant mariadb conflicts mysql percona description {Build with mariadb support} {
+variant mariadb conflicts mysql description {Build with mariadb support} {
     set ver 10.2
     configure.args-replace  -Dmysql=OFF -Dmysql=ON
     configure.args-append   -DMYSQL_CONFIG_EXECUTABLE=${prefix}"/lib/mariadb-${ver}/bin/mysql_config"
     depends_lib-append      port:mariadb-${ver}
-}
-
-variant percona conflicts mysql mariadb description {Build with percona support} {
-    configure.args-replace  -Dmysql=OFF -Dmysql=ON
-    configure.args-append   -DMYSQL_CONFIG_EXECUTABLE=${prefix}"/lib/percona/bin/mysql_config"
-    depends_lib-append      port:percona
 }
 
 variant postgresql conflicts description {Build with PostgreSQL support} {

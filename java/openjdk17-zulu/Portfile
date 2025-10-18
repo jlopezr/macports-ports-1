@@ -2,9 +2,10 @@
 
 PortSystem       1.0
 
-name             openjdk17-zulu
+set feature 17
+name             openjdk${feature}-zulu
 categories       java devel
-maintainers      {breun.nl:nils @breun} openmaintainer
+maintainers      {breun @breun} openmaintainer
 platforms        {darwin any}
 # This port uses prebuilt binaries; 'NoMirror' makes sure MacPorts doesn't mirror/distribute these third-party binaries
 license          GPL-2 NoMirror
@@ -14,38 +15,41 @@ universal_variant no
 # https://www.azul.com/downloads/?version=java-17-lts&os=macos&package=jdk
 supported_archs  x86_64 arm64
 
-version      17.46.19
+version      ${feature}.60.17
 revision     0
 
-set openjdk_version 17.0.9
+set openjdk_version ${feature}.0.16
 
-description  Azul Zulu Community OpenJDK 17 (Long Term Support)
-long_description Azul® Zulu® is a Java Development Kit (JDK), and a compliant implementation of the Java Standard Edition (SE)\
-                 specification that contains all the Java components needed to build and run Java SE applications. Zulu has been\
-                 verified by passing all tests of the OpenJDK Community Technology Compatibility Kit (TCK) as available for each\
-                 respective Java SE version.
+# Support roadmap: https://www.azul.com/products/azul-support-roadmap/
+description Azul Zulu Community OpenJDK ${feature} (Long Term Support until September 2029)
+long_description {*}${description} \
+\n\nOpenJDK ${feature} (Java Development Kit) distribution from Azul.
 
 master_sites https://cdn.azul.com/zulu/bin/
 
 if {${configure.build_arch} eq "x86_64"} {
-    distname     zulu${version}-ca-jdk${openjdk_version}-macosx_x64
-    checksums    rmd160  fd8f5f3c2ada6d311e7703ae466f8b4921363ad3 \
-                 sha256  19271b74c3f3b21f4978eda8f09908c063c456cea57265d71475ceefef5aa0ac \
-                 size    194260499
+    set arch_classifier x64
+    checksums    rmd160  cd20ad2319b9fdfcd2b9fabe669b9f3e50ae9e82 \
+                 sha256  6578d84c961b23f27bc7d504cb2fc45a47296bce382927d6485d404753a8a51a \
+                 size    194313773
 } elseif {${configure.build_arch} eq "arm64"} {
-    distname     zulu${version}-ca-jdk${openjdk_version}-macosx_aarch64
-    checksums    rmd160  b707761c64657cde18ad62b54894e5704300d200 \
-                 sha256  d6837676e55b97772b6512e253fdaf8ab282bb216c0f8366b6c5905cd02b5056 \
-                 size    192126889
+    set arch_classifier aarch64
+    checksums    rmd160  b92f9913fd7649893fcb10617f17d70da98ce59e \
+                 sha256  1e23895f8edddd86dbc20a2820b1bd11695e7a6ac37f1bcee90492341aa5b32d \
+                 size    192274740
+} else {
+    set arch_classifier unsupported_arch
 }
 
-worksrcdir   ${distname}/zulu-17.jdk
+distname     zulu${version}-ca-jdk${openjdk_version}-macosx_${arch_classifier}
+
+worksrcdir   ${distname}/zulu-${feature}.jdk
 
 homepage     https://www.azul.com/downloads/
 
 livecheck.type      regex
 livecheck.url       https://cdn.azul.com/zulu/bin/
-livecheck.regex     zulu(17\.\[0-9\.\]+)-ca-jdk\[0-9\.\]+-macosx_.*\.tar\.gz
+livecheck.regex     zulu(${feature}\.\[0-9\.\]+)-ca-jdk\[0-9\.\]+-macosx_.*\.tar\.gz
 
 use_configure    no
 build {}

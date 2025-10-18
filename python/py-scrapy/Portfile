@@ -5,7 +5,7 @@ PortGroup               python 1.0
 PortGroup               select 1.0
 
 name                    py-scrapy
-version                 2.11.0
+version                 2.13.3
 revision                0
 # epoch needed due to previous downgrading version
 epoch                   1
@@ -24,18 +24,22 @@ homepage                https://scrapy.org/
 
 python.rootname         Scrapy
 set rootname_lower      [string tolower ${python.rootname}]
+# scrapy 2.11.2 named with lowercase
+set distname            ${rootname_lower}-${version}
 
-checksums               rmd160  71ffe148f50dc79177baa6b9add728119bb4400d \
-                        sha256  3cbdedce0c3f0e0482d61be2d7458683be7cd7cf14b0ee6adfbaddb80f5b36a5 \
-                        size    1171092
+checksums               rmd160  859380277eeabeb4abe66204e9fe7bfb484e2f75 \
+                        sha256  bf17588c10e46a9d70c49a05380b749e3c7fba58204a367a5747ce6da2bd204d \
+                        size    1220051
 
-python.versions 38 39 310 311
+# 2.12.0 supports 313 but so many dependencies need updated
+python.versions 310 311 312
 
 if {${name} ne ${subport}} {
     depends_lib-append  \
         port:py${python.version}-twisted \
         port:py${python.version}-cryptography \
         port:py${python.version}-cssselect \
+        port:py${python.version}-defusedxml \
         port:py${python.version}-parsel \
         port:py${python.version}-openssl \
         port:py${python.version}-queuelib \
@@ -44,8 +48,10 @@ if {${name} ne ${subport}} {
         port:py${python.version}-zopeinterface \
         port:py${python.version}-protego \
         port:py${python.version}-dispatcher \
+        port:py${python.version}-itemloaders \
         port:py${python.version}-itemadapter \
         port:py${python.version}-tldextract \
+        port:py${python.version}-typing_extensions \
         port:py${python.version}-lxml
     depends_run-append \
         port:${rootname_lower}_select
@@ -59,20 +65,12 @@ if {${name} ne ${subport}} {
         port:py${python.version}-botocore \
         port:py${python.version}-jmespath \
         port:py${python.version}-pillow \
+        port:py${python.version}-pexpect \
         port:py${python.version}-sybil \
         port:py${python.version}-testfixtures \
         port:py${python.version}-tldextract
 
     test.run            yes
-
-    # Dependencies:
-    # https://github.com/scrapy/scrapy/blob/e63188cbf753d560e43d8489c821bd6eb9fe54e9/setup.py#L21
-    #
-    # But note that patches add setuptools and remove h2
-    depends_lib-append  \
-        port:py${python.version}-setuptools \
-        port:py${python.version}-itemloaders \
-        port:py${python.version}-itemadapter
 
     select.group     ${rootname_lower}
     select.file      ${filespath}/${rootname_lower}-${python.version}

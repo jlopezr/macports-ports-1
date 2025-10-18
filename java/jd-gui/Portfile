@@ -5,12 +5,13 @@ PortGroup               java 1.0
 PortGroup               github 1.0
 
 github.setup            java-decompiler jd-gui 1.6.6 v
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from     tarball
 
 categories              java devel
-platforms               darwin
 supported_archs         x86_64
 license                 GPL-3
-maintainers             {@lhaeger gmx.net:lothar.haeger} openmaintainer
+maintainers             nomaintainer
 
 description             JD-GUI, a standalone graphical utility that displays Java sources from CLASS files
 long_description        JD-GUI is a standalone graphical utility that displays Java source codes of ".class" \

@@ -3,9 +3,9 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/k6io/k6 0.48.0 v
+go.setup            github.com/k6io/k6 1.3.0 v
 go.package          go.k6.io/k6
-github.tarball_from archive
+go.offline_build    no
 revision            0
 
 homepage            https://k6.io
@@ -25,11 +25,9 @@ maintainers         {l2dy @l2dy} \
                     {gmail.com:herby.gillot @herbygillot} \
                     openmaintainer
 
-checksums           rmd160  46c2bb271624ff69f2b593cadb586f9c8a10c7da \
-                    sha256  da769e645a053980159e5b247bae92f99d320977fcf5681c7dbcc6f1e9e84109 \
-                    size    9297159
-
-build.env-delete    GO111MODULE=off
+checksums           rmd160  49c4cbfc103e3c4ece92310ba95b5b3e363c41e9 \
+                    sha256  6a04403eea25fc721de3a7515b89301fb8679deb3faff5c9703d79d76e114fd9 \
+                    size    11407110
 
 destroot {
     xinstall -m 0755 ${worksrcpath}/${name} ${destroot}${prefix}/bin/
@@ -44,3 +42,5 @@ destroot {
     xinstall -d ${destroot}${sharedir}/
     copy ${worksrcpath}/examples ${destroot}${sharedir}/
 }
+
+github.livecheck.regex {([0-9.]+)}

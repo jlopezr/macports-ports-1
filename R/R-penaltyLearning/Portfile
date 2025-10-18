@@ -3,7 +3,7 @@
 PortSystem          1.0
 PortGroup           R 1.0
 
-R.setup             cran tdhock penaltyLearning 2023.8.31
+R.setup             cran tdhock penaltyLearning 2024.9.3
 revision            0
 categories-append   math
 maintainers         nomaintainer
@@ -11,9 +11,10 @@ license             GPL-3
 description         Implementations of algorithms from Learning Sparse Penalties \
                     for Change-point Detection using Max Margin Interval Regression
 long_description    {*}${description}
-checksums           rmd160  4953d402fd78058edc0c8d627437c03383c06dd5 \
-                    sha256  2a45b28a6d0c2b51f344ac8d84dc73539bcf93c97fe457e1be03e0df9b976aaa \
-                    size    2850395
+homepage            https://github.com/tdhock/penaltyLearning
+checksums           rmd160  a6de544146d989487208593b028558a57bdde588 \
+                    sha256  2f3175393cb959d5290ef920d129b37389505b7f698413f0b08987d0b319373a \
+                    size    2851370
 
 depends_lib-append  port:R-data.table \
                     port:R-ggplot2

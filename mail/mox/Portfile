@@ -3,8 +3,7 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/mjl-/mox 0.0.7 v
-github.tarball_from archive
+go.setup            github.com/mjl-/mox 0.0.12 v
 revision            0
 
 description         \
@@ -44,15 +43,18 @@ long_description    \
     - Prometheus metrics and structured logging for operational insight.
 
 
-checksums           rmd160  8d1f335884d894ae344fe50ff122240ef390a7e9 \
-                    sha256  dbcb6dc3905733da2a80ca09829aefc9778e7b0b760fee650f8efb99a2593240 \
-                    size    5192140
+checksums           rmd160  f2c30abb45553ee1f1528b78520101e43b27929c \
+                    sha256  432fb5d4d7122fc67c9ad272a306ffe38cfbfa0364be286aca7ffe72299fd721 \
+                    size    6570643
 
 categories          mail
 installs_libs       no
 license             MIT
 maintainers         {gmail.com:herby.gillot @herbygillot} \
                     openmaintainer
+
+depends_build-append \
+                    bin:npm:npm10
 
 build.cmd           make
 

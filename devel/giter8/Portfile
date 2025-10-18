@@ -9,7 +9,7 @@ revision        0
 
 categories      devel
 license         Apache-2
-maintainers     {@catap korins.ky:kirill} openmaintainer
+maintainers     nomaintainer
 
 description     A command line tool to apply templates defined on github
 long_description \
@@ -25,7 +25,7 @@ checksums       rmd160  383c691a0f18d2347ead3908dddf95e4a3f267d7 \
                 size    123557
 
 supported_archs noarch
-platforms       darwin
+platforms       any
 
 # Required java version
 java.version    1.8+

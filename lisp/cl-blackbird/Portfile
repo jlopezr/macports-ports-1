@@ -5,6 +5,8 @@ PortGroup           github 1.0
 PortGroup           common_lisp 1.0
 
 github.setup        orthecreedence blackbird abe3696e1a128bd082fb5d3e211f33d8feb25bc8
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 name                cl-blackbird
 version             20220907
 revision            0
@@ -14,7 +16,7 @@ checksums           rmd160  ab42c9b9d6e5ac594fd16835cdc67a8cd49131e3 \
                     size    13020
 
 categories-append   devel
-maintainers         {@catap korins.ky:kirill} openmaintainer
+maintainers         nomaintainer
 license             MIT
 
 description         A promise implementation for Common Lisp

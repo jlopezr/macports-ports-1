@@ -1,0 +1,30 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           python 1.0
+
+name                py-aiohttp-socks
+python.rootname     aiohttp_socks
+version             0.10.1
+revision            0
+license             Apache-2
+supported_archs     noarch
+platforms           {darwin any}
+maintainers         {mps @Schamschula} openmaintainer
+description         The aiohttp-socks package provides a proxy connector for aiohttp.
+long_description    {*}${description} Supports SOCKS4(a), SOCKS5(h), HTTP (tunneling) as \
+                    well as Proxy chains. It uses python-socks for core proxy functionality.
+homepage            https://github.com/romis2012/aiohttp-socks
+
+checksums           rmd160  86a24acf21eef2d70033ba305c549492aa4bf523 \
+                    sha256  49f2e1f8051f2885719beb1b77e312b5a27c3e4b60f0b045a388f194d995e068 \
+                    size    10445
+
+python.versions     39 310 311 312 313
+
+if {${name} ne ${subport}} {
+    depends_lib-append  \
+                    port:py${python.version}-aiohttp \
+                    port:py${python.version}-python-socks
+}
+

@@ -2,16 +2,15 @@
 
 PortSystem          1.0
 PortGroup           cmake 1.1
-PortGroup           compiler_blacklist_versions 1.0
 PortGroup           github 1.0
 PortGroup           legacysupport 1.1
 
-github.setup        nih-at libzip 1.10.1 v
+github.setup        nih-at libzip 1.11.4 v
 revision            0
 
-checksums           rmd160  728507cd4cbd250218b496dfaa010612a4084337 \
-                    sha256  dc3c8d5b4c8bbd09626864f6bcf93de701540f761d76b85d7c7d710f4bd90318 \
-                    size    774144
+checksums           rmd160  15a725b29600dc5eb3a0256cd05fb5662c8c8620 \
+                    sha256  8a247f57d1e3e6f6d11413b12a6f28a9d388de110adc0ec608d893180ed7097b \
+                    size    793340
 
 categories          archivers
 license             BSD
@@ -41,9 +40,6 @@ configure.args-append \
 
 # zip.h: error: wrong number of arguments specified for ‘deprecated’ attribute
 compiler.blacklist-append *gcc-4.0 *gcc-4.2 {clang < 421}
-
-test.run            yes
-test.target         check
 
 variant gnutls conflicts mbedtls openssl description {install gnutls crypto support} {
     configure.args-replace \

@@ -5,6 +5,8 @@ PortGroup           github 1.0
 PortGroup           common_lisp 1.0
 
 github.setup        m2ym trivial-types ee869f2b7504d8aa9a74403641a5b42b16f47d88
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 name                cl-trivial-types
 version             20120318
 revision            0
@@ -14,7 +16,7 @@ checksums           rmd160  3619f91b9b85306afe8541cd166f0f35115b2d0b \
                     size    3290
 
 categories-append   devel
-maintainers         {@catap korins.ky:kirill} openmaintainer
+maintainers         nomaintainer
 license             LLGPL
 
 description         Trivial type definitions for Common Lisp

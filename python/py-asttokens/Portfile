@@ -4,15 +4,14 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-asttokens
-version             2.2.1
+version             3.0.0
 revision            0
 categories-append   devel
 license             Apache-2
 supported_archs     noarch
 platforms           {darwin any}
 
-python.versions     37 38 39 310 311 312
-python.pep517       yes
+python.versions     39 310 311 312 313
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -21,19 +20,11 @@ long_description    {*}${description}
 
 homepage            https://github.com/gristlabs/asttokens
 
-checksums           rmd160  34e61bf90202bf54723a6386caf310072a3f8395 \
-                    sha256  4622110b2a6f30b77e1473affaa97e711bc2f07d3f10848420ff1898edbe94f3 \
-                    size    60486
+checksums           rmd160  ae1e54b5970fc3fc30f7d1c6d2ca4f4e09ad5e2a \
+                    sha256  0dcd8baa8d62b0c1d118b399b2ddba3c4aff271d0d7a9e0d4c1681c79035bbc7 \
+                    size    61978
 
 if {${name} ne ${subport}} {
     depends_build-append \
                         port:py${python.version}-setuptools_scm
-
-    depends_lib-append  port:py${python.version}-six
-
-    # Tests are temporarily broken (v2.2.1)
-    #depends_test-append \
-    #                    port:py${python.version}-astroid
-
-    #test.run            yes
 }

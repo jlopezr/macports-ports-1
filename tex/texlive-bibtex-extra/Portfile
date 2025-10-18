@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           texlive 1.0
 
 name                texlive-bibtex-extra
-version             66579
+version             74417
 revision            0
 
 categories          tex
@@ -13,22 +13,22 @@ license             Copyleft Permissive
 description         TeX Live: BibTeX additional styles
 long_description    Additional BibTeX styles and bibliography data(bases), notably including BibLaTeX.
 
-checksums           texlive-bibtex-extra-66579-run.tar.xz \
-                    rmd160  95930e43a87010d3c48e64d36b6b68c7927f6fe9 \
-                    sha256  f6d35b7574ae80c60c87aa60019bf52dc35f42e2d54599a280629651f5b721f2 \
-                    size    78574524 \
-                    texlive-bibtex-extra-66579-doc.tar.xz \
-                    rmd160  ffd7f82c4e551633ef9b4d3cdc3e68624455a31d \
-                    sha256  63906257729615f309c69d832f37fbc4905dc5335251f3fb2559cc7af19c227b \
-                    size    70464204 \
-                    texlive-bibtex-extra-66579-src.tar.xz \
-                    rmd160  d4a7804cda32ad7da3f80672b7df6067171e02e2 \
-                    sha256  3f6b1cd52a4cdb588304cc8a33d8cc3a68bd04a90d16aae6264d2caf30223614 \
-                    size    3917656
+checksums           texlive-bibtex-extra-74417-run.tar.xz \
+                    rmd160  57aaa6f14e73c8d12f6915fa23792581901e0f7e \
+                    sha256  1e1dc96f313bb0918e7af8a743857cffadcdc218360b7076dfc54cef67efc051 \
+                    size    6121388 \
+                    texlive-bibtex-extra-74417-doc.tar.xz \
+                    rmd160  deec4b50ee8db90c9229fb2760c8a25e80f3bcd2 \
+                    sha256  9f38453499db9756624f8a49493a34663d9c107ea9be99399196ad6689f19b51 \
+                    size    64560892 \
+                    texlive-bibtex-extra-74417-src.tar.xz \
+                    rmd160  780b5cbc82c33257da31cbf497c5d2a8e879b235 \
+                    sha256  7a28d983b6cac7e37667f75ccbc31f146d27a748d41c862798cea58018846c08 \
+                    size    4402012
 
 depends_lib         port:texlive-latex
 
-texlive.binaries    bbl2bib bib2gls bibcop bibdoiadd biber-ms bibexport bibmradd biburl2doi bibzbladd citeproc-lua convertgls2bib listbib ltx2crossrefxml multibibliography urlbst
+texlive.binaries    bbl2bib bib2gls bibcop bibdoiadd biber-ms bibexport bibmradd biburl2doi bibzbladd citeproc-lua convertgls2bib datatool2bib listbib ltx2crossrefxml ltx2unitxt multibibliography urlbst
 
 
 texlive.texmfport

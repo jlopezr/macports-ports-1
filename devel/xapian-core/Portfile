@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                xapian-core
-version             1.4.24
+version             1.4.27
 categories          devel
 maintainers         {ryandesign @ryandesign} openmaintainer
 license             GPL-2+
@@ -20,8 +20,6 @@ master_sites        https://oligarchy.co.uk/xapian/${version}/
 dist_subdir         xapian
 use_xz              yes
 
-patchfiles          dynamic_lookup-11.patch
-
 compiler.cxx_standard \
                     2011
 
@@ -31,9 +29,9 @@ if {${subport} eq ${name}} {
     # version.h does not get generated properly when there are multiple -arch flags
     PortGroup                   muniversal 1.0
 
-    checksums                   rmd160  75d7e7510c0728cba8533c9bc0547d7ecbb399c2 \
-                                sha256  eda5ae6dcf6b0553a8676af64b1fd304e998cd20f779031ccaaf7ab9a373531a \
-                                size    3194164
+    checksums                   rmd160  344e11ede45691dd6f76a35690838acbd6ad216b \
+                                sha256  bcbc99cfbf16080119c2571fc296794f539bd542ca3926f17c2999600830ab61 \
+                                size    3246624
 
     # TODO: Fix xapian-config to not require the .la file
     # /opt/local/bin/xapian-config --ltlibs --cxxflags
@@ -53,16 +51,16 @@ if {${subport} eq ${name}} {
 
     livecheck.type              regex
     livecheck.url               ${homepage}/download
-    livecheck.regex             ${name}-(\[0-9\]+\\.\[0-9\]*\[02468\](\\.\[0-9\]+)*)${extract.suffix}
+    livecheck.regex             ${name}-(\[0-9\]+\\.\[0-9\]*\[02468\](\\.\[0-9\]+)*)[quotemeta ${extract.suffix}]
 } else {
     livecheck.type              none
 }
 
 subport xapian-omega {
     revision                    0
-    checksums                   rmd160  1b85060d7d83bbbacae78f434def14585813145a \
-                                sha256  d08756e4f33b18916cc8a2493d311f1cbeb8ed4357bd40fa5c1744adc080ebff \
-                                size    580736
+    checksums                   rmd160  bb9f9f8e497ac97fa506804114794799215de625 \
+                                sha256  1d193b3285ec150557257b049ee1d8c94c40bcde906ce0ba7f1a38a1a9a5a5c1 \
+                                size    583960
 
     description                 web application using the Xapian library
     long_description            Xapian Omega is an application built on the \
@@ -83,9 +81,9 @@ subport xapian-omega {
 }
 
 if {${subport} ni [list ${name} xapian-omega]} {
-    checksums                   rmd160  f9ce3e8a99cac628015f8563d06aa7a226b1bf3e \
-                                sha256  513d578488279198ace13ad497510d2b22204d5d794b64143d05b7be974eb6cf \
-                                size    1112744
+    checksums                   rmd160  beec2bc2b651c54e97c2649db30c1c0240aedc72 \
+                                sha256  ba3b5e10809e579acd11bd165779ce3fd29a8904ea37968ef5b57ad97c3618ba \
+                                size    1116236
 
     homepage                    ${homepage}/docs/bindings/
 
@@ -132,7 +130,7 @@ subport xapian-bindings-java {
 }
 
 # Perl
-foreach v {5.28 5.30 5.32 5.34 5.36} {
+foreach v {5.28 5.30 5.32 5.34 5.36 5.38} {
     subport xapian-bindings-perl${v} "
         revision                0
 
@@ -151,7 +149,7 @@ foreach v {5.28 5.30 5.32 5.34 5.36} {
 }
 
 # PHP
-foreach v {8.0 8.1 8.2} {
+foreach v {8.0 8.1 8.2 8.3} {
     set v_no_dot [string map {. {}} ${v}]
     set php php${v_no_dot}
     subport ${php}-xapian "
@@ -179,7 +177,7 @@ foreach v {8.0 8.1 8.2} {
 }
 
 # Python
-foreach v {2.7 3.6 3.7 3.8 3.9 3.10 3.11} {
+foreach v {3.8 3.9 3.10 3.11 3.12 3.13} {
     set v_no_dot [string map {. {}} ${v}]
     if {[vercmp ${v} 3] >= 0} {
         set suffix 3
@@ -206,7 +204,7 @@ foreach v {2.7 3.6 3.7 3.8 3.9 3.10 3.11} {
 }
 
 # Ruby
-foreach v {2.1 2.2 2.3 2.4 2.5 2.6 2.7 3.0 3.1 3.2} {
+foreach v {2.7 3.0 3.1 3.2 3.3 3.4} {
     set v_no_dot [string map {. {}} ${v}]
     subport xapian-bindings-ruby${v_no_dot} "
         revision                0

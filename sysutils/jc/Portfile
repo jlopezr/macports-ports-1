@@ -4,8 +4,8 @@ PortSystem              1.0
 PortGroup               python 1.0
 
 name                    jc
-version                 1.23.6
-revision                0
+version                 1.25.5
+revision                1
 
 homepage                https://pypi.org/project/jc
 
@@ -23,14 +23,21 @@ maintainers             {gmail.com:herby.gillot @herbygillot} \
 supported_archs         noarch
 platforms               {darwin any}
 
-checksums               rmd160  13b29950805b7764d6319ec5b3ba1ab3910ca15a \
-                        sha256  886568b3819424235c60df7ebbc6cdee98c3eff7785d4b2ce5d78721035d444b \
-                        size    452321
+checksums               rmd160  fdfd300c3a93da9fe3d05790d03b601c8b786efd \
+                        sha256  f8ac0e4bc427b0ee8a3bdb07a254cc9df6b6036cd440f6c425e2e519cdbda78a \
+                        size    594042
 
-python.default_version  311
+python.default_version  313
 
 depends_build-append    port:py${python.version}-setuptools
 
 depends_lib-append      port:py${python.version}-ruamel-yaml  \
                         port:py${python.version}-pygments     \
                         port:py${python.version}-xmltodict
+
+post-destroot {
+    xinstall -d ${destroot}${prefix}/share/man/man1
+    xinstall -m 0444 \
+        ${worksrcpath}/man/${name}.1 \
+        ${destroot}${prefix}/share/man/man1/
+}

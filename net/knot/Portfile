@@ -7,7 +7,7 @@ PortGroup           legacysupport 1.1
 legacysupport.newest_darwin_requires_legacy 15
 
 name                knot
-version             3.3.3
+version             3.5.1
 revision            0
 categories          net
 license             GPL-3+
@@ -21,9 +21,9 @@ master_sites        https://secure.nic.cz/files/knot-dns/ \
 
 use_xz              yes
 
-checksums           rmd160  efd163e3e029d1fd8363be342bc3e51a8e1df2e0 \
-                    sha256  aab40aab2acd735c500f296bacaa5c84ff0488221a4068ce9946e973beacc5ae \
-                    size    1586348
+checksums           rmd160  b0a0d2f26e208a375bb781c420c5e3a46e54f2fe \
+                    sha256  a614d5226ceed4b4cdd4a3badbb0297ea0f987f65948e4eb828119a3b5ac0a4b \
+                    size    1676008
 
 depends_build       port:pkgconfig
 
@@ -36,9 +36,24 @@ depends_lib         port:fstrm \
                     port:protobuf-c \
                     port:userspace-rcu
 
-platforms {darwin >= 15}
+# Should match knot-resolver port
+platforms {darwin >= 11}
 
-patchfiles          patch-src-knot-server-quic-handler.c.diff
+# error: address argument to atomic operation must be a
+# pointer to non-const _Atomic type on macOS <10.14
+# Uses C17 atomics.
+compiler.c_standard 2017
+
+patchfiles-append   patch-src-knot-server-quic-handler.c.diff
+
+# https://github.com/CZ-NIC/knot/pull/35
+# TCP Fast Open API support was implemented in macOS 10.11.
+# Despite the correctness of the compatibility patch, it
+# wasn't be added to upstream.
+if {${os.platform} eq "darwin" && ${os.major} < 16} {
+    patchfiles-append \
+                    patch-for-macos-10.11-and-older.diff
+}
 
 post-patch {
     reinplace "s|task_t|k_task_t|g" \
@@ -53,11 +68,23 @@ post-patch {
 
 configure.args      --disable-silent-rules
 
-startupitem.create      yes
-startupitem.netchange   yes
-startupitem.executable  ${prefix}/sbin/knotd -c ${prefix}/etc/knot/knot.conf
+subport libknot {
+    conflicts       ${name}
 
-notes "
+    configure.args-append \
+                    --disable-daemon \
+                    --disable-modules \
+                    --disable-utilities 
+} 
+
+if {${name} eq ${subport}} {
+    conflicts       libknot
+
+    startupitem.create      yes
+    startupitem.netchange   yes
+    startupitem.executable  ${prefix}/sbin/knotd -c ${prefix}/etc/knot/knot.conf
+
+    notes "
 To complete the installation, run:
 
 sudo cp ${prefix}/etc/knot/knot.sample.conf ${prefix}/etc/knot/knot.conf
@@ -66,3 +93,4 @@ Edit as necessary. (See the knot.conf manpage for additional information.)
 
 You will also need to created *.zone files. See ${prefix}/etc/knot/example.com.zone.
 "
+}

@@ -1,11 +1,15 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem       1.0
+PortGroup        deprecated 1.0
 
-name             jdk17
+deprecated.eol_version yes
+
+set feature 17
+name             jdk${feature}
 categories       java devel
-maintainers      {breun.nl:nils @breun} openmaintainer
-platforms        darwin
+maintainers      nomaintainer
+platforms        {darwin any}
 # This port uses prebuilt binaries; 'NoMirror' makes sure MacPorts doesn't mirror/distribute these third-party binaries
 license          NFTC NoMirror
 # This port uses prebuilt binaries for a particular architecture; they are not universal binaries
@@ -14,27 +18,33 @@ universal_variant no
 supported_archs  x86_64 arm64
 
 # https://www.oracle.com/java/technologies/downloads/#jdk17-mac
-version      17.0.9
-revision     0
+version      ${feature}.0.12
+revision     1
 
-description  Oracle Java SE Development Kit 17
+description  Oracle Java SE Development Kit ${feature}
 long_description Java Platform, Standard Edition Development Kit (JDK). \
     The JDK is a development environment for building applications and components using the Java programming language. \
-    This software is provided under the Oracle No-Fee Terms and Conditions (NFTC) license (https://java.com/freeuselicense).
+    This software is provided under the Oracle No-Fee Terms and Conditions (NFTC) license (https://java.com/freeuselicense). \
+    Oracle JDK ${feature}.0.13 and later are only available under the OTN license and therefore cannot be made available via MacPorts. \
+    If you require an up-to-date JDK ${feature}, consider installing the 'openjdk${feature}' or another openjdk${feature}-* port instead.
 
-master_sites https://download.oracle.com/java/17/archive/
+master_sites https://download.oracle.com/java/${feature}/archive/
 
 if {${configure.build_arch} eq "x86_64"} {
-    distname     jdk-${version}_macos-x64_bin
-    checksums    rmd160  53f15befd2ef0a6ca17de4a846b0c1638daa3e9e \
-                 sha256  336f3d0cfd3cac9b16c14830a43c1ee3f63810b0dae2f3e17a824185b83e3e85 \
-                 size    178913008
+    set arch_classifier x64
+    checksums    rmd160  cf665cf7137fadc32ea734aa53f81ba6a69cf044 \
+                 sha256  4a157a935142096e1bac83e53a458e41c05c4aad0e8414c0a5c01f36dc44c901 \
+                 size    179208015
 } elseif {${configure.build_arch} eq "arm64"} {
-    distname     jdk-${version}_macos-aarch64_bin
-    checksums    rmd160  dfa7fddd185f6ccad9dc07b9652449702736fa9f \
-                 sha256  b65346d61ccfef1ba0fc994709295d196007d5fef1a0aa8c0f2eaf97bdd530b7 \
-                 size    176350219
+    set arch_classifier aarch64
+    checksums    rmd160  038d49828e5e8bf5ab49780e1e0914fd8f22c349 \
+                 sha256  d8866b3678123c629c1c0fb3bdd95e984fba415b17511c7a6ff2c95ff4e9a34c \
+                 size    177042954
+} else {
+    set arch_classifier unsupported_arch
 }
+
+distname     jdk-${version}_macos-${arch_classifier}_bin
 
 worksrcdir   jdk-${version}.jdk
 
@@ -42,7 +52,7 @@ homepage     https://www.oracle.com/java/
 
 livecheck.type      regex
 livecheck.url       https://www.oracle.com/java/technologies/downloads/
-livecheck.regex     Java SE Development Kit (17\.\[0-9\.\]+)
+livecheck.regex     JDK Development Kit (${feature}\.\[0-9\.\]+) downloads
 
 use_configure    no
 build {}

@@ -2,12 +2,11 @@
 
 PortSystem          1.0
 PortGroup           cmake 1.1
-PortGroup           compiler_blacklist_versions 1.0
 PortGroup           github 1.0
 PortGroup           legacysupport 1.1
 
-github.setup        rspamd rspamd 3.6
-revision            2
+github.setup        rspamd rspamd 3.13.0
+revision            0
 categories          mail
 license             BSD
 maintainers         nomaintainer
@@ -37,28 +36,27 @@ long_description    Rspamd is an advanced spam filtering system and \
                     API to access external resources, such as DNS, \
                     HTTP or even generic TCP/UDP services.
 
-checksums           rmd160  3d22f64f775a536c389e5192f43b4ec2fed89410 \
-                    sha256  bae279f6365f709db9fc3af2dba0babcb8d19da4b0095953eb94f37b6733d5f7 \
-                    size    5843907
+checksums           rmd160  881486c16f060de79aec1f4d9fb8250be912bb5a \
+                    sha256  e153951c7b05ea63136548a12df4707dae46205a44dd8ac059408e41be8c8ad6 \
+                    size    6598225
 
-# legacysupport needed for open_memstream and fmemopen, on 10.12 and earlier
-legacysupport.newest_darwin_requires_legacy 16
+# open_memstream, fmemopen, std::filesystem
+legacysupport.newest_darwin_requires_legacy 18
 legacysupport.use_mp_libcxx                 yes
 
 depends_build-append \
-                    port:pkgconfig
+                    path:bin/pkg-config:pkgconfig
 
 depends_lib-append  port:fann \
                     port:gd2 \
                     path:lib/pkgconfig/glib-2.0.pc:glib2 \
                     port:gmime \
-                    port:hyperscan \
+                    port:vectorscan \
                     path:lib/pkgconfig/icu-uc.pc:icu \
                     port:libevent \
                     port:libmagic \
                     port:libsodium \
                     port:libstemmer \
-                    port:libunwind \
                     port:lua \
                     path:lib/libluajit-5.1.2.dylib:luajit \
                     path:lib/libopenblas.dylib:OpenBLAS \
@@ -74,12 +72,25 @@ depends_lib-append  port:fann \
 depends_run-append  port:hiredis \
                     port:redis
 
-# Match requirements of dependency hyperscan.
-supported_archs     x86_64
+variant hyperscan \
+    description {Use hyperscan instead of vectorscan.} {
+    if {${build_arch} ne {x86_64}} {
+        known_fail  yes
+        pre-fetch {
+            ui_error "hyperscan is only available \
+                with the x86_64 architecture."
+            error {unsupported platform}
+        }
+    }
 
+    depends_lib-replace \
+                    port:vectorscan \
+                    port:hyperscan
+}
+
+# Match requirements of dependency vectorscan
+supported_archs     arm64 x86_64
 compiler.cxx_standard 2020
-# MacPorts base 2.8.1 doesn't yet know about C++20.
-compiler.blacklist  {clang < 1103}
 
 # Previous issue note; see https://github.com/rspamd/rspamd/issues/2884
 # For issues with -DENABLE_PCRE2=ON, enable pcre jit debugging

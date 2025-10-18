@@ -4,15 +4,15 @@ PortSystem          1.0
 PortGroup           meson 1.0
 
 name                spice-protocol
-version             0.14.3
+version             0.14.5
 revision            0
-checksums           rmd160  5a59b1347e4d0b2a54d0b9083e10e1b80341de08 \
-                    sha256  f986e5bc2a1598532c4897f889afb0df9257ac21c160c083703ae7c8de99487a \
-                    size    22224
+checksums           rmd160  7a2668185aca3c430ab1a867aebde9374f8ef01a \
+                    sha256  baf58449f6e89d19f475899ad5fb9196fdc46c03cc53233f4e39cf2978f9cff7 \
+                    size    23592
 
 categories          devel
 license             BSD
-maintainers         nomaintainer
+maintainers         {makr @mohd-akram} openmaintainer
 supported_archs     noarch
 platforms           any
 

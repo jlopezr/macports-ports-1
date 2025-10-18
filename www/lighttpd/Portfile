@@ -5,11 +5,11 @@ PortGroup                   legacysupport 1.0
 PortGroup                   lua 1.0
 
 name                        lighttpd
-version                     1.4.73
+version                     1.4.82
 revision                    0
-checksums                   rmd160  7524652b92a75f2f536191f6acea1aecf5c05162 \
-                            sha256  818816d0b314b0aa8728a7076513435f6d5eb227f3b61323468e1f10dbe84ca8 \
-                            size    1086680
+checksums                   rmd160  e00380a566929bc574aa7cdd8948ab45d5bd6745 \
+                            sha256  abfe74391f9cbd66ab154ea07e64f194dbe7e906ef4ed47eb3b0f3b46246c962 \
+                            size    883352
 
 set branch                  [join [lrange [split ${version} .] 0 1] .]
 categories                  www
@@ -28,7 +28,15 @@ homepage                    https://www.lighttpd.net/
 master_sites                https://download.lighttpd.net/lighttpd/releases-${branch}.x/
 use_xz                      yes
 
-depends_build-append        port:pkgconfig
+# Upstream no longer provides a configure script in the tarball.
+use_autoreconf              yes
+autoreconf.cmd              ./autogen.sh
+autoreconf.args
+
+depends_build-append        port:autoconf \
+                            port:automake \
+                            port:libtool \
+                            path:bin/pkg-config:pkgconfig
 
 depends_lib                 port:brotli \
                             port:pcre2 \
@@ -44,7 +52,7 @@ post-patch {
         ${worksrcpath}/doc/config/conf.d/cgi.conf \
         ${worksrcpath}/doc/config/conf.d/fastcgi.conf \
         ${worksrcpath}/doc/config/conf.d/rrdtool.conf \
-        ${worksrcpath}/doc/config/lighttpd.conf
+        ${worksrcpath}/doc/config/lighttpd.annotated.conf
 }
 
 configure.args-append       CC_FOR_BUILD="${configure.cc}" \
@@ -68,8 +76,8 @@ platform darwin {
             set user "_www"
             set group "_www"
         }
-        reinplace "s|@USER@|${user}|g" ${worksrcpath}/doc/config/lighttpd.conf
-        reinplace "s|@GROUP@|${group}|g" ${worksrcpath}/doc/config/lighttpd.conf
+        reinplace "s|@USER@|${user}|g" ${worksrcpath}/doc/config/lighttpd.annotated.conf
+        reinplace "s|@GROUP@|${group}|g" ${worksrcpath}/doc/config/lighttpd.annotated.conf
     }
 }
 

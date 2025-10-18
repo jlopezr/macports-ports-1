@@ -7,7 +7,9 @@ PortGroup           active_variants 1.1
 PortGroup           boost 1.0
 PortGroup           legacysupport 1.1
 
-github.setup        osm2pgsql-dev osm2pgsql 1.10.0
+github.setup        osm2pgsql-dev osm2pgsql 2.2.0
+revision            0
+github.tarball_from archive
 
 categories          gis
 maintainers         {vince @Veence} openmaintainer
@@ -20,9 +22,9 @@ license             GPL-2+
 
 homepage            https://osm2pgsql.org
 
-checksums           rmd160  60f84c2353f85da7fd2faa00280d53caeadc4feb \
-                    sha256  cdcd15706e0f42cc93b1330e0a58061e6cbb91f19de878e9b94c1a9d41e10bad \
-                    size    2599718
+checksums           rmd160  c8d65c8435548456091dc3e2a1d2f0a535965859 \
+                    sha256  567dad078f8a66d6d706ac1876b5251b688109d16974909d89ce2056d6e9f258 \
+                    size    2729137
 
 # It uses include variant
 compiler.cxx_standard 2017
@@ -31,22 +33,28 @@ compiler.cxx_standard 2017
 legacysupport.newest_darwin_requires_legacy 17
 legacysupport.use_mp_libcxx yes
 
-set port_libfmt     libfmt8
+set port_libfmt     libfmt11
+set opencv          opencv4
 
 cmake.module_path-append \
                     ${prefix}/lib/${port_libfmt}/cmake
 configure.args-append \
-                    -DFMT_INCLUDE_DIR=${prefix}/include/${port_libfmt}
+                    -DFMT_INCLUDE_DIR=${prefix}/include/${port_libfmt} \
+                    -DOpenCV_DIR="${prefix}/libexec/${opencv}/cmake"
+
+depends_build-append \
+                    port:poppler
 
 depends_lib-append  port:bzip2 \
-                    port:CImg \
+                    port:CLI11 \
                     port:expat \
                     port:libosmium \
+                    port:lua \
                     port:nlohmann-json \
                     port:${port_libfmt} \
-                    port:postgis3 \
+                    port:${opencv} \
                     port:potrace \
-                    port:proj8 \
+                    port:proj \
                     port:protozero \
                     port:zlib
 
@@ -55,81 +63,45 @@ post-patch {
     file delete -force ${worksrcpath}/contrib
 }
 
-# Database variants (from the GDAL port)
-set postgresql_suffixes {96 10 11 12 13 14 15}
+set proj_v 9
 
+configure.args-append \
+                    -DBUILD_COVERAGE=OFF \
+                    -DBUILD_TESTS=OFF \
+                    -DCLANG_TIDY=OFF \
+                    -DEXTERNAL_CLI11=ON \
+                    -DEXTERNAL_FMT=ON \
+                    -DEXTERNAL_LIBOSMIUM=ON \
+                    -DEXTERNAL_PROTOZERO=ON \
+                    -DPROJ6_INCLUDE_DIR=${prefix}/lib/proj${proj_v}/include \
+                    -DPROJ_LIBRARY=${prefix}/lib/proj${proj_v}/lib/libproj.dylib \
+                    -DWITH_LUAJIT=OFF \
+                    -DWITH_PROJ=ON
+
+# Database variants (from the GDAL port)
+set postgresql_suffixes {12 13 14 15 16 17}
 set postgresql_variants {}
 foreach suffix ${postgresql_suffixes} {
     lappend postgresql_variants postgresql${suffix}
 }
-
 foreach suffix ${postgresql_suffixes} {
     set vrt     postgresql${suffix}
     set index   [lsearch -exact ${postgresql_variants} ${vrt}]
     set conf    [lreplace ${postgresql_variants} ${index} ${index}]
 
     variant ${vrt} description "Use ${vrt}" conflicts {*}${conf} "
-        depends_lib-append      port:${vrt}
+        depends_lib-append      port:${vrt} \
+                                port:pg${suffix}-postgis3
         configure.args-append   -DPostgreSQL_INCLUDE_DIR=${prefix}/include/${vrt}
         configure.args-append   -DPostgreSQL_TYPE_INCLUDE_DIR=${prefix}/include/${vrt}
         configure.args-append   -DPostgreSQL_LIBRARY=${prefix}/lib/${vrt}/libpq.dylib
     "
-
-    if {[variant_isset ${vrt}]} {
-        if {![catch {set result [active_variants postgis3 ${vrt}]}]} {
-            if {!$result} {
-                ui_msg "Error: postgis3 isn't installed on the required postgresql version!"
-                return -code error "Variant mismatch."
-            }
-        }
-    }
 }
-
 # postgresql default
 set pgdefault "if {"
-
 foreach suffix ${postgresql_suffixes} {
     set pgdefault "${pgdefault}!\[variant_isset postgresql${suffix}\] && "
 }
-
 set pgdefault [string range ${pgdefault} 0 end-4]
 set pgdefault "${pgdefault}} { default_variants +postgresql${suffix} }"
-
 eval ${pgdefault}
-
-variant lua description {Build with support for Lua} {
-    depends_lib-append port:lua
-}
-
-configure.args-append   "-DPROJ6_INCLUDE_DIR=${prefix}/lib/proj8/include"
-configure.args-append   "-DPROJ_LIBRARY=${prefix}/lib/proj8/lib/libproj.dylib"
-configure.args-append   "-DEXTERNAL_LIBOSMIUM=ON"
-configure.args-append   "-DEXTERNAL_PROTOZERO=ON"
-configure.args-append   "-DEXTERNAL_FMT=ON"
-
-if {${subport} eq ${name}} {
-    revision        0
-
-    if {(![variant_isset lua])} {
-        configure.args-append   "-DWITH_LUA=OFF"
-    }
-} else {
-    livecheck.type  none
-}
-
-subport ${name}-lua {
-    revision        0
-
-    depends_lib-append port:lua
-
-    description         ${description} with Lua support
-
-    long_description    ${long_description} \
-                        This sub-port includes support for Lua scripts.
-
-    post-destroot {
-        file rename ${destroot}${prefix}/bin/${name} ${destroot}${prefix}/bin/${subport}
-        file rename ${destroot}${prefix}/share/man/man1/${name}.1 ${destroot}${prefix}/share/man/man1/${subport}.1
-        file rename ${destroot}${prefix}/share/${name} ${destroot}${prefix}/share/${subport}
-    }
-}

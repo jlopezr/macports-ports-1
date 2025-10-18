@@ -4,24 +4,23 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-cytoolz
-version             0.12.2
+version             1.0.1
 revision            0
 categories-append   devel
 license             BSD
 
-python.versions     37 38 39 310 311
-python.pep517       yes
+python.versions     39 310 311 312 313
 
 maintainers         {stromnov @stromnov} openmaintainer
 
 description         Cython implementation of Toolz.
-long_description    ${description}
+long_description    {*}${description}
 
 homepage            https://github.com/pytoolz/cytoolz/
 
-checksums           rmd160  eedc291731da413a6edc91fa91b3766169a2ae7e \
-                    sha256  31d4b0455d72d914645f803d917daf4f314d115c70de0578d3820deb8b101f66 \
-                    size    601476
+checksums           rmd160  ff2a0e5ca5a6c102d33d69b56ebce1d422a6f5fc \
+                    sha256  89cc3161b89e1bb3ed7636f74ed2e55984fd35516904fc878cae216e42b2c7d6 \
+                    size    626652
 
 if {${name} ne ${subport}} {
     depends_build-append \

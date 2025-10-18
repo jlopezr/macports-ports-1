@@ -1,0 +1,40 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           python 1.0
+
+name                py-mp-api
+version             0.45.8
+revision            1
+
+categories-append   science devel
+platforms           {darwin any}
+supported_archs     noarch
+license             BSD
+maintainers         nomaintainer
+
+description         API Client for the Materials Project
+long_description    {*}${description}
+
+homepage            https://github.com/materialsproject/api
+
+distname            mp_api-${version}
+
+checksums           rmd160  db807d09017bace19c11481224cbae2cc9e13d50 \
+                    sha256  a897f57e89002e04ffca5aec03616c7971a8fb5e31748ff936819d49cc1023c3 \
+                    size    708228
+
+python.versions     39 310 311 312 313
+
+if {${name} ne ${subport}} {
+    depends_lib-append \
+                    port:py${python.version}-emmet-core \
+                    port:py${python.version}-maggma \
+                    port:py${python.version}-monty \
+                    port:py${python.version}-msgpack \
+                    port:py${python.version}-pymatgen \
+                    port:py${python.version}-requests \
+                    port:py${python.version}-setuptools \
+                    port:py${python.version}-smart_open \
+                    port:py${python.version}-typing_extensions
+}

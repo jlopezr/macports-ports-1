@@ -3,8 +3,8 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/apache/cloudstack-cloudmonkey 6.3.0
-github.tarball_from archive
+go.setup            github.com/apache/cloudstack-cloudmonkey 6.5.0
+go.offline_build    no
 name                cloudmonkey
 revision            0
 
@@ -21,13 +21,9 @@ license             Apache-2
 maintainers         {gmail.com:herby.gillot @herbygillot} \
                     openmaintainer
 
-checksums           rmd160  9c6218fc4757eb4867039939e01f58af5ff037d2 \
-                    sha256  2deb1d3a13061a3c2189a5333d2b9428eb5f1fa2846058c2c3a1b0bbfd9a4115 \
-                    size    1888657
-
-# Cloudmonkey includes a /vendor directory.  In order to build using vendored
-# deps (-mod=vendor), we need to unset GO111MODULE=off
-build.env-delete    GO111MODULE=off
+checksums           rmd160  4676172b62db506ecfea11264609e61bc6718cc6 \
+                    sha256  bb491140103f0d8c178966355114f0eb9b35ad64323fba7448d475112d8847fc \
+                    size    2219896
 
 build.cmd           make
 build.target        all
@@ -35,3 +31,5 @@ build.target        all
 destroot {
     xinstall -m 0755 ${worksrcpath}/bin/cmk ${destroot}${prefix}/bin/
 }
+
+github.livecheck.regex  {([0-9.]+)}

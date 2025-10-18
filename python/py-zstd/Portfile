@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           python 1.0
 
-github.setup        indygreg python-zstandard 0.20.0
+github.setup        indygreg python-zstandard 0.25.0
 github.tarball_from archive
 name                py-zstd
 
@@ -16,16 +16,16 @@ long_description    This extension allows Zstandard compression from Python
 
 homepage            https://github.com/indygreg/python-zstandard
 
-checksums           rmd160  6b54c29daadff331d3bc2d7eeb5337be38d76f5d \
-                    sha256  4f44f00c8abb5faf051c900576816bec6612bb975fcbccf383b72087e78f30d0 \
-                    size    712241
+checksums           rmd160  925cec59b0943bca6c77b66a397259e4173d8c21 \
+                    sha256  851846ffe25681f7936ab2fd89130acf62b214a77b8c54e4319824f3510ab395 \
+                    size    795455
 
-python.versions     37 38 39 310 311 312
+python.versions     39 310 311 312 313
 
 if {${name} ne ${subport}} {
     depends_build-append \
-                    port:py${python.version}-setuptools \
-                    port:py${python.version}-cffi
+                    port:py${python.version}-cffi \
+                    port:py${python.version}-packaging
 
     depends_lib-append \
                     port:zstd

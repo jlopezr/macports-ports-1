@@ -5,6 +5,8 @@ PortGroup           github 1.0
 PortGroup           common_lisp 1.0
 
 github.setup        wiseman cl-html-diff 5a0b39d1c524278d6f60851d7786bb2585614310
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 version             20090528
 revision            0
 
@@ -13,7 +15,7 @@ checksums           rmd160  1726d6393c1aafc12c27d38bacac4088a9e47c27 \
                     size    4162
 
 categories-append   devel
-maintainers         {@catap korins.ky:kirill} openmaintainer
+maintainers         nomaintainer
 license             MIT
 
 description         A Common Lisp library for generating a human-readable diff of two HTML documents.

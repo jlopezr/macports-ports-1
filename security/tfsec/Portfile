@@ -3,8 +3,8 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/tfsec/tfsec 1.28.4 v
-github.tarball_from archive
+go.setup            github.com/tfsec/tfsec 1.28.14 v
+go.offline_build    no
 revision            0
 
 description         Security scanner for your Terraform code
@@ -18,12 +18,10 @@ license             MIT
 maintainers         {gmail.com:herby.gillot @herbygillot} \
                     openmaintainer
 
-checksums           rmd160  ec4af454846ed84c4e439ded0a7befd2abb33559 \
-                    sha256  a579076cdbd5fea3302c3ff5073869c6d861e9325a774cbe92b3ad0d55dc74bf \
-                    size    6543254
+checksums           rmd160  00367e6968d7f507500c60bb597ef7c866cc4fee \
+                    sha256  61fe8ee670cceaf45d85c2789da66616d0045f8dbba4ec2b9db453436f9b9804 \
+                    size    6547680
 
-# Allow Go to fetch dependencies at build time
-go.offline_build no
 build.env-append    TRAVIS_TAG=${version}
 build.cmd           "go mod vendor && make build"
 

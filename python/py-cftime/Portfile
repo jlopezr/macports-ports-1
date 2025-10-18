@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 PortGroup           github 1.0
 
-github.setup        Unidata cftime 1.6.3 v rel
+github.setup        Unidata cftime 1.6.5 v rel
 github.tarball_from archive
 name                py-cftime
 revision            0
@@ -16,25 +16,16 @@ maintainers         {reneeotten @reneeotten} openmaintainer
 description         Time-handling functionality from netcdf4-python
 long_description    {*}${description}
 
-checksums           rmd160  877b2836d5f55d2869aea64162fcf005b9def28f \
-                    sha256  38a20e2c088abe814a5e5ccf365d994dac925f29b7b4b9b57ee4f55e13a017a2 \
-                    size    60665
+checksums           rmd160  42ff4f7eeb9f9095056623426b9acbf3b216d0e7 \
+                    sha256  42c383aea81c121e82c1b2e651e42ad125b09bffcbcbc263ba3a7617260a907c \
+                    size    61804
 
-python.versions     27 35 36 37 38 39 310 311 312
-python.pep517       no
+python.versions     39 310 311 312 313 314
 
 if {${name} ne ${subport}} {
-    if {${python.version} < 37} {
-        github.setup    Unidata cftime 1.5.2 v rel
-        revision        0
-        epoch           1
-        checksums       rmd160  acd812fb21765ecf044d68c186ac39e83ffe0a92 \
-                        sha256  86e1ec04135828f0c8a4e4ac4b9baff08f8b57d0b1f31662dbf0209fdcc63a2d \
-                        size    580452
-    }
-
     depends_build-append \
-                    port:py${python.version}-cython
+                    port:py${python.version}-cython \
+                    port:py${python.version}-oldest-supported-numpy
 
     depends_lib-append \
                     port:py${python.version}-numpy
@@ -47,6 +38,4 @@ if {${name} ne ${subport}} {
         xinstall -m 0644 -W ${worksrcpath} README.md Changelog \
             LICENSE ${destroot}${docdir}
     }
-
-    livecheck.type  none
 }

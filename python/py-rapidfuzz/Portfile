@@ -5,28 +5,28 @@ PortGroup           python 1.0
 PortGroup           compiler_wrapper 1.0
 
 name                py-rapidfuzz
-version             3.5.2
+version             3.14.1
 revision            0
 categories-append   textproc
 license             MIT
 
-python.versions     37 38 39 310 311 312
-python.pep517       yes
+python.versions     39 310 311 312 313
 
 maintainers         {stromnov @stromnov} openmaintainer
 
 description         A fast string matching library for Python.
-long_description    ${description}
+long_description    {*}${description}
 
 homepage            https://github.com/maxbachmann/RapidFuzz
 
-checksums           rmd160  b0d87692ae90b1950deef50ce3b2db04b6e2090c \
-                    sha256  9e9b395743e12c36a3167a3a9fd1b4e11d92fb0aa21ec98017ee6df639ed385e \
-                    size    1524315
+checksums           rmd160  6d789c63b7f6d7b54d45e05e96b070490f7e1549 \
+                    sha256  b02850e7f7152bd1edff27e9d584505b84968cacedee7a734ec4050c655a803c \
+                    size    57869570
 
 if {${name} ne ${subport}} {
     compiler.cxx_standard 2017
     depends_build-append \
-                        port:py${python.version}-scikit-build \
+                        port:py${python.version}-scikit-build-core \
+                        port:py${python.version}-cython \
                         port:ninja
 }

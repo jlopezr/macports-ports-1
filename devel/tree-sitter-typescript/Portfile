@@ -4,7 +4,9 @@ PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           tree_sitter 1.0
 
-github.setup        tree-sitter tree-sitter-typescript 0.20.3 v
+github.setup        tree-sitter tree-sitter-typescript 0.23.2 v
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 revision            0
 
 description         A tree-sitter parser for TypeScript
@@ -15,8 +17,11 @@ categories          devel
 license             MIT
 maintainers         {amake @amake} openmaintainer
 
-checksums           rmd160  4e7e65d613a11687952a9d7aae34525e521752b7 \
-                    sha256  09183faaba27b4b758b8aa1ca3474c5768e86fb3855b1bcbf7f9734f4dd99c6a \
-                    size    843886
+checksums           rmd160  9d53c19d29aa5fab8c349e52e598815abd7b2f20 \
+                    sha256  f0feb9e76104b67ce958a6bfef55166a355df6b8c231c7228d906451b014911d \
+                    size    1032691
 
 worksrcdir          ${worksrcdir}/typescript/src
+
+# scanner.h: error: ‘for’ loop initial declaration used outside C99 mode
+configure.cflags-append -std=c99

@@ -3,11 +3,11 @@
 PortSystem              1.0
 PortGroup               github 1.0
 
-github.setup            samtools htslib 1.19
+github.setup            samtools htslib 1.22.1
 revision                0
-checksums               rmd160  ff6b69ad12cf3191a7b03990ebdd73afedd970f8 \
-                        sha256  8751c40c4fa7d1f23a6864c5b20a73744f8be68239535ae7729c5f7d394d0736 \
-                        size    4774326
+checksums               rmd160  4f3a74cd46b37ef82b16847012588769ed1b40aa \
+                        sha256  3dfa6eeb71db719907fe3ef7c72cb2ec9965b20b58036547c858c89b58c342f7 \
+                        size    4840271
 
 categories              science
 maintainers             {ryandesign @ryandesign} openmaintainer
@@ -31,6 +31,9 @@ depends_lib             port:bzip2 \
                         port:xz \
                         port:zlib
 
+# cpuid_count, get_cpuid_max
+compiler.blacklist-append {clang < 503}
+
 # https://trac.macports.org/wiki/WimplicitFunctionDeclaration#strchr
 configure.checks.implicit_function_declaration.whitelist-append strchr
 
@@ -39,6 +42,14 @@ configure.args          --enable-bz2 \
                         --enable-gcs \
                         --enable-libcurl \
                         --enable-lzma
+
+platform darwin {
+    if {[vercmp ${macosx_deployment_target} < 10.10]} {
+        # https://github.com/samtools/htslib/issues/1941
+        configure.args-append \
+                        --disable-ref-cache
+    }
+}
 
 post-destroot {
     xinstall -d ${destroot}${prefix}/share/doc/${name}

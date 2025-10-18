@@ -4,7 +4,8 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-napari-svg
-version             0.1.10
+python.rootname     napari_svg
+version             0.2.1
 revision            0
 license             BSD
 maintainers         {mps @Schamschula} openmaintainer
@@ -14,15 +15,13 @@ supported_archs     noarch
 platforms           {darwin any}
 homepage            https://github.com/napari/napari-svg
 
-python.versions     38 39 310 311
+python.versions     39 310 311 312 313
 
-checksums           rmd160  f2e8c0bee9e130ae3b2e16cccd1e9e5c08d7523a \
-                    sha256  18e642c888a71e09c9d1097f25bced1e7ef5dde1771469647bcd77975800f77d \
-                    size    14553
+checksums           rmd160  723623c34cea82dc1b5d5ca69d5485c254fb7a89 \
+                    sha256  031f13b34b0948afbdcb11eb00728fe32ef7e4e3aa3905f923001d6871a08ad9 \
+                    size    17533
 
 if {${name} ne ${subport}} {
-    python.pep517   yes
-
     depends_build-append \
                     port:py${python.version}-setuptools_scm
 

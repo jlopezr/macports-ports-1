@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           clang_dependency 1.0
 
 name                gdbm
-version             1.23
+version             1.26
 revision            0
 
 categories          databases
@@ -20,14 +20,15 @@ long_description    The GNU `dbm' is a library of database functions \
 homepage            https://www.gnu.org/software/gdbm/gdbm.html
 
 depends_build       port:gettext
+
 depends_lib         port:gettext-runtime \
                     port:readline
 
 master_sites        gnu
 
-checksums           rmd160  8a9e35d4e0eae3e7927b0f1fdb627ebfe7e4179b \
-                    sha256  74b1081d21fff13ae4bd7c16e5d6e504a4c26f7cde1dca0d963a484174bbcacd \
-                    size    1115854
+checksums           rmd160  8a023fcc0c74686a16a2dd4cd2bb53889b527a6e \
+                    sha256  6a24504a14de4a744103dcb936be976df6fbe88ccff26065e54c1c47946f4a5e \
+                    size    1226591
 
 if {${os.platform} eq "darwin" && ${os.major} < 11 && ${cxx_stdlib} eq "libc++"} {
     # This port is in the dependency chain for clang 3.7 and later

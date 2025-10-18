@@ -3,8 +3,7 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/benhoyt/goawk 1.25.0 v
-github.tarball_from archive
+go.setup            github.com/benhoyt/goawk 1.29.1 v
 revision            0
 
 homepage            https://benhoyt.com/writings/goawk
@@ -20,9 +19,9 @@ license             MIT
 maintainers         {gmail.com:herby.gillot @herbygillot} \
                     openmaintainer
 
-checksums           rmd160  5967bd540731aaf94ed82624b796f1d9ba3f9a89 \
-                    sha256  9d76415c6ce54c676428aa946ae1c4bc93863a3c680c8137711e65192628d7a2 \
-                    size    1685633
+checksums           rmd160  aa021897ff146b84a2e78869bc4a9834acdb44cb \
+                    sha256  9c355857faf7168f99e78d090ebe993ff10732a5ff34735cdc3e86256ce8c989 \
+                    size    1682166
 
 destroot {
     xinstall -m 0755 ${worksrcpath}/${name} ${destroot}${prefix}/bin/

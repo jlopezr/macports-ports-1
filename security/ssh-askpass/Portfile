@@ -3,20 +3,22 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        theseal ssh-askpass 1.4.2 v
+github.setup        theseal ssh-askpass 1.5.1 v
 github.tarball_from archive
 revision            0
 
 categories          security devel
 license             ISC
+platforms           {darwin any}
+supported_archs     noarch
 maintainers         {judaew @judaew} openmaintainer
 
 description         ssh-askpass for OS X/macOS
 long_description    {*}${description}
 
-checksums           rmd160  cb28375a7a8750f51e14ca5999107e35254b9cdb \
-                    sha256  b5e0ffd2745caa2d7f3f302f55755cb613fbfbdcecf3572a7afbf02e88d948f7 \
-                    size    54745
+checksums           rmd160  eeabf46d17c07e3217c3b851031574a5d2ddd4f1 \
+                    sha256  7497125e452e1cfe671ac05dbb4640f5d82ba6961950c0e519a00afdd8be0880 \
+                    size    54932
 
 patchfiles          patch-fix-prefix.diff
 

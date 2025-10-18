@@ -2,10 +2,11 @@
 
 PortSystem       1.0
 
-name             openjdk11-openj9
+set feature 11
+name             openjdk${feature}-openj9
 categories       java devel
-maintainers      {breun.nl:nils @breun} openmaintainer
-platforms        darwin
+maintainers      {breun @breun} openmaintainer
+platforms        {darwin any}
 # This port uses prebuilt binaries; 'NoMirror' makes sure MacPorts doesn't mirror/distribute these third-party binaries
 license          GPL-2 NoMirror
 # This port uses prebuilt binaries for a particular architecture; they are not universal binaries
@@ -14,37 +15,41 @@ universal_variant no
 # https://developer.ibm.com/languages/java/semeru-runtimes/downloads?os=macOS
 supported_archs  x86_64 arm64
 
-version      11.0.21
-revision     0
+version      ${feature}.0.28
+revision     1
 
-set build    9
-set openj9_version 0.41.0
+set build    6
+set openj9_version 0.53.0
 
-description  IBM Semeru with Eclipse OpenJ9 VM distribution, based on OpenJDK 11
+description  IBM Semeru with Eclipse OpenJ9 VM distribution, based on OpenJDK ${feature} (Long Term Support)
 long_description The IBM Semeru Runtimes are free production-ready open source binaries to run your Java applications\
                  built with the OpenJDK class libraries and the Eclipse OpenJ9 JVM.
 
-master_sites https://github.com/ibmruntimes/semeru11-binaries/releases/download/jdk-${version}%2B${build}_openj9-${openj9_version}/
+master_sites https://github.com/ibmruntimes/semeru${feature}-binaries/releases/download/jdk-${version}%2B${build}_openj9-${openj9_version}/
 
 if {${configure.build_arch} eq "x86_64"} {
-    distname     ibm-semeru-open-jdk_x64_mac_${version}_${build}_openj9-${openj9_version}
-    checksums    rmd160  ce894f346f5a531da39a78511684ebf5f5d4837e \
-                 sha256  195800cd1783626659c5b70355ecf19072f849eeabcf1f652d45d76e22ec31af \
-                 size    206685231
+    set arch_classifier x64
+    checksums    rmd160  7272e4f9844b7edeaadc8ee5432f8a5d5aa3ce74 \
+                 sha256  9df4034690c682bf76a024b04af4716e9fd4a7b20939688fe44a2a01e5fd6c42 \
+                 size    212710773
 } elseif {${configure.build_arch} eq "arm64"} {
-    distname     ibm-semeru-open-jdk_aarch64_mac_${version}_${build}_openj9-${openj9_version}
-    checksums    rmd160  6fa276d4b7adc68778055c5c1e6b92249c99342b \
-                 sha256  108e8ac9e738ca0c19ca3c5ba3e89ee807e4c4d78ffd5692ce04abe1bb5a07c4 \
-                 size    200954634
+    set arch_classifier aarch64
+    checksums    rmd160  596f44f7301a32f313a5f9592ae3ae842cb7bd91 \
+                 sha256  b5d685f5851f21c9e8eb11644b2bd65659eba46541050c985160956206b62627 \
+                 size    207506284
+} else {
+    set arch_classifier unsupported_arch
 }
+
+distname     ibm-semeru-open-jdk_${arch_classifier}_mac_${version}_${build}_openj9-${openj9_version}
 
 worksrcdir   jdk-${version}+${build}
 
 homepage     https://developer.ibm.com/languages/java/semeru-runtimes/
 
 livecheck.type      regex
-livecheck.url       https://github.com/ibmruntimes/semeru11-binaries/releases/
-livecheck.regex     ibm-semeru-open-jdk_.*_mac_(11\.\[0-9\.\]+)_\[0-9\]+_openj9-\[0-9\.\]+\.tar\.gz
+livecheck.url       https://github.com/ibmruntimes/semeru${feature}-binaries/releases/
+livecheck.regex     ibm-semeru-open-jdk_.*_mac_(${feature}\.\[0-9\.\]+)_\[0-9\]+_openj9-\[0-9\.\]+\.tar\.gz
 
 use_configure    no
 build {}

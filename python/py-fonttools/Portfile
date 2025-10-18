@@ -5,7 +5,7 @@ PortGroup           python 1.0
 PortGroup           select 1.0
 
 name                py-fonttools
-version             4.47.0
+version             4.60.1
 revision            0
 
 description         XML<->TrueType/OpenType Converter
@@ -20,26 +20,15 @@ categories-append   print
 license             MIT
 maintainers         {amake @amake} openmaintainer
 
-checksums           rmd160  0f410acf2c85902589454a6121897ed1d5a0f370 \
-                    sha256  ec13a10715eef0e031858c1c23bfaee6cba02b97558e4a7bfa089dba4a8c2ebf \
-                    size    3408590
+checksums           rmd160  d5395bb367987068585460ae9562ae0404da9d02 \
+                    sha256  ef00af0439ebfee806b25f24c8f92109157ff3fac5731dc7867957812e87b8d9 \
+                    size    3559823
 
-python.versions     37 38 39 310 311 312
+python.versions     39 310 311 312 313
 
 if {${name} ne ${subport}} {
-    if {${python.version} == 37} {
-        version     4.38.0
-        revision    0
-        use_zip     yes
-        checksums   rmd160  d980b05830a6cf0810505c99a8eb7d22b1bb8821 \
-                    sha256  2bb244009f9bf3fa100fc3ead6aeb99febe5985fa20afbfbaa2f8946c2fbdaf1 \
-                    size    5071980
-        livecheck.type  none
-    }
-
     depends_build-append \
-                    port:py${python.version}-cython \
-                    port:py${python.version}-setuptools
+                    port:py${python.version}-cython
 
     depends_run-append \
                     port:${python.rootname}_select

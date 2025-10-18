@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-tomli
-version             2.0.1
+version             2.3.0
 license             MIT
 platforms           {darwin any}
 supported_archs     noarch
@@ -15,11 +15,12 @@ long_description    Tomli is a Python library for parsing TOML. Tomli is fully \
 
 homepage            https://github.com/hukkin/tomli
 
-checksums           rmd160 08391b8bdece5ba4b13e0e67e0bb3f0a3de9cc55 \
-                    sha256 de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f \
-                    size 15164
+checksums           rmd160  f7f7431f41a5cc923266cf63cbc1e6bde646a2b0 \
+                    sha256  64be704a875d2a59753d80ee8a533c3fe183e3f06807ff7dc2232938ccb01549 \
+                    size    17392
 
-python.versions     36 37 38 39 310 311 312
+# Do not add additional versions, nothing should be using this in Python 3.11 or newer.
+python.versions     36 37 38 39 310 311
 
 if {${name} ne ${subport}} {
     if {${python.version} == 36} {
@@ -28,6 +29,16 @@ if {${name} ne ${subport}} {
         checksums   rmd160 cbdb7cfc45e9183147842cd799b5e4bbb0aef34b \
                     sha256 05b6166bff487dc068d322585c7ea4ef78deed501cc124060e0f238e89a9231f \
                     size 15094
+        set bootstrap_portname py36-bootstrap-modules
+    } elseif {${python.version} == 37} {
+        version     2.0.1
+        revision    0
+        checksums   rmd160 08391b8bdece5ba4b13e0e67e0bb3f0a3de9cc55 \
+                    sha256 de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f \
+                    size 15164
+        set bootstrap_portname py-bootstrap-modules
+    } else {
+        set bootstrap_portname py-bootstrap-modules
     }
 
     python.pep517 yes
@@ -37,11 +48,11 @@ if {${name} ne ${subport}} {
         # Break circular dependencies with py-build and friends when
         # there is no tomllib in the stdlib.
         python.add_dependencies no
-        depends_build   port:py-bootstrap-modules
+        depends_build   port:${bootstrap_portname}
         depends_lib     port:python${python.version}
-        build.env-append    PYTHONPATH=${prefix}/share/py-bootstrap-modules
+        build.env-append    PYTHONPATH=${prefix}/share/${bootstrap_portname}
         build.args      --skip-dependency-check
-        destroot.env-append PYTHONPATH=${prefix}/share/py-bootstrap-modules
+        destroot.env-append PYTHONPATH=${prefix}/share/${bootstrap_portname}
     }
 
     livecheck.type  none

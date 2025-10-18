@@ -5,6 +5,8 @@ PortGroup           github 1.0
 PortGroup           common_lisp 1.0
 
 github.setup        vseloved cl-redis 7d592417421cf7cd1cffa96043b457af0490df7d
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 version             20200616
 revision            0
 
@@ -13,7 +15,7 @@ checksums           rmd160  bec2d541a7bd9db0336d2a4ac3358654c2cf41cd \
                     size    25535
 
 categories-append   devel
-maintainers         {@catap korins.ky:kirill} openmaintainer
+maintainers         nomaintainer
 license             MIT
 
 description         Redis client for Common Lisp

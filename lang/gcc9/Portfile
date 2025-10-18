@@ -2,7 +2,6 @@
 
 PortSystem                                       1.0
 PortGroup           select                       1.0
-PortGroup           compiler_blacklist_versions  1.0
 PortGroup           active_variants              1.1
 PortGroup           conflicts_build              1.0
 PortGroup           xcode_workaround             1.0
@@ -12,7 +11,7 @@ name                gcc9
 version             9.5.0
 revision            1
 subport             libgcc9 { revision 2 }
-platforms           {darwin >= 10 < 15}
+platforms           {darwin < 15}
 categories          lang
 maintainers         nomaintainer
 # an exception in the license allows dependents to not be GPL
@@ -47,7 +46,7 @@ if { ${os.platform} eq "darwin" && ${os.major} > 19 } {
     patchfiles-append patch-genconditions.diff
 }
 
-if { ${configure.build_arch} eq "i386" && ${os.major} >= 10 } {
+if { ${configure.build_arch} eq "i386" } {
 
     # fix no-pie clang bug bootstrapping gcc on i386
     # https://trac.macports.org/ticket/63161
@@ -165,6 +164,11 @@ if { ${os.platform} eq "darwin" && \
 # Need to disable bootstrap comparisons here as well
 if { ${os.platform} eq "darwin" && ${os.major} < 15 } {
     configure.args-append  --without-build-config
+}
+
+platform darwin 8 {
+    configure.args-append \
+                    --with-dwarf2
 }
 
 pre-configure {

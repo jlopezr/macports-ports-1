@@ -4,9 +4,11 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-sounddevice
-version             0.3.14
+version             0.5.2
+revision            0
+
 license             MIT
-maintainers         {mojca @mojca} openmaintainer
+maintainers         nomaintainer
 
 description         Play and Record Sound with Python
 long_description    This Python module provides bindings for the PortAudio library \
@@ -15,16 +17,16 @@ long_description    This Python module provides bindings for the PortAudio libra
 
 homepage            https://python-sounddevice.readthedocs.io/
 
-checksums           rmd160  1b7622d4cff51655c745e9154790d0f71f5ac589 \
-                    sha256  c7b0f7ad86550668da55404eabcb63d4212ec622fcce86510092306b77d2e80a \
-                    size    48212
+checksums           rmd160  a7882f4b3bdca0ed2197a608b1417059dd4f3852 \
+                    sha256  c634d51bd4e922d6f0fa5e1a975cc897c947f61d31da9f79ba7ea34dff448b49 \
+                    size    53150
 
-python.versions     37
+python.versions     39 310 311 312 313
 
 if {${name} ne ${subport}} {
     depends_build-append \
-                        port:py${python.version}-setuptools \
                         port:py${python.version}-cffi
+
     depends_run-append  port:portaudio \
                         port:py${python.version}-cffi \
                         port:py${python.version}-numpy

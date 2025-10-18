@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           legacysupport 1.1
 
-github.setup        Raku nqp 2023.06
+github.setup        Raku nqp 2025.05
 revision            0
 description         A lightweight Perl 6-like language for virtual machines
 long_description    This is "Not Quite Perl" -- a lightweight Perl 6-like \
@@ -21,12 +21,12 @@ license             Artistic-2
 
 github.tarball_from releases
 
-checksums           rmd160  e25d974f5ae09c8f48abfc24d8f5345b57ef4fc6 \
-                    sha256  ddcb92f29180699ebaf0a7faa46ad4ac902f9c8826d7476d9c6f71176cadd7d3 \
-                    size    6021123
+checksums           rmd160  99bba2cba2a14d78f836c9356c05a01dae8dc048 \
+                    sha256  51f72f3c3cdd8e87fabd1601eab7c6dfef201dd4b65946848a6e38370e99458f \
+                    size    9727268
 
 depends_build-append \
-                    port:perl5
+                    path:bin/perl:perl5
 
 # citation:
 # NQP can run on three different backends: Parrot, MoarVM and the Java Virtual Machine (JVM).
@@ -41,11 +41,14 @@ legacysupport.redirect_bins nqp nqp-m
 configure.cmd       ${prefix}/bin/perl Configure.pl
 configure.args      --prefix=${prefix} \
                     --backends=moar \
-                    --with-moar=${prefix}/bin/moar
+                    --with-moar=${prefix}/bin/moar \
+                    --no-silent-build
 
 # https://github.com/MoarVM/MoarVM/issues/414
 universal_variant   no
 # Unsupported by Configure.pl
 # configure.universal_args-delete --disable-dependency-tracking
+
+use_parallel_build  no
 
 test.run            yes

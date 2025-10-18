@@ -2,18 +2,17 @@
 
 PortSystem          1.0
 PortGroup           cmake 1.1
-PortGroup           compiler_blacklist_versions 1.0
 PortGroup           github 1.0
 PortGroup           legacysupport 1.1
 
 # CLOCK_MONOTONIC
 legacysupport.newest_darwin_requires_legacy 15
 
-github.setup        ARMmbed mbedtls 3.5.1 mbedtls-
+github.setup        Mbed-TLS mbedtls 3.6.5 mbedtls-
 name                mbedtls3
 revision            0
 
-conflicts           mbedtls
+conflicts           hello mbedtls mbedtls4
 
 categories          devel
 license             Apache-2
@@ -24,34 +23,22 @@ long_description    {*}${description}
 platforms           darwin
 
 homepage            https://tls.mbed.org
-github.tarball_from archive
+github.tarball_from releases
+# https://github.com/Mbed-TLS/mbedtls/releases/download/mbedtls-3.6.1/mbedtls-3.6.1.tar.bz2
 
-checksums           rmd160  21b68dd0a7ef6148124ed4f0165299834bf7ebce \
-                    sha256  0da345cda55ec6f6d71afa84cfae55632a16ba0b8b4644f4d0e8a32c9d1117b0 \
-                    size    5580943
+use_bzip2           yes
 
-variant python38 conflicts python39 python310 python311 description {Use Python 3.8} {}
-variant python39 conflicts python38 python310 python311 description {Use Python 3.9} {}
-variant python310 conflicts python38 python39 python311 description {Use Python 3.10} {}
-variant python311 conflicts python38 python39 python310 description {Use Python 3.11} {}
+checksums           rmd160  c39c350104107955bf73bfbce1abd48f6825c1c1 \
+                    sha256  4a11f1777bb95bf4ad96721cac945a26e04bf19f57d905f241fe77ebeddf46d8 \
+                    size    5367178
 
-if {![variant_isset python38] && ![variant_isset python39] && ![variant_isset python310]} {
-    default_variants +python311
-}
-
-foreach pv {311 310 39 38} {
-    if {[variant_isset python${pv}]} {
-        set python.branch "[string index ${pv} 0].[string range ${pv} 1 end]"
-        depends_build-append \
-                    port:python${pv} \
-                    port:py${pv}-jsonschema
-
-        break
-    }
-}
+set python.version  313
+set python.branch   "[string index ${python.version} 0].[string range ${python.version} 1 end]"
 
 depends_build-append \
-                    port:perl5
+                    port:perl5 \
+                    port:python${python.version} \
+                    port:py${python.version}-jsonschema
 
 patchfiles          patch-CMakeLists.txt.diff
 

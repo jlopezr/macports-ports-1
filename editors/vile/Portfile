@@ -3,11 +3,11 @@
 PortSystem          1.0
 
 name                vile
-version             9.8y
+version             9.8za
 revision            0
-checksums           rmd160  0a278c188d356c208afbe8e0dded769a8c1ad7e4 \
-                    sha256  1b67f1ef34f5f2075722ab46184bb149735e8538fa912fc07c985c92f78fe381 \
-                    size    2477410
+checksums           rmd160  832f3f4bd7166b47bb22cf5d75f84075f2d494ac \
+                    sha256  65ba15ec145dfc5506217162228c7d88f01c0490a0dccde7a8a19f1c7c1b93b2 \
+                    size    2496214
 
 categories          editors
 platforms           darwin

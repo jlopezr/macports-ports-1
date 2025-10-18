@@ -8,7 +8,7 @@ PortGroup           legacysupport 1.1
 legacysupport.newest_darwin_requires_legacy 16
 legacysupport.use_mp_libcxx yes
 
-github.setup        qpdf qpdf 11.6.4 v
+github.setup        qpdf qpdf 12.2.0 v
 revision            0
 
 categories          textproc pdf
@@ -22,9 +22,9 @@ long_description    QPDF is a command-line program that does structural, \
 homepage            http://qpdf.sourceforge.net/
 github.tarball_from releases
 
-checksums           rmd160  4b4971ddcf75cfc37c06cc8a6a81a2ccc057a312 \
-                    sha256  c4b59318d296c50ceb29881e28bb57c6fcc1f6ca675cf52480ceeca552d7b3f6 \
-                    size    18655617
+checksums           rmd160  120819e857df9e592a12ffdbd59b8bf37fd4dedc \
+                    sha256  b3d1575b2218badc3549d6977524bb0f8c468c6528eebc8967bbe3078cf2cace \
+                    size    19537905
 
 depends_build-append \
                     port:perl5
@@ -61,3 +61,12 @@ variant openssl conflicts gnutls description {Build against openssl} {
 if {![variant_isset openssl]} {
     default_variants        +gnutls
 }
+
+post-destroot {
+    reinplace -W ${worksrcpath}/completions "s|/usr|${prefix}|" bash/qpdf zsh/_qpdf
+    xinstall -d ${destroot}${prefix}/share/bash-completion/completions
+    xinstall -m 644 ${worksrcpath}/completions/bash/qpdf ${destroot}${prefix}/share/bash-completion/completions
+    xinstall -d ${destroot}${prefix}/share/zsh/site-functions
+    xinstall -m 644 ${worksrcpath}/completions/zsh/_qpdf ${destroot}${prefix}/share/zsh/site-functions
+}
+

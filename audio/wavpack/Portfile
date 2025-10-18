@@ -2,15 +2,14 @@
 
 PortSystem          1.0
 PortGroup           muniversal 1.0
-PortGroup           compiler_blacklist_versions 1.0
 
 name                wavpack
-version             5.6.0
+version             5.8.1
 revision            0
 
-checksums           rmd160  2f6387b86313b4ea997bf8e87961fced75e830cb \
-                    sha256  8cbfa15927d29bcf953db35c0cfca7424344ff43ebe4083daf161577fb839cc1 \
-                    size    868207
+checksums           rmd160 24b952ba29ef8b5ab5381741e6245e044030e294 \
+                    sha256 7322775498602c8850afcfc1ae38f99df4cbcd51386e873d6b0f8047e55c0c26 \
+                    size   822696
 
 categories          audio
 license             BSD
@@ -22,10 +21,9 @@ long_description    WavPack is a completely open audio compression format \
                     loosely based on previous versions of WavPack, the new \
                     version 4 format has been designed from the ground up \
                     to offer unparalleled performance and functionality.
-homepage            http://www.wavpack.com/
-platforms           darwin
+homepage            https://www.wavpack.com
 master_sites        ${homepage}
-use_bzip2           yes
+use_xz              yes
 
 depends_lib         port:libiconv
 

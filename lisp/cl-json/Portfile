@@ -5,6 +5,8 @@ PortGroup           github 1.0
 PortGroup           common_lisp 1.0
 
 github.setup        hankhero cl-json 6dfebb9540bfc3cc33582d0c03c9ec27cb913e79
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 version             20141108
 revision            0
 
@@ -13,7 +15,7 @@ checksums           rmd160  2021c1361cccad3d4c32ed6bcf8f68d52128e76d \
                     size    62050
 
 categories-append   devel
-maintainers         {@catap korins.ky:kirill} openmaintainer
+maintainers         nomaintainer
 license             MIT
 
 description         Json encoder and decoder for Common-Lisp

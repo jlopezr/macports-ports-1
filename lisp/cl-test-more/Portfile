@@ -5,6 +5,8 @@ PortGroup           github 1.0
 PortGroup           common_lisp 1.0
 
 github.setup        jd cl-test-more ead30e3acf89f770bc033551d15b19c1ab947c8a
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 version             20130114
 revision            0
 
@@ -13,7 +15,7 @@ checksums           rmd160  3464d67c9e6f589e4ff39b0aa4a4fcb0917cadcd \
                     size    3882
 
 categories-append   devel
-maintainers         {@catap korins.ky:kirill} openmaintainer
+maintainers         nomaintainer
 license             MIT
 
 description         Yet Another Unit Testing Framework for Common Lisp

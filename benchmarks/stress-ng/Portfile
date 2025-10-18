@@ -4,11 +4,17 @@ PortSystem      1.0
 PortGroup       makefile 1.0
 PortGroup       github 1.0
 
-github.setup    ColinIanKing stress-ng 0.17.03 V
+github.setup    ColinIanKing stress-ng 0.19.05 V
+github.tarball_from \
+                archive
 revision        0
 categories      benchmarks sysutils
 maintainers     {i0ntempest @i0ntempest} openmaintainer
 license         GPL-2
+
+checksums       rmd160  5e299f83f8418b1f20bb7a134d8aad4ea59a7184 \
+                sha256  9712c5505602c6db8017c15a2659a3185f5a4f81ddde745e9f45f9e10a9f86c4 \
+                size    6839158
 
 description     System stress test utility 
 long_description \
@@ -28,7 +34,3 @@ post-patch {
     reinplace "s|JOBDIR=/usr/share/stress-ng/example-jobs|JOBDIR=${prefix}/share/stress-ng/example-jobs|" ${worksrcpath}/Makefile
     reinplace "s|BASHDIR=/usr/share/bash-completion/completions|BASHDIR=${prefix}/share/bash-completion/completions|" ${worksrcpath}/Makefile
 }
-
-checksums       rmd160  53a9bb27852f79a55dadb780ebf65d58df0458f4 \
-                sha256  0bf79c58d7e88d53f07bfd842b636e64151b28211dc3557b75aa02cb0370a824 \
-                size    6187787

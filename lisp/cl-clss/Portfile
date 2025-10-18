@@ -5,6 +5,8 @@ PortGroup           github 1.0
 PortGroup           common_lisp 1.0
 
 github.setup        Shinmera clss c51e25d2ea35618a18fb234f724b13dae5550728
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 name                cl-clss
 version             20230703
 revision            0
@@ -14,7 +16,7 @@ checksums           rmd160  45bf5debe16ac8a7f488c55657054844cfe99de1 \
                     size    21810
 
 categories-append   devel
-maintainers         {@catap korins.ky:kirill} openmaintainer
+maintainers         nomaintainer
 license             zlib
 
 description         A DOM tree searching engine based on CSS selectors.

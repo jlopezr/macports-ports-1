@@ -4,15 +4,14 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-xyzservices
-version             2023.7.0
+version             2025.4.0
 revision            0
 categories-append   devel
 license             BSD
 supported_archs     noarch
 platforms           {darwin any}
 
-python.versions     37 38 39 310 311 312
-python.pep517       yes
+python.versions     39 310 311 312 313
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -21,9 +20,9 @@ long_description    {*}${description}
 
 homepage            https://github.com/geopandas/xyzservices
 
-checksums           rmd160  19dd7380f323026dda8365a932b1687ca24b5de7 \
-                    sha256  0ec928742227d6f5d4367ea7b457fcfed943429f4de2949b5b02a82cdf5569d6 \
-                    size    1116697
+checksums           rmd160  79b4f111ea171dd6acfd20c12421096e3078d915 \
+                    sha256  6fe764713648fac53450fbc61a3c366cb6ae5335a1b2ae0c3796b495de3709d8 \
+                    size    1134722
 
 if {${subport} ne ${name}} {
     depends_build-append \

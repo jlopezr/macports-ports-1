@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           github  1.0
 PortGroup           cmake   1.1
 
-github.setup        GothenburgBitFactory timewarrior 1.6.0 v
+github.setup        GothenburgBitFactory timewarrior 1.9.1 v
 github.tarball_from releases
 revision            0
 
@@ -25,9 +25,15 @@ maintainers         {gmail.com:herby.gillot @herbygillot} \
 
 distname            timew-${version}
 
-checksums           rmd160  831e7d0ec395bedf466e547621472f9534059a33\
-                    sha256  cd1aa610ed50558bb2cf141022fa7b41523091ac3ae5fbb9c2d459cfe1afc782\
-                    size    3073564
+checksums           rmd160  4ee3c9f84ccee42db10c364d2e30d139a9df2251\
+                    sha256  7ad34f95c0d61d356df55149f9479f8d9aaec417e5f57f2a1cc76ae2f8a3171b\
+                    size    323991
+
+# Hardcoding C++ runtime is either redundant or breaking.
+patchfiles-append       patch-fix-cxx.diff
+
+# Required by the build:
+compiler.cxx_standard   2017
 
 post-destroot {
     # Install bash completions

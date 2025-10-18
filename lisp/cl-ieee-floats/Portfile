@@ -5,6 +5,8 @@ PortGroup           github 1.0
 PortGroup           common_lisp 1.0
 
 github.setup        marijnh ieee-floats 9566ce8adfb299faef803d95736c780413a1373c
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 name                cl-ieee-floats
 version             20220126
 revision            1
@@ -14,7 +16,7 @@ checksums           rmd160  7c0e45aa6fcfbc3d311b80d3ee3dbf1c41a9bd49 \
                     size    5363
 
 categories-append   devel
-maintainers         {@catap korins.ky:kirill} openmaintainer
+maintainers         nomaintainer
 license             zlib
 
 description         Common Lisp IEEE-754 float en- and decoding

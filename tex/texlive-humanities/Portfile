@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           texlive 1.0
 
 name                texlive-humanities
-version             65502
+version             73810
 revision            0
 
 categories          tex
@@ -13,30 +13,22 @@ license             Copyleft Permissive
 description         TeX Live: Humanities packages
 long_description    Packages for law, linguistics, social sciences, humanities, etc.
 
-checksums           texlive-humanities-65502-run.tar.xz \
-                    rmd160  64e16b3a845059b237be7146e3b39f867bde2d08 \
-                    sha256  e09bf39ebf0fdf75a19d5e0fa7f94e65c17d167549567f3c3e324af161044192 \
-                    size    27635180 \
-                    texlive-humanities-65502-doc.tar.xz \
-                    rmd160  b972d9fa83c2739ca5496a5a960d81b4244c6583 \
-                    sha256  f2303f9258b421fa851674a6064013f49bc4ef192ae9b9f854d97955cc4f3cce \
-                    size    26702564 \
-                    texlive-humanities-65502-src.tar.xz \
-                    rmd160  5f52401991458c609fe332454a1533f301da8fe7 \
-                    sha256  cc6d397d39282ddffc8ae43b6264a02171b6c1257eab47df910074eb11c6f79a \
-                    size    634380
+checksums           texlive-humanities-73810-run.tar.xz \
+                    rmd160  869b9c3c83b4d650cad7cb0b0b18534d6d51fc77 \
+                    sha256  085b4783c869ba0d133bc2e34693e35b6649a25350947d207b8c8b371487d07b \
+                    size    464112 \
+                    texlive-humanities-73810-doc.tar.xz \
+                    rmd160  fcc3b475861ecc87ededc35c949fa20ecd6ece2b \
+                    sha256  a46b13084e1f0772c63b390e187c4be330bc3c52319ca436f0754ca23cbbeac5 \
+                    size    32884052 \
+                    texlive-humanities-73810-src.tar.xz \
+                    rmd160  12d0ebfaceea2fccf5429af60156d260af339140 \
+                    sha256  511ea3e7e422ae5847fc82fc7e2e2e987c2ff65dcf2d50a3d009db0434d710ab \
+                    size    631220
 
 depends_lib         port:texlive-latex
 
 texlive.binaries    diadia
-
-pre-activate {
-    # Handle conflicts for TL2018 upgrade
-    if { ![catch {set vers [lindex [registry_active texlive-latex-extra] 0]}]
-         && ([vercmp [lindex $vers 1] 47410] < 0) } {
-        registry_deactivate_composite texlive-latex-extra "" [list ports_nodepcheck 1]
-    }
-}
 
 
 texlive.texmfport

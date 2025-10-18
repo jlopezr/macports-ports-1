@@ -3,16 +3,24 @@
 PortSystem          1.0
 PortGroup           R 1.0
 
-R.setup             cran valentint tclust 1.5-5
+# GitHub version is outdated.
+R.setup             cran valentint tclust 2.0-5
 revision            0
 categories-append   math
-maintainers         {@barracuda156 gmail.com:vital.had} openmaintainer
+maintainers         nomaintainer
 license             GPL-3
 description         Robust Trimmed Clustering
 long_description    {*}${description}
-checksums           rmd160  16028828152a75df9faf295556ad3252b63098f2 \
-                    sha256  fc8dbf2626cab50a06e037423fa005431202edd6782ea770c9a002abb30e5496 \
-                    size    1107780
+homepage            https://github.com/valentint/tclust
+checksums           rmd160  ad023ebe6a40c09c04964d6afe5f817275c6df4d \
+                    sha256  17c81d2f54ba52a299eadac028e2bac56fcbdb10bedfa10a4ca6167ff156a8bf \
+                    size    1062337
+
+depends_lib-append  port:R-doParallel \
+                    port:R-ellipsis \
+                    port:R-foreach \
+                    port:R-Rcpp \
+                    port:R-RcppArmadillo
 
 compilers.setup     require_fortran
 

@@ -8,12 +8,14 @@ name                youtube-dl
 
 if {${subport} eq ${name}} {
     github.setup    ytdl-org ${subport} 2021.12.17
-    revision        2
+    revision        3
     checksums       rmd160  beca02d231a287488cecffe4c98651b4d6537b9d \
                     sha256  9f3b99c8b778455165b4525f21505e86c7ff565f3ac319e19733d810194135df \
                     size    3332299
 
-    homepage        https://youtube-dl.org
+    homepage        https://${github.author}.github.io/${github.project}/
+
+    python.pep517_backend setuptools
 
     set symlinks [list \
         etc/bash_completion.d/${subport}.bash-completion \
@@ -35,14 +37,15 @@ if {${subport} eq ${name}} {
 }
 
 subport yt-dlp {
-    github.setup    yt-dlp ${subport} 2023.11.16
+    github.setup    yt-dlp ${subport} 2025.10.14
     revision        0
-    checksums       rmd160  4bc761b7303419a369300377716fac318356bbc6 \
-                    sha256  aa7fb7e49b57b1b5ac439a72568575e4df904ffc30417e19e644990e7239ac53 \
-                    size    5568397
-
+    checksums       rmd160  5ecf2b3ebcb676e4afe6396302f79b4836a3ba86 \
+                    sha256  2772759e7f4768634b486bd8abb44bb2a1374ef8665b7fda92df9ac9232f54bf \
+                    size    6024964
     dist_subdir     ${subport}/${version}
     distname        ${subport}
+
+    python.pep517_backend hatch
 
     set symlinks [list \
         share/bash-completion/completions/${subport} \
@@ -99,26 +102,24 @@ variant ffmpeg description {Add ffmpeg dependency, used to extract audio} {
 
 default_variants    +ffmpeg
 
-variant python38 conflicts python39 python310 python311 description {Use Python 3.8} {}
-variant python39 conflicts python38 python310 python311 description {Use Python 3.9} {}
-variant python310 conflicts python38 python39 python311 description {Use Python 3.10} {}
-variant python311 conflicts python38 python39 python310 description {Use Python 3.11} {}
+variant python310 conflicts python311 python312 python313 description {Use Python 3.10} {}
+variant python311 conflicts python310 python312 python313 description {Use Python 3.11} {}
+variant python312 conflicts python310 python311 python313 description {Use Python 3.12} {}
+variant python313 conflicts python310 python311 python312 description {Use Python 3.13} {}
 
-if {![variant_isset python38] && ![variant_isset python39] && ![variant_isset python310] && ![variant_isset python311]} {
-    default_variants +python311
+if {![variant_isset python310] && ![variant_isset python311] && ![variant_isset python312] && ![variant_isset python313]} {
+    default_variants +python313
 }
 
-if {[variant_isset python38]} {
-    python.default_version  38
-} elseif {[variant_isset python39]} {
-    python.default_version  39
-} elseif {[variant_isset python310]} {
+if {[variant_isset python310]} {
     python.default_version  310
 } elseif {[variant_isset python311]} {
     python.default_version  311
+} elseif {[variant_isset python312]} {
+    python.default_version  312
+} elseif {[variant_isset python313]} {
+    python.default_version  313
 }
-
-depends_build-append        port:py${python.version}-setuptools
 
 # WARNING: hlsnative has detected features it does not support, extraction will be delegated to ffmpeg
 depends_lib-append          port:py${python.version}-pycryptodome

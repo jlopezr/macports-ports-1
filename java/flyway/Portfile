@@ -5,12 +5,12 @@ PortGroup           select 1.0
 PortGroup           java 1.0
 
 name                flyway
-version             9.22.2
+version             11.1.0
 
 categories          java devel
 license             Apache-2
 maintainers         {emcrisostomo @emcrisostomo} openmaintainer
-platforms           darwin
+platforms           any
 supported_archs     noarch
 
 description         Database Migrations Made Easy.
@@ -24,9 +24,9 @@ master_sites        https://repo1.maven.org/maven2/org/flywaydb/flyway-commandli
 distname            ${name}-commandline-${version}
 worksrcdir          ${name}-${version}
 
-checksums           rmd160  1596caaf77726aa18c4d014688f54ec843962a52 \
-                    sha256  21a511ad13f543f35ebbf1e63df083b0beab679f46965e40ce09e242144adc65 \
-                    size    112190149
+checksums           rmd160  4d97aa3f80c0bebcd02210501e0b6b8c0f12fca0 \
+                    sha256  efe0ad5eba3d5dfcbf7cee5308256cc89090d6de5f4b5705b5112cd9387a4f7e \
+                    size    202749404
 
 java.version        1.8+
 java.fallback       openjdk17

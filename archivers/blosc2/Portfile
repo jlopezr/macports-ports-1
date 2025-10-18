@@ -1,0 +1,56 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim: fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           cmake 1.1
+PortGroup           github 1.0
+
+github.setup        Blosc c-blosc2 2.21.3 v
+revision            0
+
+name                blosc2
+categories          archivers devel
+license             BSD
+
+maintainers         {stromnov @stromnov} openmaintainer
+
+description         A fast, compressed, persistent binary data store library
+long_description    {*}${description}.
+
+homepage            https://www.blosc.org
+
+checksums           rmd160  f9048032c033fc58f24f3c1141d4a0260927faed \
+                    sha256  4ac2e8b7413624662767b4348626f54ad621d6fbd315d0ba8be32a6ebaa21d41 \
+                    size    3337783
+github.tarball_from archive
+
+depends_lib-append  port:lz4 \
+                    port:zlib \
+                    port:zstd
+
+configure.args-append \
+                    -DBUILD_BENCHMARKS:BOOL=OFF \
+                    -DBUILD_EXAMPLES:BOOL=OFF \
+                    -DBUILD_PLUGINS:BOOL=ON \
+                    -DPREFER_EXTERNAL_LZ4:BOOL=ON \
+                    -DPREFER_EXTERNAL_ZLIB:BOOL=ON \
+                    -DPREFER_EXTERNAL_ZSTD:BOOL=ON
+
+# error: ‘for’ loop initial declaration used outside C99 mode
+configure.cflags-append -std=c99
+
+# https://trac.macports.org/ticket/67478
+platform darwin {
+    if {${os.major} < 11 && [string match *gcc* ${configure.compiler}]} {
+        configure.args-append \
+                            -DDEACTIVATE_AVX2:BOOL=ON \
+                            -DDEACTIVATE_AVX512:BOOL=ON
+    }
+}
+
+if {${build_arch} in [list ppc ppc64]} {
+    configure.args-append \
+                        -DDEACTIVATE_AVX2:BOOL=ON \
+                        -DDEACTIVATE_AVX512:BOOL=ON
+}
+
+test.run            yes

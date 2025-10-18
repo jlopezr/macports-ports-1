@@ -4,10 +4,40 @@ PortSystem          1.0
 PortGroup           app 1.0
 PortGroup           cmake 1.0
 PortGroup           github 1.0
-PortGroup           qt5 1.0
 
-github.setup        Faster3ck converseen 0.12.0.1 v
-revision            0
+if {(${os.platform} eq "darwin" && ${os.major} > 13) \
+    || ${os.platform} ne "darwin"} {
+    PortGroup       qt5 1.0
+
+    github.setup    Faster3ck converseen 0.15.1.0 v
+    # Change github.tarball_from to 'releases' or 'archive' next update
+    github.tarball_from tarball
+    revision        0
+    checksums       rmd160  5135a7f7bbef73313ff59e772fd6e473222b5c54 \
+                    sha256  2a810db70a2f310b0d575b2ee4ec35608436a4287bf2cac69b7fa67606c7088e \
+                    size    972618
+
+    qt5.depends_component \
+                    qttools
+
+    compiler.cxx_standard   2017
+} else {
+    PortGroup       qt4 1.0
+
+    # Version for legacy systems using Qt4.
+    github.setup    Faster3ck converseen 0.9.2 v
+    # Change github.tarball_from to 'releases' or 'archive' next update
+    github.tarball_from tarball
+    revision        0
+    checksums       rmd160  8fb30774f2105641c864fd5d828dc51bb218eb7c \
+                    sha256  4ad8a612ff8dc693159743031b6bf14af966b163a155296ce809d1dc3789faee \
+                    size    292007
+
+    # https://github.com/Faster3ck/Converseen/issues/169
+    patchfiles-append \
+                    patch-fix-formats.diff
+}
+
 categories          graphics
 license             GPL-3
 maintainers         {mps @Schamschula} openmaintainer
@@ -15,15 +45,6 @@ description         Converseen is an open source batch image converter and resiz
 long_description    {*}${description} Thanks to the Magick++ image libraries it supports \
                     more than 100 image formats.
 
-checksums           rmd160  53a9a29218dae7dcde0f2eac3c26682d009e3e70 \
-                    sha256  7e4ed38fe6cd2b30a728b499966336625795c5e2d63b2b9de122acc2be00e02e \
-                    size    2296247
-
 depends_lib-append  port:ImageMagick
-
-platforms {darwin >= 14}
-
-qt5.depends_component \
-                    qttools
 
 app.icon            ${filespath}/Converseen.icns

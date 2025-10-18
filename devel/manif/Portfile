@@ -2,10 +2,11 @@
 
 PortSystem          1.0
 PortGroup           cmake 1.1
-PortGroup           compiler_blacklist_versions 1.0
 PortGroup           github 1.0
 
 github.setup        artivis manif c8a9fcbfe157b55a7a860577febdc5350043a722
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 version             2023.11.03
 revision            0
 categories          devel
@@ -18,7 +19,7 @@ homepage            https://artivis.github.io/manif
 checksums           rmd160  62e17b670616963ccc2e6adf3bc81af176d9836d \
                     sha256  305089cd56285fb69b1a10e1afb1346b34e4c92ce1614e73c55f11bb5b6b6ea3 \
                     size    728266
-installs_libs       no
+platforms           any
 supported_archs     noarch
 
 depends_lib-append  path:share/pkgconfig/eigen3.pc:eigen3

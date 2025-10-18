@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                verde
-version             1.8.0
+version             1.8.1
 revision            0
 categories-append   science
 license             BSD
@@ -12,24 +12,26 @@ maintainers         {mps @Schamschula} openmaintainer
 description         Verde is a Python library for processing spatial data
 long_description    {*}${description} (bathymetry, geophysics surveys, etc) and \
                     interpolating it on regular grids (i.e., gridding).
-supported_archs     noarch
-platforms           {darwin any}
 homepage            https://github.com/fatiando/verde
 
-checksums           rmd160  12dea203be9e1c61e459ac485cabc02243578393 \
-                    sha256  274d52f459e5e6f696bacab49b4630692825151c1b8a7be672bd89a95b48d0c2 \
-                    size    165682
+supported_archs     noarch
+platforms           {darwin any}
 
-variant python38 conflicts python311 python39 python310 description {Use Python 3.8} {}
-variant python39 conflicts python311 python38 python310 description {Use Python 3.9} {}
-variant python310 conflicts python311 python38 python39 description {Use Python 3.10} {}
-variant python311 conflicts python38 python39 python310 description {Use Python 3.11} {}
+checksums           rmd160  1c3f62f27c43cc142e35e3ece508c3a12e21d5d9 \
+                    sha256  e97a55ceecb1a4bbc6ad09232738cce95b6c93d82d514b9f64dea14ded505ec3 \
+                    size    165904
 
-if {![variant_isset python38] && ![variant_isset python39] && ![variant_isset python310]} {
-    default_variants +python311
+variant python39 conflicts python310 python311 python312 python313 description {Use Python 3.9} {}
+variant python310 conflicts python39 python311 python312 python313 description {Use Python 3.10} {}
+variant python311 conflicts python39 python310 python312 python313 description {Use Python 3.11} {}
+variant python312 conflicts python39 python310 python311 python313 description {Use Python 3.12} {}
+variant python313 conflicts python39 python310 python311 python312 description {Use Python 3.13} {}
+
+if {![variant_isset python39] && ![variant_isset python310] && ![variant_isset python311] && ![variant_isset python312]} {
+    default_variants +python313
 }
 
-foreach pv {311 310 39 38} {
+foreach pv {313 312 311 310 39} {
     if {[variant_isset python${pv}]} {
         python.default_version ${pv}
         break

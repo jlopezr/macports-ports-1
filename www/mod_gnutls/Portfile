@@ -1,10 +1,11 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem          1.0
-PortGroup           compiler_blacklist_versions 1.0
 PortGroup           github 1.0
 
-github.setup        airtower-luna mod_gnutls 0.12.1 mod_gnutls/
+github.setup        airtower-luna mod_gnutls 0.12.2 mod_gnutls/
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 revision            0
 categories          www security crypto
 license             Apache-2
@@ -21,32 +22,13 @@ long_description    \
 
 homepage            https://github.com/airtower-luna/mod_gnutls/
 
-github.tarball_from releases
+checksums           rmd160  2d386566e3457c23bd07a52aa3e1afbf34297ccf \
+                    sha256  bf7008fe6a37b99011de6c2406d9e7a394fb0df252a9bbc0d96d0dd8f6d14d44 \
+                    size    188791
 
-checksums           rmd160  c6e016ae970866f0feadb4eb990d0c7ebff5a8c9 \
-                    sha256  5bb97f11edb31a399354027004d3b0e862bd8d85fb6ba86b3b54b340a5e2ed97 \
-                    size    454861
-
-use_bzip2           yes
-
-variant python38 conflicts python39 python310 python311 python312 description {Build using Python 3.8} {}
-variant python39 conflicts python38 python310 python311 python312 description {Build using Python 3.9} {}
-variant python310 conflicts python38 python39 python311 python312 description {Build using Python 3.10} {}
-variant python311 conflicts python38 python39 python310 python312 description {Build using Python 3.11} {}
-variant python312 conflicts python38 python39 python310 python311 description {Build using Python 3.12} {}
-
-if {![variant_isset python38] && ![variant_isset python39] && ![variant_isset python310] && ![variant_isset python312]} {
-    default_variants +python311
-}
-
-foreach python.branch {3.12 3.11 3.10 3.9 3.8} {
-    set python.version [string map {. {}} ${python.branch}]
-    if {[variant_isset python${python.version}]} {
-        configure.python ${prefix}/bin/python${python.branch}
-        break
-    }
-    unset python.version
-}
+set python.version  313
+set python.branch   [string index ${python.version} 0].[string range ${python.version} 1 end]
+configure.python    ${prefix}/bin/python${python.branch}
 
 depends_build       port:pkgconfig \
                     port:python${python.version} \
@@ -77,7 +59,7 @@ pre-destroot {
 
 post-destroot {
     xinstall -m 755 -d ${destroot}${prefix}/share/doc/${name}
-    xinstall -m 644 -W ${worksrcpath} LICENSE NOTICE README \
+    xinstall -m 644 -W ${worksrcpath} LICENSE NOTICE README.md \
         ${destroot}${prefix}/share/doc/${name}
 }
 

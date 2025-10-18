@@ -4,17 +4,17 @@ PortSystem          1.0
 PortGroup           R 1.0
 
 # Revert to GitHub once updated there.
-R.setup             cran pbs-assess sdmTMB 0.4.1 v
+R.setup             cran pbs-assess sdmTMB 0.6.0 v
 revision            0
 categories-append   math
 maintainers         nomaintainer
 license             GPL-3
-description         Spatial and spatio-temporal SPDE-based GLMMs with R-TMB
-long_description    {*}${description}
+description         Spatial and spatio-temporal SPDE-based GLMMs
+long_description    {*}${description} with R-TMB.
 homepage            https://pbs-assess.github.io/sdmTMB
-checksums           rmd160  3c0ac4197ca33b8ea8560407b357c6578433dbfc \
-                    sha256  4911bfd1ba8ac2127446d3f9b43b07b1968e614a0d8ff76cd1673ee2776ba7a5 \
-                    size    2875850
+checksums           rmd160  d473c265f12f3219a3a8c79b071cdcab2eb7fa62 \
+                    sha256  8845fd1b66954f0b09daf105948b917d26b24d15f44429c30bae7475afaf536c \
+                    size    1839772
 
 depends_lib-append  port:R-assertthat \
                     port:R-cli \
@@ -31,10 +31,11 @@ depends_lib-append  port:R-assertthat \
 
 compiler.cxx_standard 2017
 
-depends_test-append port:R-dplyr \
+depends_test-append port:R-DHARMa \
+                    port:R-dplyr \
                     port:R-effects \
-                    port:R-estimability \
                     port:R-emmeans \
+                    port:R-estimability \
                     port:R-future \
                     port:R-future.apply \
                     port:R-ggeffects \

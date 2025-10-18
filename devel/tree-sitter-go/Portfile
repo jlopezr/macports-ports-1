@@ -4,7 +4,9 @@ PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           tree_sitter 1.0
 
-github.setup        tree-sitter tree-sitter-go 0.20.0 v
+github.setup        tree-sitter tree-sitter-go 0.25.0 v
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 revision            0
 
 description         A tree-sitter parser for Golang
@@ -15,8 +17,11 @@ categories          devel
 license             MIT
 maintainers         {amake @amake} openmaintainer
 
-checksums           rmd160  7202c55c707c6998ebf4e60e7ac4256d4300233a \
-                    sha256  8197161cafb7dee4714a126fdfc9d528806498378cb405440842820180457a41 \
-                    size    195771
+checksums           rmd160  fc76707bfd9fe15375f3d74617d415f76d6d5147 \
+                    sha256  0c3ecabff5b8a92ec93bc708e527684dec37962e0bc181308de1be33f6a8f54b \
+                    size    211269
 
 worksrcdir          ${worksrcdir}/src
+
+# parser.c: error: ‘for’ loop initial declaration used outside C99 mode
+configure.cflags-append -std=c99

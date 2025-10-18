@@ -3,10 +3,9 @@
 PortSystem          1.0
 
 name                cabal
-version             3.10.2.0
+version             3.16.0.0
 revision            0
 categories          lang haskell devel
-platforms           darwin
 license             BSD
 maintainers         {ieee.org:s.t.smith @essandess} openmaintainer
 
@@ -24,6 +23,8 @@ long_description    Cabal is a system for building and packaging \
 homepage            https://www.haskell.org/cabal
 
 master_sites        https://downloads.haskell.org/~${name}/${name}-install-${version}/:haskell
+
+installs_libs       no
 
 platform arm {
     set cabal_build_arch    aarch64
@@ -57,18 +58,19 @@ set distfile_haskell    ${cabal_distname}.tar.xz
 distfiles           ${distfile_haskell}:haskell
 
 # set build_arch by hand on arm64/x86_64 systems to get x86_64/arm64 checksums
+# sudo port -d checksum cabal-prebuilt os.arch=i386 build_arch=x86_64
 # sudo port -d checksum cabal-prebuilt os.arch=arm build_arch=arm64
 # run `port clean --all cabal-prebuilt` afterwards
 if {${build_arch} eq {arm64}} {
     checksums       ${distfile_haskell} \
-                    rmd160  6aeec964b457b8428ebcfdc65788b5dc2b636b63 \
-                    sha256  d2bd336d7397cf4b76f3bb0d80dea24ca0fa047903e39c8305b136e855269d7b \
-                    size    11928216
+                    rmd160  2359b874fac29654a892159d5ea86e33f77004a2 \
+                    sha256  8e7aa8823f9c0d9c4c75b69051ebd405b29e2f1a8a1862fcc96df79578ffea1d \
+                    size    12912528
 } elseif {${build_arch} eq {x86_64}} {
     checksums       ${distfile_haskell} \
-                    rmd160  5213303e2249015f614c85e417c85ac69bfbb037 \
-                    sha256  cd64f2a8f476d0f320945105303c982448ca1379ff54b8625b79fb982b551d90 \
-                    size    5612620
+                    rmd160  fe1302dcb42b8d15566572900c639acc3b8ddac7 \
+                    sha256  d3a74742caf998c1627a457de095c7d263680d96d38a7582cd3f9746bff76423 \
+                    size    6076988
 }
 
 # cabal may use these MacPorts build tools:
@@ -92,15 +94,15 @@ if {${name} eq ${subport}} {
     master_sites    https://github.com/haskell/${name}/archive/refs/tags:github
     distfiles       ${distfile_github}:github
     checksums       ${distfile_github} \
-                    rmd160  7f608e0c97ec8cf1172c26d32e1b3a8aa29da9e1 \
-                    sha256  0b9be9ad935938d5d3ca44bd29e6ac555c723536edb2b01534bb0b2d11dabcb8 \
-                    size    2277893
+                    rmd160  f2adc18aa2b8469f2dece0eee4670ad3541e14ea \
+                    sha256  59c59ae925f2598f94c6d575c52dbf90f5d8371222f39664a61d431cf3938fd7 \
+                    size    4072960
 
     extract.only-append \
                     ${distfile_github}
-if {[exists extract.rename]} {
-    extract.rename  yes
-}
+    if {[exists extract.rename]} {
+        extract.rename  yes
+    }
     variant prebuilt \
         description {This variant is deprecated.} {
         ui_error "Please install the port ${name}-prebuilt."
@@ -109,7 +111,7 @@ if {[exists extract.rename]} {
 
     # use these to specify python versions, python3 required
     # use ${prefix}/var/macports/sources/rsync.macports.org/macports/release/tarballs/ports/_resources/port1.0/group/python-1.0.tcl
-    set python3_version 310
+    set python3_version 313
     set python3_branch  [string index ${python3_version} 0].[string range ${python3_version} 1 end]
     set python3_prefix  ${frameworks_dir}/Python.framework/Versions/${python3_branch}
     set python3_bin     ${python3_prefix}/bin/python${python3_branch}
@@ -118,6 +120,7 @@ if {[exists extract.rename]} {
                     port:python${python3_version} \
                     port:py${python3_version}-importlib-metadata \
                     port:py${python3_version}-parsing \
+                    port:py${python3_version}-setuptools \
                     port:py${python3_version}-sphinx \
                     port:py${python3_version}-sphinx-jsonschema \
                     port:py${python3_version}-sphinx_rtd_theme \
@@ -152,20 +155,34 @@ if {[exists extract.rename]} {
                     "CABAL_CONFIG=${haskell_cabal.cabal_root}/config" \
                     "GHC=${prefix}/bin/ghc"
 
-    # https://github.com/haskell/cabal/issues/8360#issuecomment-1220918581
+    set project_file cabal.release.project
+
+    haskell_cabal.update_flags-append \
+                    --project-file=${project_file}
+
     build.target    ${name}-install \
-                    --project-file=cabal.project.release \
-                    --allow-newer
+                    --project-file=${project_file}
+    # apparently required for MacPorts github CI and buildbots
+    build.post_args-prepend \
+                    --ghc \
+                    --with-compiler=${prefix}/bin/ghc
     build.post_args-append \
                     --bindir=${prefix}/bin \
-                    --datadir=${prefix}/share/${subport}
-
+                    --datadir=${prefix}/share/${subport} \
+                    --allow-newer
     post-build {
         # https://github.com/haskell/cabal/blob/c1f490a50782cc89030889fae8edd9f95db7c1e4/Makefile#L207
         system -W ${worksrcpath} \
             "sphinx-build-${python3_branch} -n --keep-going -E\
                     doc ${haskell_cabal.build_dir}/doc/users-guide"
     }
+
+    # apparently required for MacPorts github CI and buildbots
+    destroot.post_args-prepend \
+                    --ghc \
+                    --with-compiler=${prefix}/bin/ghc
+    destroot.post_args-append \
+                    --allow-newer
 
     post-destroot {
         xinstall -d ${destroot}${prefix}/share/doc/${distname}
@@ -202,3 +219,6 @@ subport cabal-prebuilt {
 It is intended to be used to bootstrap ghc and other Haskell-based tools.
 "
 }
+
+livecheck.url       https://github.com/haskell/${name}/tags
+livecheck.regex     "archive/refs/tags/${name}\-install\-v(\[^\"\]+)\.tar\.gz"

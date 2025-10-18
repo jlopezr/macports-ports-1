@@ -4,7 +4,8 @@ PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           python 1.0
 
-github.setup        omnilib aiosqlite 0.19.0 v
+github.setup        omnilib aiosqlite 0.21.0 v
+github.tarball_from archive
 name                py-${github.project}
 revision            0
 categories-append   devel
@@ -22,17 +23,15 @@ long_description    aiosqlite provides a friendly, async interface to \
                     context managers for automatically closing \
                     connections and cursors.
 
-checksums           rmd160  82fa0a2e56925391d43697c64a63c52de73fd119 \
-                    sha256  ffc85e673ec5395cc291eb58ce6ad4f4f1721bd3b0ea09960b1bdd96128945e6 \
-                    size    20584
+checksums           rmd160  f2c0e4daa29cebdca6034a3843ad1c12169f524d \
+                    sha256  f2338f94d62f5faf5c2da409c3fcd6862e53075cfa52abe521ddba324d472f21 \
+                    size    21125
 
-python.versions     38 39 310 311
+python.versions     39 310 311 312 313
 
-python.pep517       yes
 python.pep517_backend   flit
 
 if {${name} ne ${subport}} {
     depends_build-append \
-                    port:py${python.version}-typing_extensions \
-                    port:py${python.version}-wheel
+                    port:py${python.version}-typing_extensions
 }

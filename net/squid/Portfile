@@ -3,7 +3,7 @@
 PortSystem 1.0
 
 name            squid
-version         6.6
+version         6.14
 categories      net
 license         GPL-2+
 maintainers     {jmr @jmroot} openmaintainer
@@ -18,19 +18,13 @@ long_description    Squid is a high-performance proxy caching server for \
                 C++17 compiler to build.
 
 homepage        http://www.squid-cache.org/
-master_sites    https://mirror.aarnet.edu.au/pub/squid/squid/ \
-                https://www.mirrorservice.org/sites/ftp.squid-cache.org/pub/squid/ \
-                http://ftp.ring.gr.jp/archives/net/www/squid/ \
-                ftp://ftp.is.co.za/pub/squid/ \
-                ftp://ftp1.cl.squid-cache.org/pub/squid/ \
-                http://www.squid-cache.org/Versions/v6/ \
-                ftp://ftp.squid-cache.org/pub/squid/
+master_sites    https://github.com/squid-cache/squid/releases/download/SQUID_[string map {. _} ${version}]/
 
 use_xz          yes
-checksums       md5 5a41134ee1b7e75f62088acdec92d2ca \
-                sha1 f05e06a9dd3bf7501d2844e43d9ae1bd00e9edcc \
-                rmd160 fd30ea376a14bd793275fd508bcddfded45b30f1 \
-                sha256 55bd7f9f4898153161ea1228998acb551bf840832b9e5b90fc8ecd2942420318
+checksums       md5 81b8c86aea3219e448fef75bbf6075f3 \
+                sha1 1ea4f1d59701d2225679c39afcf139d49b29bbbf \
+                rmd160 f63443c3a02922a49842ca3b3175f99697d309f9 \
+                sha256 9eafe06f58a199b918e79d33d8aa03afb9ae0c11d18974dca0b44c2669cab6dd
 
 patchfiles      patch-compat_types.h.diff \
                 patch-basic_pam_auth.cc.diff \
@@ -51,10 +45,10 @@ platform darwin {
     }
 }
 
-depends_build   port:pkgconfig
-depends_lib     port:expat port:libtool port:zlib
+depends_build   path:bin/pkg-config:pkgconfig
+depends_lib     port:libtool port:zlib
 
-conflicts       squid2 squid3 squid5
+conflicts       squid2 squid3
 
 compiler.cxx_standard   2017
 
@@ -165,6 +159,6 @@ variant ssl_crtd requires openssl description "Enable use of external certificat
     configure.args-append   --enable-ssl-crtd
 }
 
-livecheck.type  regexm
-livecheck.url   ${homepage}Versions/
-livecheck.regex {Latest Release[^\n]*\n?[^\n]*\n?[^\n]*<td>([0-9.]+)</td>}
+livecheck.type  regex
+livecheck.url   https://api.github.com/repos/squid-cache/squid/releases/latest
+livecheck.regex {"name":\s+"v([0-9.]+)",}

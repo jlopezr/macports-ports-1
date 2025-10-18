@@ -4,7 +4,6 @@
 
 PortSystem              1.0
 PortGroup select        1.0
-PortGroup compiler_blacklist_versions 1.0
 
 set llvm_version        3.4
 set llvm_version_no_dot 34
@@ -15,7 +14,6 @@ set suffix              mp-${llvm_version}
 set sub_prefix          ${prefix}/libexec/llvm-${llvm_version}
 dist_subdir             llvm
 categories              lang
-platforms               darwin
 license                 NCSA
 maintainers             {jeremyhu @jeremyhu} {larryv @larryv}
 
@@ -117,7 +115,7 @@ checksums           llvm-3.4.2.src.tar.gz \
                     rmd160  8af0af0ead94bd50b1e6cbdcde5c4770bba5de0d \
                     sha256  ba85187551ae97fe1c8ab569903beae5ff0900e21233e5eb5389f6ceab1028b4
 
-patch.pre_args  -p1
+patch.pre_args-replace  -p0 -p1
 patchfiles \
         0001-MacPorts-Only-Update-install-targets-for-clang-subpo.patch \
         0003-MacPorts-Only-Fix-sample-project-regex-to-work-with-.patch \
@@ -126,6 +124,7 @@ patchfiles \
         0006-Fix-dylib-install-name-when-building-on-Tiger.patch \
         0007-Define-EXC_MASK_CRASH-and-MACH_EXCEPTION_CODES-if-th.patch \
         llvm-skip-unittests.patch \
+        regex_impl.h.patch \
         patch-macports-flags.diff
 
 if {${subport} eq "clang-${llvm_version}"} {

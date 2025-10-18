@@ -5,6 +5,8 @@ PortGroup           github 1.0
 PortGroup           common_lisp 1.0
 
 github.setup        xach salza2 2.1 release-
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 name                cl-salza2
 revision            0
 
@@ -13,7 +15,7 @@ checksums           rmd160  2daf46315455d2af3efcfaf5dd84981810128622 \
                     size    17075
 
 categories-append   devel
-maintainers         {@catap korins.ky:kirill} openmaintainer
+maintainers         nomaintainer
 license             BSD
 
 description         ZLIB compression in Common Lisp

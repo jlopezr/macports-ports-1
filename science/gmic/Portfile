@@ -2,8 +2,12 @@
 
 PortSystem          1.0
 
-PortGroup           compiler_blacklist_versions 1.0
 PortGroup           conflicts_build 1.0
+PortGroup           legacysupport 1.1
+
+# https://trac.macports.org/ticket/70676 
+# fatal error: use of undeclared identifier 'AT_FDCWD'
+legacysupport.newest_darwin_requires_legacy 13
 
 if {${subport} eq "gmic-gimp" || ${subport} eq "gmic-qt"} {
     PortGroup       cmake           1.1
@@ -16,8 +20,8 @@ if {${subport} eq "gmic-gimp" || ${subport} eq "gmic-qt"} {
 }
 
 name                gmic
-version             3.3.2
-revision            1
+version             3.6.3
+revision            0
 license             CeCILL
 categories          science graphics
 maintainers         {mps @Schamschula} openmaintainer
@@ -34,12 +38,9 @@ long_description    G'MIC stands for GREYC's Magic Image Converter. It is \
 homepage            https://gmic.eu
 master_sites        https://gmic.eu/files/source/
 
-# stealth update; remove for next release
-dist_subdir         ${dist_subdir}/${version}_1
-
-checksums           rmd160  1dcc23a19c30758bb359e344231b6293a3004c4d \
-                    sha256  d95ead2339c552378cef2947e844d5ec247f3a8485471786395aee10f566f868 \
-                    size    18999452
+checksums           rmd160  67aae064aeb2aa29e586f3dc0c670ed983298caa \
+                    sha256  45304f179f2200ba527c819bd911bd6a85c4a4999740c730c7ccdd164ce240ac \
+                    size    20183375
 
 distfiles           ${name}_${version}${extract.suffix}
 
@@ -62,6 +63,8 @@ compiler.cxx_standard           2011
 # Uses more memory per compile process than we can accommodate on our
 # automated build system. See https://github.com/dtschump/gmic/issues/325
 #use_parallel_build              no
+# See: https://trac.macports.org/ticket/72933
+build.mem_per_job   2048
 
 subport ${name}-qt {
     description-append          (GUI application)
@@ -124,6 +127,11 @@ if {${subport} eq ${name}} {
     build.args-append           NO_STDLIB=Yes \
                                 OPT_CFLAGS=""
 
+    if {${os.platform} eq "darwin" && ${os.major} < 11} {
+        build.args-replace      OPT_CFLAGS="" OPT_CFLAGS="-I${prefix}/include/LegacySupport"
+        build.args-append       OPT_LIBS="-L${prefix}/lib -lMacportsLegacySupport"
+    }
+
     post-destroot {
         delete ${destroot}${prefix}/include/gmic_libc.h
         delete ${destroot}/plug-ins
@@ -175,6 +183,11 @@ if {${subport} eq ${name}} {
                                 OPT_CFLAGS="" \
                                 SOVERSION=${soversion}
 
+    if {${os.platform} eq "darwin" && ${os.major} < 11} {
+        build.args-replace      OPT_CFLAGS="" OPT_CFLAGS="-I${prefix}/include/LegacySupport"
+        build.args-append       OPT_LIBS="-L${prefix}/lib -lMacportsLegacySupport"
+    }
+
     destroot {
         xinstall -m 0644 ${worksrcpath}/src/gmic_libc.h                 ${destroot}${prefix}/include
         xinstall -m 0644 ${worksrcpath}/src/libcgmic.a                  ${destroot}${prefix}/lib
@@ -217,6 +230,11 @@ if {${subport} eq ${name}} {
     build.args-append           NO_STDLIB=Yes \
                                 OPT_CFLAGS="" \
                                 SOVERSION=${soversion}
+
+    if {${os.platform} eq "darwin" && ${os.major} < 11} {
+        build.args-replace      OPT_CFLAGS="" OPT_CFLAGS="-I${prefix}/include/LegacySupport"
+        build.args-append       OPT_LIBS="-L${prefix}/lib -lMacportsLegacySupport"
+    }
 
     destroot {
         xinstall -m 0644 ${worksrcpath}/src/gmic.h                      ${destroot}${prefix}/include

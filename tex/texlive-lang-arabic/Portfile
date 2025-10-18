@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           texlive 1.0
 
 name                texlive-lang-arabic
-version             66115
+version             74115
 revision            0
 
 categories          tex
@@ -13,24 +13,24 @@ license             Copyleft Permissive
 description         TeX Live: Arabic
 long_description    Support for Arabic and Persian.
 
-checksums           texlive-lang-arabic-66115-run.tar.xz \
-                    rmd160  30dda6a1b5c93e386930cd2c14e41171f1b1a780 \
-                    sha256  1c9070a39e8e84c0d8adcdbd0e49edf7edbcce10bf3c5b3ca4846b26b6751ab0 \
-                    size    27143512 \
-                    texlive-lang-arabic-66115-doc.tar.xz \
-                    rmd160  605a46f65af201445e5fd5816a34682beb7cefeb \
-                    sha256  2fb50d421925a42960e48195b451700c6d1968e7e0f0f6b9277c6a211e8864be \
-                    size    21752548 \
-                    texlive-lang-arabic-66115-src.tar.xz \
-                    rmd160  5f8fef991ba12785c704abe7921be49baca61472 \
-                    sha256  279968be5e0e1a7435a5279c7b0ca1b097757264492fa2180145fca505d66cba \
-                    size    274424
+checksums           texlive-lang-arabic-74115-run.tar.xz \
+                    rmd160  aacbe0cae2638bc246a8a5ac20e1ef212f4caa5a \
+                    sha256  7f95b0e3b29a83c98fb4bad1f17253e52d53be2c0485dbe90de95617766a4522 \
+                    size    5842380 \
+                    texlive-lang-arabic-74115-doc.tar.xz \
+                    rmd160  41c4fd26f02dc20d7f4a57a9d3e7be401ba73d07 \
+                    sha256  6982137c749e5e0fac2d614bf2059cf3a070900f449a93982582f704e3ee7b87 \
+                    size    21973248 \
+                    texlive-lang-arabic-74115-src.tar.xz \
+                    rmd160  00bfe7ab94d45e14a6680ecf0229641b1979055e \
+                    sha256  fcc426e8383053cd46ee490064712de7765ff1d95c3779d6eb5b65053e8b5ee3 \
+                    size    272296
 
 depends_lib         port:texlive-basic
 
 texlive.languages      \
-    {arabic zerohyph.tex 2 3 {} {} {} {} } \
-    {farsi zerohyph.tex 2 3 {persian} {} {} {} }
+    {arabic hyph-ar.tex 0 0 {} {} {} {} } \
+    {farsi hyph-fa.tex 0 0 {persian} {} {} {} }
 
 texlive.maps      \
     {Map arabi.map} \

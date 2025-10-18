@@ -3,7 +3,7 @@
 PortSystem          1.0
 PortGroup           R 1.0
 
-R.setup             cran antoinelucas gmp 0.7-3
+R.setup             cran antoinelucas gmp 0.7-5
 revision            0
 categories-append   math
 maintainers         {@barracuda156 gmail.com:vital.had} openmaintainer
@@ -11,9 +11,9 @@ license             GPL-2+
 description         Multiple precision arithmetic
 long_description    {*}${description}
 homepage            https://forgemia.inra.fr/sylvain.jasson/gmp
-checksums           rmd160  ffc16f0bb44cfbcdc3d88ff5abd7b9d3320f0084 \
-                    sha256  606d0f7fbbf81ad61dcfa5e83002fc274a5ebf6b4ff5c9a9b69f141f886ac665 \
-                    size    167426
+checksums           rmd160  c39d8cc5bac1a9e96d2ab3cc924f17198843f5cd \
+                    sha256  f5cdaf9afb4cd921924f16682a6d6097ff372c95b697f363704c367f9b13ce78 \
+                    size    166664
 
 depends_lib-append  port:gmp
 

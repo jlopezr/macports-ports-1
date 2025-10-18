@@ -5,10 +5,11 @@ PortGroup           github 1.0
 PortGroup           python 1.0
 
 github.setup        deepmind tree 0.1.5
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 name                py-dm-${github.project}
 revision 0
 
-platforms           darwin
 license             Apache-2
 maintainers         nomaintainer
 
@@ -23,7 +24,7 @@ checksums           rmd160  be34ef9fce02a8812f14b57a24f392649789399b \
                     sha256  c8389c2e58cb02d4721985c6f003ab9b8f5cfe58e678b52501fc586cf9a0b724 \
                     size    34622
 
-python.versions     37 38 39
+python.versions     39
 
 proc python_listify {tcl_list} {
     set python_list {}

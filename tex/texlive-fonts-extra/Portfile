@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           texlive 1.0
 
 name                texlive-fonts-extra
-version             66328
+version             74512
 revision            0
 
 categories          tex
@@ -13,26 +13,25 @@ license             Copyleft Permissive
 description         TeX Live: Additional fonts
 long_description    Additional fonts
 
-checksums           texlive-fonts-extra-66328-run.tar.xz \
-                    rmd160  931c44dae747326ebd87ea88e19d36c1c8e5c1fd \
-                    sha256  df33d3afd83776bf1646b233814d7559f61ec12f895e2a9073121508fb9a7852 \
-                    size    727420344 \
-                    texlive-fonts-extra-66328-doc.tar.xz \
-                    rmd160  4f6e1ca54839cc2b71aa7b316e39dd7d2cd484db \
-                    sha256  169b0fb362a6d70ae0895e73bba7ab57ed2b2ac05948078775ed2421041f2522 \
-                    size    172897120 \
-                    texlive-fonts-extra-66328-src.tar.xz \
-                    rmd160  8db03e984d939a4f51052ad35b60a005ac55d6c7 \
-                    sha256  479767f70e3e4e86d2e50db33bbb5d4f7ec3e24601fd1fcbc4f62b578fec7710 \
-                    size    9239036
+checksums           texlive-fonts-extra-74512-run.tar.xz \
+                    rmd160  fafc348694d8430fc4aabce39aec7a4d66cb3b9d \
+                    sha256  fc8908544cb201b9941f3e32b781e111d66971f4708c31eb5f918f63bf2403af \
+                    size    641601208 \
+                    texlive-fonts-extra-74512-doc.tar.xz \
+                    rmd160  7a2b309c844ab8b06e501dfcfc197e4324dd0e8f \
+                    sha256  1282e7f55bdb6a22b1f388e8b74631037aa6d2731c0b5ada821784f9d7dbd6f2 \
+                    size    210064696 \
+                    texlive-fonts-extra-74512-src.tar.xz \
+                    rmd160  6eac21cfdc5c85e098010bc9c445b10d9d195ee4 \
+                    sha256  67d4125fd777ad341d5c5c79a6cf9d4dfbb096d48a727ff196e48d7117faa609 \
+                    size    8316604
 
 depends_lib         port:texlive-basic
 
 texlive.maps      \
     {Map accanthis.map} \
-    {Map OrnementsADF.map} \
-    {Map ArrowsADF.map} \
-    {Map BulletsADF.map} \
+    {Map adforn.map} \
+    {Map adfsymbols.map} \
     {Map aesupp.map} \
     {Map Alegreya.map} \
     {Map AlphaSlabOne.map} \
@@ -74,7 +73,7 @@ texlive.maps      \
     {Map cantarell.map} \
     {Map carlito.map} \
     {Map cmin.map} \
-    {Map CascadiaCodThree.map} \
+    {Map CascadiaCode.map} \
     {Map ccicons.map} \
     {Map clm.map} \
     {Map charssil.map} \
@@ -101,6 +100,7 @@ texlive.maps      \
     {Map CrimsonPro.map} \
     {Map cuprum.map} \
     {Map cyklop.map} \
+    {Map nm.map} \
     {Map dante.map} \
     {Map dejavu-type1.map} \
     {Map dictsym.map} \
@@ -134,7 +134,8 @@ texlive.maps      \
     {Map fourier.map} \
     {Map frcursive.map} \
     {Map GaramondLibre.map} \
-    {Map gentium-type1.map} \
+    {Map gelasio.map} \
+    {Map GelasioMath.map} \
     {Map gfsartemisia.map} \
     {Map gfsbodoni.map} \
     {Map gfscomplutum.map} \
@@ -210,6 +211,8 @@ texlive.maps      \
     {Map mdugm.map} \
     {Map mdsymbol.map} \
     {Map merriweather.map} \
+    {Map metsymb.map} \
+    {Map MFBOldstyle.map} \
     {Map miama.map} \
     {Map mintspirit.map} \
     {Map mlm.map} \
@@ -265,7 +268,6 @@ texlive.maps      \
     {Map SticksTooText.map} \
     {Map stix.map} \
     {Map stix2.map} \
-    {Map superiors.map} \
     {Map svrsymbols.map} \
     {Map tempora.map} \
     {Map tfrupee.map} \
@@ -283,7 +285,8 @@ texlive.maps      \
     {Map yvo.map} \
     {Map yvt.map} \
     {Map XCharter.map} \
-    {Map yfrak.map}
+    {Map yfrak.map} \
+    {Map ysabeau.map}
 
 
 texlive.texmfport

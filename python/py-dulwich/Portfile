@@ -1,11 +1,12 @@
-
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-dulwich
-version             0.21.6
+version             0.24.1
+revision            0
+
 categories-append   devel
 maintainers         {danchr @danchr} openmaintainer
 license             {GPL-2+ Apache-2+}
@@ -17,24 +18,58 @@ long_description    Simple Pure-Python implementation of the Git file \
 
 homepage            https://www.dulwich.io
 
-checksums           rmd160  3a84a1fd013fa21cfb55a1ff97140465e1fc8a07 \
-                    sha256  30fbe87e8b51f3813c131e2841c86d007434d160bd16db586b40d47f31dd05b0 \
-                    size    445545
+checksums           ${distname}${extract.suffix} \
+                    rmd160  c4d99f7251cad5e663f51ced83c6c57da5db9c59 \
+                    sha256  e19fd864f10f02bb834bb86167d92dcca1c228451b04458761fc13dabd447758 \
+                    size    806136
 
-python.versions     37 38 39 310 311 312
+python.versions     39 310 311 312 313
+
+set dulwich_darwin_min_ver 11
 
 if {${name} ne ${subport}} {
-    python.pep517           yes
-
     if {${python.version} < 310} {
         depends_build-append \
             port:py${python.version}-importlib-metadata
     }
 
-    patchfiles      patch-archflags.diff \
-                    patch-strnlen-lion.diff
+    patchfiles      patch-archflags.diff
 
     depends_lib-append \
-                    port:py${python.version}-setuptools \
                     port:py${python.version}-urllib3
+
+    if {${python.version} < 311} {
+        depends_lib-append \
+                    port:py${python.version}-typing_extensions
+    }
+
+    if {${os.platform} eq "darwin" && ${os.major} < ${dulwich_darwin_min_ver}} {
+        build.env-append \
+                    PURE=1
+    } else {
+        PortGroup   rust 1.0
+
+        depends_build-append \
+                    port:py${python.version}-setuptools-rust
+
+        # sudo cargo update
+        # egrep -e '^(name|version|checksum) = ' Cargo.lock | perl -pe 's/^(?:name|version|checksum) = "(.+)"/$1/' | tr '\n' ' ' | perl -pe 's|([0-9a-f]{64})|\1 \\\n|g' | pbcopy
+        cargo.crates \
+            autocfg 1.5.0 c08606f8c3cbf4ce6ec8e28fb0014a2c086708fe954eaa885384a6165172e7e8 \
+            indoc 2.0.6 f4c7245a08504955605670dbf141fceab975f15ca21570696aebe9d2e71576bd \
+            libc 0.2.175 6a82ae493e598baaea5209805c49bbf2ea7de956d50d7da0da1164f9c6d28543 \
+            memchr 2.7.5 32a282da65faaf38286cf3be983213fcf1d2e2a58700e808f83f4ea9a4804bc0 \
+            memoffset 0.9.1 488016bfae457b036d996092f6cb448677611ce4449e970ceaf42695203f218a \
+            proc-macro2 1.0.101 89ae43fd86e4158d6db51ad8e2b80f313af9cc74f5c0e03ccb87de09998732de \
+            pyo3 0.25.1 8970a78afe0628a3e3430376fc5fd76b6b45c4d43360ffd6cdd40bdde72b682a \
+            pyo3-build-config 0.25.1 458eb0c55e7ece017adeba38f2248ff3ac615e53660d7c71a238d7d2a01c7598 \
+            pyo3-ffi 0.25.1 7114fe5457c61b276ab77c5055f206295b812608083644a5c5b2640c3102565c \
+            pyo3-macros 0.25.1 a8725c0a622b374d6cb051d11a0983786448f7785336139c3c94f5aa6bef7e50 \
+            pyo3-macros-backend 0.25.1 4109984c22491085343c05b0dbc54ddc405c3cf7b4374fc533f5c3313a572ccc \
+            quote 1.0.40 1885c039570dc00dcb4ff087a89e185fd56bae234ddc7f056a945bf36467248d \
+            syn 2.0.106 ede7c438028d4436d71104916910f5bb611972c5cfd7f89b8300a8186e6fada6 \
+            target-lexicon 0.13.2 e502f78cdbb8ba4718f566c418c52bc729126ffd16baee5baa718cf25dd5a69a \
+            unicode-ident 1.0.18 5a5f39404a5da50712a4c1eecf25e90dd62b613502b7e925fd4e4d19b5c96512 \
+            unindent 0.2.4 7264e107f553ccae879d21fbea1d6724ac785e8c3bfc762137959b5802826ef3 \
+    }
 }

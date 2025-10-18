@@ -4,8 +4,8 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-pythran
-version             0.14.0
-revision            1
+version             0.18.0
+revision            0
 
 categories-append   devel
 platforms           {darwin any}
@@ -18,30 +18,18 @@ long_description    {*}${description}
 
 homepage            https://github.com/serge-sans-paille/pythran
 
-checksums           rmd160  e15b91c1a315cd6d18d2741db4fe98675f8de977 \
-                    sha256  42f3473946205964844eff7f750e2541afb2006d53475d708f5ff2d048db89bd \
-                    size    4015360
+checksums           rmd160  ce03b31a99b711c7498f0dfc82f97b9e518774ab \
+                    sha256  5c003e8cbedf6dbb68c2869c49fc110ce8b5e8982993078a4a819f1dadc4fc6a \
+                    size    2402895
 
-python.versions     37 38 39 310 311
+python.versions     39 310 311 312 313 314
 
 if {${name} ne ${subport}} {
-    depends_build-append \
-                    port:py${python.version}-setuptools
-
     depends_lib-append \
                     port:py${python.version}-beniget \
                     port:py${python.version}-gast \
                     port:py${python.version}-numpy \
                     port:py${python.version}-ply
-
-    if {${python.version} < 38} {
-        depends_lib-append \
-                    port:py${python.version}-importlib-metadata
-    }
-
-    # https://github.com/serge-sans-paille/pythran/pull/2165
-    patchfiles-append \
-                    patch-xsimd_scalar.hpp-fix-for-missing-__exp10-on-macOS.diff
 
     post-destroot {
         set docdir ${prefix}/share/doc/${subport}

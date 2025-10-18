@@ -4,31 +4,40 @@ PortSystem          1.0
 PortGroup           conflicts_build 1.0
 PortGroup           github 1.0
 
-github.setup        radareorg radare2 5.8.8
-revision            1
+github.setup        radareorg radare2 6.0.4
+github.tarball_from archive
+revision            0
 categories          devel
-platforms           darwin
 license             LGPL-3+
 maintainers         {i0ntempest @i0ntempest} openmaintainer
 description         Opensource tools to disasm, debug, analyze and manipulate binary files.
 long_description    ${name} provides {*}${description}.
 homepage            https://www.radare.org/
 
-depends_build       port:pkgconfig
+depends_build       port:pkgconfig \
+                    port:git
 
 depends_lib         port:capstone \
                     port:zlib \
                     port:libzip
+
 conflicts_build     ${name}
 
-checksums           rmd160  2f061dd251521ddac5363dad5597b933e247b75b \
-                    sha256  5010f5d971bc8b175a79e6728d6f449ef9bb54764df4e7ebacd8d1dd40138444 \
-                    size    11168695
+checksums           rmd160  544975aa9c4b9eb99cb55e1a8c086f0850f9571c \
+                    sha256  2aadf26066c396961949656f304cb5d99b76c88adbe30ad923db4e98b10f3bbc \
+                    size    11670531
 
 configure.args-append \
                     --with-syscapstone \
-                    --with-syszip \
+                    --with-syszip
+
+if {[string match *clang* ${configure.compiler}]} {
+    configure.args-append \
                     --with-compiler=clang
+} elseif {[string match *gcc* ${configure.compiler}]} {
+    configure.args-append \
+                    --with-compiler=gcc
+}
 
 post-patch {
     # 5.7.8: r_fs library fails to build without -lzip. Check again in the next version.

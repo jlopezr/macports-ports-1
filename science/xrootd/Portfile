@@ -2,16 +2,17 @@
 
 PortSystem                                       1.0
 PortGroup           cmake                        1.1
-PortGroup           compiler_blacklist_versions  1.0
 PortGroup           github                       1.0
 PortGroup           legacysupport                1.1
 
-github.setup        xrootd xrootd 5.6.3 v
+github.setup        xrootd xrootd 5.8.4 v
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 revision            0
 
-checksums           rmd160  b503bc46cfe25e37bd17b4b22101cc5a070bc2a2 \
-                    sha256  eef8c4b8e7cc767b0810539e1ce14971146433e008cdcc2c418dedceb64b4f04 \
-                    size    3296467
+checksums           rmd160  05aad894956f58acb2981dedcf3eee32f9921424 \
+                    sha256  72a6e753a3faca9d996540efc886e544a510beb845d4694c86a3533e24f57802 \
+                    size    6948741
 
 categories          science
 maintainers         {jonesc @cjones051073} openmaintainer
@@ -40,12 +41,10 @@ cmake.out_of_source yes
 
 # Force a compatible compiler
 compiler.blacklist-append *gcc-4.* {clang < 900} {macports-clang-3.[0-9]} {macports-clang-[4-5].0}
-# Blacklist Xcode clang on 10.12
-# error: template argument for template template parameter must be a class template or type alias template
-compiler.blacklist-append {clang < 1000}
+compiler.blacklist-append {clang < 1400}
 
-configure.cxxflags-append -std=c++14
-compiler.cxx_standard  2014
+
+compiler.cxx_standard  2017
 
 configure.args-append -DENABLE_CRYPTO=False \
                       -DENABLE_READLINE=False \
@@ -57,39 +56,39 @@ configure.args-append -DENABLE_CRYPTO=False \
                       -DCMAKE_CXX_FLAGS="${configure.cxxflags}" \
                       -DCMAKE_INSTALL_MANDIR="share/man"
 
-set python_vs        {3.8 3.9 3.10 3.11 3.12}
+set python_vs        {3.8 3.9 3.10 3.11 3.12 3.13}
 set variant_set      no
+set selected_py_v    3.13
 foreach python_v ${python_vs} {
     set python_v_nodot  [string map {. {}} $python_v]
     variant python${python_v_nodot} description "Enable python ${python_v} bindings" { }
     if {[variant_isset python${python_v_nodot}]} {
-        set variant_set  yes
+        set variant_set    yes
+        set selected_py_v  ${python_v}
     }
 }
 if { ${variant_set} eq no} {
-    default_variants-append +python311
+    default_variants-append +python[string map {. {}} $selected_py_v]
 }
 proc setup_py_variants {} {
-    global python_vs prefix configure.python
-    foreach python_v ${python_vs} {
-        set python_v_nodot  [string map {. {}} $python_v]
-        if {[variant_isset python${python_v_nodot}]} {
-            configure.python        ${prefix}/bin/python${python_v}
-            depends_lib-append      port:python${python_v_nodot}
-            depends_build-append    port:py${python_v_nodot}-setuptools \
-                port:py${python_v_nodot}-setuptools_scm \
-                port:py${python_v_nodot}-pip
-            configure.args-replace -DENABLE_PYTHON=FALSE  -DENABLE_PYTHON=TRUE
-            configure.args-append  -DPYTHON_EXECUTABLE=${configure.python}
-            post-extract {
-                # Fix python install location
-                set python_framework ${frameworks_dir}/Python.framework/Versions/${python_v}
-                reinplace "s|\${CMAKE_INSTALL_PREFIX}|${python_framework}|g" ${worksrcpath}/bindings/python/CMakeLists.txt
-            }
-            post-configure {
-                # Do not attempt to remove old pip installs
-                reinplace "s|pip\ install|pip\ install\ \-I|g" ${workpath}/build/bindings/python/cmake_install.cmake
-            }
+    global python_vs prefix configure.python selected_py_v
+    set selected_py_v_nodot [string map {. {}} ${selected_py_v}]
+    if {[variant_isset python${selected_py_v_nodot}]} {
+        configure.python        ${prefix}/bin/python${selected_py_v}
+        depends_lib-append      port:python${selected_py_v_nodot}
+        depends_build-append    port:py${selected_py_v_nodot}-setuptools \
+                                port:py${selected_py_v_nodot}-setuptools_scm \
+                                port:py${selected_py_v_nodot}-pip
+        configure.args-replace -DENABLE_PYTHON=FALSE  -DENABLE_PYTHON=TRUE
+        configure.args-append  -DPython_EXECUTABLE=${configure.python}
+        post-extract {
+            # Fix python install location
+            set python_framework ${frameworks_dir}/Python.framework/Versions/${selected_py_v}
+            reinplace "s|\${CMAKE_INSTALL_PREFIX}|${python_framework}|g" ${worksrcpath}/bindings/python/CMakeLists.txt
+        }
+        post-configure {
+            # Do not attempt to remove old pip installs
+            reinplace "s|pip\ install|pip\ install\ \-I|g" ${workpath}/build/bindings/python/cmake_install.cmake
         }
     }
 }

@@ -3,21 +3,17 @@
 PortSystem              1.0
 PortGroup               github 1.0
 
-github.setup            gitkraken gk-cli 1.1.4 v
+github.setup            gitkraken gk-cli 3.1.42 v
 name                    gk
 github.tarball_from     releases
 
 categories              devel
 license                 CCBY-3
 installs_libs           no
-maintainers             {@sergiolms} \
-                        {@alejandroSuch} \
-                        {@JBUinfo} \
+maintainers             {@sergiolms}\
                         openmaintainer
 
-
 supported_archs         x86_64 arm64
-
 
 description             Official CLI for GitKraken
 long_description        ${name} is GitKraken on the command line. It makes working across multiple \
@@ -26,29 +22,37 @@ long_description        ${name} is GitKraken on the command line. It makes worki
                         and seamlessly connects with GitKraken Client and GitLens in VS Code \
                         to visualize git information when you need it.
 
-checksums               ${name}_${version}_macOS_arm64.zip \
-                            sha256  225173e85dac0113cec42f613e8f7f13e39d99068d4bcc116fb31ee28233857d \
-                            rmd160  d3fa29869345e5ece6e207cd2dcc7e190d9f8e7c \
-                            size    11444246 \
-                        ${name}_${version}_macOS_x86_64.zip \
-                            sha256  c937ac62bf66bd9f19946dcd356f5b22638766d285699fa57364374b798ffce4 \
-                            rmd160  6c7b023c5aad57b2c7a733ca10e7330e033fe94f \
-                            size    12110975
-
-extract.mkdir           yes
-
-build                   {}
-use_configure           no
-use_zip                 yes
-
-if { ${build_arch} eq "arm64" } {
-    distfiles           ${name}_${version}_macOS_arm64.zip
+if {${build_arch} eq "x86_64"} {
+    # file name is "amd64" for x86_64
+    set arch_filename   amd64
+    checksums           rmd160  78d2e11ad9272c9bb4dbdb7c737d56b8ad1e8ad9 \
+                        sha256  397f14b11b83f76fd21ccbbf45533459d20786cf7b6aa224e9c1c2d9d7ce94bf \
+                        size    7616475
 } else {
-    distfiles           ${name}_${version}_macOS_x86_64.zip
+    # arm64
+    set arch_filename ${build_arch}
+    checksums           rmd160  1c96af52deede24b0d516b5f5ab5034e1f328406 \
+                        sha256  a0dfd41e12309e658f05f6314d3b500e8b2dc81a1b39ee4976c90785aa35ec83 \
+                        size    7067659
 }
 
+distfiles               ${name}_${version}_darwin_${arch_filename}.zip
+extract.mkdir           yes
+use_zip                 yes
+
+use_configure           no
+build                   {}
+
 destroot {
-   xinstall -m 0755 -W ${worksrcpath} gk ${destroot}${prefix}/bin
+    xinstall -m 0755 ${worksrcpath}/gk ${destroot}${prefix}/bin
+    # All supported shells: bash, fish, powershell, zsh
+    set comp_path(bash) ${destroot}${prefix}/share/bash-completion/completions/${name}
+    set comp_path(fish) ${destroot}${prefix}/share/fish/completions/${name}.fish
+    set comp_path(zsh)  ${destroot}${prefix}/share/zsh/site-functions/_${name}
+    foreach shell {bash fish zsh} {
+        xinstall -d [file dirname $comp_path(${shell})]
+        system -W ${worksrcpath} "./${name} completion ${shell} > $comp_path(${shell})"
+    }
 }
 
 github.livecheck.regex  {([0-9.]+)}

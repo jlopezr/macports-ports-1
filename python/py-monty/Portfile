@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-monty
-version             2023.9.25
+version             2025.3.3
 revision            0
 
 platforms           {darwin any}
@@ -20,15 +20,13 @@ long_description    \
 
 homepage            https://materialsvirtuallab.github.io/monty/
 
-checksums           rmd160  a95ba6beac7dca76218c2ca65d3b7f041ff63bbb \
-                    sha256  05f2667d0fb8bb225914298f9fa6f420a48ee43f867081636c09369484d4e698 \
-                    size    38120
+checksums           rmd160  36dd858b5086088d68713fa9620bc7685f5684bd \
+                    sha256  16c1eb54b2372e765c2f3f14cff01cc76ab55c3cc12b27d49962fb8072310ae0 \
+                    size    85592
 
-python.versions     37 38 39 310 311 312
+python.versions     39 310 311 312 313
 
 if {${name} ne ${subport}} {
     depends_build-append \
-                    port:py${python.version}-setuptools
-
-    livecheck.type  none
+        port:py${python.version}-setuptools_scm
 }

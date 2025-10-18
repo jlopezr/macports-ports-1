@@ -3,16 +3,18 @@
 PortSystem          1.0
 PortGroup           R 1.0
 
-R.setup             cran paullabonne BayesMultiMode 0.6.0
+R.setup             cran paullabonne BayesMultiMode 0.7.3
 revision            0
 categories-append   math
+platforms           {darwin any}
 maintainers         {@barracuda156 gmail.com:vital.had} openmaintainer
 license             GPL-3+
 description         Bayesian mode inference
 long_description    {*}${description}
-checksums           rmd160  015222ec4495b77133bccf58be7aaec946c874e7 \
-                    sha256  a650858e05e85a04c83351e1285bdd10445196fa940d9718a319bfebf52048e9 \
-                    size    4980151
+homepage            https://github.com/paullabonne/BayesMultiMode
+checksums           rmd160  0abe5ede0df537295ff90441d6e6d4426bf368fd \
+                    sha256  e23853a4c22ad34f1e3b3db8e2e32ad1c90ae0342c626f7ca1b0675916747b81 \
+                    size    5163844
 supported_archs     noarch
 
 depends_lib-append  port:R-assertthat \
@@ -26,7 +28,6 @@ depends_lib-append  port:R-assertthat \
                     port:R-mvtnorm \
                     port:R-posterior \
                     port:R-Rdpack \
-                    port:R-scales \
                     port:R-sn \
                     port:R-stringr \
                     port:R-tidyr

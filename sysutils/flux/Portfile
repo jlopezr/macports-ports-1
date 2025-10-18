@@ -3,15 +3,14 @@
 PortSystem              1.0
 PortGroup               golang 1.0
 
-go.setup                github.com/fluxcd/flux2 2.1.1 v
+go.setup                github.com/fluxcd/flux2 2.6.3 v
 go.offline_build        no
-github.tarball_from     archive
 revision                0
 name                    flux
 
-checksums               rmd160  5f33289544f30e3e53ad98fbff26133ee0bac8ad \
-                        sha256  c42a9016d53e961a85c253fb167cd6e412c5d3beb69d1a07217d6f9af7acb852 \
-                        size    328391
+checksums               rmd160  2f9f8c5d514b5b0fdf35bf83745a849d567afa45 \
+                        sha256  2b1b7101904d7b1c37730047043faf5b285619114daf140b0774e546dcaf12a6 \
+                        size    1355690
 
 homepage                https://fluxcd.io/
 description             Flux CLI

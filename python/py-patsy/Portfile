@@ -4,15 +4,15 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-patsy
-version             0.5.3
-revision            0
+version             1.0.1
+revision            1
+
 categories-append   math
 supported_archs     noarch
 platforms           {darwin any}
 license             BSD
 
-python.versions     37 38 39 310 311
-python.pep517       yes
+python.versions     39 310 311 312 313
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -25,13 +25,17 @@ long_description    A Python package for describing statistical models \
 
 homepage            https://github.com/pydata/patsy
 
-checksums           rmd160  a9d8d677ed7b4d9c981b40962e7c6bfd87025861 \
-                    sha256  bdc18001875e319bc91c812c1eb6a10be4bb13cb81eb763f466179dca3b67277 \
-                    size    397680
+checksums           rmd160  1211f3b53aab92ad0e7283bfc0697c2cefe7262d \
+                    sha256  e786a9391eec818c054e359b737bbce692f051aee4c661f4141cc88fb459c0c4 \
+                    size    396010
 
 if {${name} ne ${subport}} {
-    depends_lib-append  port:py${python.version}-numpy \
-                        port:py${python.version}-six
+    depends_lib-append \
+                    port:py${python.version}-numpy
 
     test.run        yes
+
+    depends_test-append \
+                    port:py${python.version}-pandas \
+                    port:py${python.version}-scipy
 }

@@ -4,29 +4,26 @@ PortSystem          1.0
 PortGroup           perl5 1.0
 
 perl5.branches      5.28 5.30 5.32 5.34
-perl5.setup         Tcl 1.27
-revision            1
-
-platforms           darwin
-maintainers         {@chrstphrchvz gmx.us:chrischavez} {@mojca mojca} openmaintainer
+perl5.setup         Tcl 1.53
+revision            0
+maintainers         {@chrstphrchvz gmx.us:chrischavez} openmaintainer
 license             {Artistic-1 GPL}
-
 description         Tcl extension module for Perl
-long_description    ${description}
+long_description    {*}${description}
 
-checksums           rmd160  a154805325127a98cc3500ef173bbd0969c7508b \
-                    sha256  f8385877a4a9ed9f3d3903d2d0f7cd70fac3ce6832c60f600a6821cee3fb5872 \
-                    size    171072
+checksums           rmd160  4daab9eea9c63c9396619bb12431f13e09cc0758 \
+                    sha256  5644f8a8c22f3cf21d70941036f24ca1aa0fe0e50066ef0863365e3aa6f25c9d \
+                    size    173082
 
 if {${perl5.major} != ""} {
-    depends_test-append \
+    depends_build-append \
                     port:p${perl5.major}-devel-refcount
+
     depends_lib-append \
                     port:tcl
+
     configure.args-append \
                     --tclsh ${prefix}/bin/tclsh \
                     --tclconfig ${prefix}/lib/tclConfig.sh \
                     --nousestubs
-
-    livecheck.type  none
 }

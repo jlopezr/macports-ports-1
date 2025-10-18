@@ -5,6 +5,8 @@ PortGroup           github 1.0
 PortGroup           common_lisp 1.0
 
 github.setup        fukamachi smart-buffer 619759d8a6f821773bbc65c0bda553d30e51e6f3
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 name                cl-smart-buffer
 version             20211018
 revision            0
@@ -14,7 +16,7 @@ checksums           rmd160  76a28535f98f9832b6adb2fd27995b128c39560b \
                     size    3480
 
 categories-append   devel
-maintainers         {@catap korins.ky:kirill} openmaintainer
+maintainers         nomaintainer
 license             BSD
 
 description         Smart octets buffer

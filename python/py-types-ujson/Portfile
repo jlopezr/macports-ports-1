@@ -4,14 +4,15 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-types-ujson
-version             5.9.0.0
+version             5.10.0.20250326
 revision            0
 categories-append   devel
 license             Apache-2
 supported_archs     noarch
 platforms           {darwin any}
 
-python.versions     37 38 39 310 311 312
+python.rootname     types_ujson
+python.versions     39 310 311 312 313
 
 maintainers         nomaintainer
 
@@ -25,10 +26,6 @@ long_description    {*}${description}. Typeshed contains external type \
 
 homepage            https://github.com/python/typeshed
 
-checksums           rmd160  5078c43fc69211d0ec953392da4579620277a41b \
-                    sha256  7e7042454dc7cd7f31b09c420d7caf36b93d30bdf4b8db93791bd0561713d017 \
-                    size    3472
-
-if {${name} ne ${subport}} {
-    python.pep517   yes
-}
+checksums           rmd160  6286250df22f45f30500e9cf21dfd1a5769de115 \
+                    sha256  5469e05f2c31ecb3c4c0267cc8fe41bcd116826fbb4ded69801a645c687dd014 \
+                    size    8340

@@ -6,7 +6,8 @@ name            gnome
 version         3.26.2
 license         Permissive
 categories      gnome
-platforms       darwin
+platforms       any
+supported_archs noarch
 maintainers     {devans @dbevans} openmaintainer
 description     The GNOME Desktop mega-port.
 
@@ -33,7 +34,7 @@ destroot    {
 
 post-activate {
     system "${prefix}/bin/update-desktop-database -q ${prefix}/share/applications"
-    system "${prefix}/bin/gtk-update-icon-cache-3.0 -f -t ${prefix}/share/icons/hicolor"
+    system "${prefix}/bin/gtk-update-icon-cache -f -t ${prefix}/share/icons/hicolor"
     system "${prefix}/bin/update-mime-database ${prefix}/share/mime"
     system "${prefix}/bin/glib-compile-schemas ${prefix}/share/glib-2.0/schemas"
 }

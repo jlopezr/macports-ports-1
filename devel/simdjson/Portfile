@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           github  1.0
 PortGroup           cmake   1.1
 
-github.setup        simdjson simdjson 3.2.3 v
+github.setup        simdjson simdjson 3.13.0 v
 github.tarball_from archive
 revision            0
 
@@ -21,9 +21,9 @@ categories          devel
 license             Apache-2
 maintainers         nomaintainer
 
-checksums           rmd160 9f942df47739480bc16f10de230a478fe6ea613f \
-                    sha256 ab72701b8560c4f93a5de525657b3bf34094f99a1e63bd9db3195d1bcb90aa09 \
-                    size   2273010
+checksums           rmd160  eaec194394ad2889c88c778e402ac7d614c9dd21 \
+                    sha256  07a1bb3587aac18fd6a10a83fe4ab09f1100ab39f0cb73baea1317826b9f9e0d \
+                    size    2720238
 
 compiler.cxx_standard 2011
 

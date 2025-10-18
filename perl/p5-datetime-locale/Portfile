@@ -5,24 +5,19 @@ PortGroup           perl5 1.0
 
 epoch               1
 perl5.branches      5.28 5.30 5.32 5.34
-perl5.setup         DateTime-Locale 1.40
+perl5.setup         DateTime-Locale 1.45 ../../authors/id/D/DR/DROLSKY
 revision            0
 license             {Artistic-1 GPL}
 maintainers         nomaintainer
-description         Localization support for DateTime
-long_description    DateTime::Locale is primarily a factory for the \
-                    various locale subclasses. It also provides some \
-                    functions for getting information on available \
-                    locales. If you want to know what methods are \
-                    available for locale objects, then please read the \
-                    DateTime::Locale::Base documentation.
+description         DateTime::Locale - Localization support for DateTime.pm
+long_description    {*}${description}
 
 platforms           {darwin any}
 supported_archs     noarch
 
-checksums           rmd160  03613d0c81edc13c52f13a90705f724cee6b771a \
-                    sha256  7490b4194b5d23a4e144976dedb3bdbcc6d3364b5d139cc922a86d41fdb87afb \
-                    size    1969601
+checksums           rmd160  a6e88e550a38b1a27f0d3aa74712b11cf76ec8e3 \
+                    sha256  1bc56dc2ff4b3152612e1d474ca65071ae2c00912e3fa4bc6f5a99e5e7a1da68 \
+                    size    2059982
 
 if {${perl5.major} != ""} {
     depends_build-append \
@@ -31,7 +26,6 @@ if {${perl5.major} != ""} {
                     port:p${perl5.major}-ipc-system-simple \
                     port:p${perl5.major}-path-tiny \
                     port:p${perl5.major}-test2-plugin-nowarnings \
-                    port:p${perl5.major}-test2-suite \
                     port:p${perl5.major}-test-file-sharedir \
                     port:p${perl5.major}-test-simple
 

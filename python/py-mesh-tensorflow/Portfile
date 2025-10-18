@@ -5,6 +5,8 @@ PortGroup           github 1.0
 PortGroup           python 1.0
 
 github.setup        tensorflow mesh 441ff477dcff8fc577eb59019007e55a278c87d6
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 # no tagged release; version from setup.py plus github commit date
 version             0.1.18.20210305
 revision            0
@@ -34,8 +36,7 @@ checksums           rmd160  47fc56ab18d7cf0d397dc7a194a94663cae81851 \
                     sha256  57bbc4caa0958e879ed24a2dac679f257e28355a1f11f0f370708bb9b982c1d4 \
                     size    361646
 
-python.versions     37 38 39
-python.pep517       yes
+python.versions     39
 
 if {${name} ne ${subport}} {
     depends_build-append \
@@ -53,6 +54,4 @@ if {${name} ne ${subport}} {
         xinstall -m 0644 -W ${worksrcpath} LICENSE README.md \
             ${destroot}${docdir}
     }
-
-    livecheck.type  none
 }

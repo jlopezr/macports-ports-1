@@ -16,7 +16,7 @@ long_description    xgsch2pcb provides an intuitive, user-friendly graphical int
                     creating new projects.
 
 homepage            http://wiki.geda-project.org/geda:download
-platforms           darwin
+platforms           {darwin any}
 supported_archs     noarch
 # upstream download site no longer available
 # use macports distfile mirrors instead
@@ -50,5 +50,5 @@ configure.args      --disable-update-desktop-database
 
 post-activate {
     system "${prefix}/bin/update-desktop-database ${prefix}/share/applications"
-    system "${prefix}/bin/gtk-update-icon-cache -f -t ${prefix}/share/icons/hicolor"
+    system "${prefix}/bin/gtk-update-icon-cache-2.0 -f -t ${prefix}/share/icons/hicolor"
 }

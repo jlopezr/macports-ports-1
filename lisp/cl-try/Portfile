@@ -5,6 +5,8 @@ PortGroup           github 1.0
 PortGroup           common_lisp 1.0
 
 github.setup        melisgl try cf2a8887d091bf297b72ef69e15012e7e849ba3b
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 name                cl-try
 version             20230828
 revision            0
@@ -14,7 +16,7 @@ checksums           rmd160  3f5c4dcfb8a8e2e7cfd4fa786b307e55346e6ba3 \
                     size    141261
 
 categories-append   devel
-maintainers         {@catap korins.ky:kirill} openmaintainer
+maintainers         nomaintainer
 license             BSD
 
 description         Try is an extensible test framework with equal support for interactive and non-interactive workflows.

@@ -5,6 +5,8 @@ PortGroup           github 1.0
 PortGroup           common_lisp 1.0
 
 github.setup        Shinmera trivial-arguments 10d09784cfa0912d43ddfe3edfad6d9fde82298f
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 name                cl-trivial-arguments
 version             20230703
 revision            0
@@ -14,7 +16,7 @@ checksums           rmd160  b092692b5b4f28d17d8e61184d3ec21f6d472ae7 \
                     size    3446
 
 categories-append   devel
-maintainers         {@catap korins.ky:kirill} openmaintainer
+maintainers         nomaintainer
 license             zlib
 
 description         Tiny CL library to retrieve the arguments list of a function.

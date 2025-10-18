@@ -1,9 +1,13 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem          1.0
+PortGroup           legacysupport 1.1
+
+# strndup
+legacysupport.newest_darwin_requires_legacy 10
 
 name                screen
-version             4.9.1
+version             5.0.1
 revision            0
 homepage            https://www.gnu.org/software/screen/
 description         Screen manager with VT100/ANSI terminal emulation
@@ -16,9 +20,9 @@ long_description    \
     multiple character sets). There is a scrollback history buffer for each \
     virtual terminal and a copy-and-paste mechanism that allows moving text \
     regions between windows.
+conflicts           screen4
 categories          sysutils
 license             GPL-3+
-platforms           darwin
 maintainers         {gmail.com:davidgilman1 @dgilman} openmaintainer
 master_sites        gnu:${name} \
                     http://www.ryandesign.com/macports/distfiles/screen/:encoding \
@@ -29,9 +33,9 @@ master_sites        gnu:${name} \
 distfiles-append    18:encoding
 
 checksums           ${distname}${extract.suffix} \
-                    rmd160  dd3f460992e823783b55d7fc7fd949a349fc4611 \
-                    sha256  26cef3e3c42571c0d484ad6faf110c5c15091fbf872b06fa7aa4766c7405ac69 \
-                    size    1040785 \
+                    rmd160  a7905cd84be4c98e4d05fbc459cfe9348bbb28e7 \
+                    sha256  2dae36f4db379ffcd14b691596ba6ec18ac3a9e22bc47ac239789ab58409869d \
+                    size    897507 \
                     18 \
                     rmd160  bd143058417e1d4c040a2589fdfbf8f9203f0b4c \
                     sha256  4d4b674a61dab6bac9b4207307c5f020fa670fc3948c39e7ea93c7fb9dfb5174 \
@@ -43,30 +47,28 @@ checksums           ${distname}${extract.suffix} \
 
 patchfiles          patch-apple-screen.diff \
                     patch-apple-window.diff \
-                    patch-acconfig.h.diff \
-                    patch-xcode-12-implicit-function-fixes.diff
-depends_lib         port:ncurses
+                    patch-tic.diff \
+                    patch-use-right-environ.diff
+depends_lib-append  port:ncurses
 
 extract.only        ${distname}${extract.suffix}
 post-extract {
     file copy ${distpath}/18 ${workpath}
 }
 
-use_autoreconf      yes
-autoreconf.args     -i
-
 configure.args      --mandir=${prefix}/share/man \
                     --infodir=${prefix}/share/info \
+                    --disable-utmp \
                     --enable-telnet \
-                    --enable-colors256 \
-                    --enable-rxvt_osc
+                    --with-system_screenrc=${prefix}/etc
 configure.cflags-append -DRUN_LOGIN
+
+compiler.c_standard     2017
 
 post-destroot {
     xinstall -m 644 ${workpath}/18 ${destroot}${prefix}/share/${name}/utf8encodings
     xinstall -m 644 ${worksrcpath}/etc/etcscreenrc ${destroot}${prefix}/etc/screenrc
     xinstall -m 644 ${worksrcpath}/terminfo/screencap ${destroot}${prefix}/etc/termcap
-    system "tic ${worksrcpath}/terminfo/screeninfo.src"
 }
 
 platform darwin {
@@ -78,9 +80,9 @@ platform darwin {
     }
 }
 
-platform darwin 8 {
+if {${os.platform} eq "darwin" && ${os.major} < 10} {
     # Tiger lacks vproc.h and _CS_DARWIN_USER_TEMP_DIR, just nix the screen.c patch
-    patchfiles-delete patch-apple-screen.diff
+    patchfiles-delete   patch-apple-screen.diff
 }
 
 notes "

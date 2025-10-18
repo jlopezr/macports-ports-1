@@ -2,41 +2,47 @@
 
 PortSystem          1.0
 PortGroup           github 1.0
-PortGroup           compiler_blacklist_versions 1.0
 
 # normally update mediainfo port at the same time
-github.setup        MediaArea MediaInfoLib 23.03 v
-checksums           rmd160  0fa889884c5a04a7ab2c86075ef52d19fdc7a8b8 \
-                    sha256  9764748df71b713dfdf5e738668853f9cd24dda76ffd95c83d7348a91d8e44bb \
-                    size    2778786
+github.setup        MediaArea MediaInfoLib 25.09 v
+github.tarball_from archive
+checksums           rmd160  6dea615a43026136239c1a2a5f8d6413f2c71df0 \
+                    sha256  ae1e9be5349e476b39d1a0147d499a8807e88387150fabb1a3e4af8806fae771 \
+                    size    3181919
 
 name                mediainfolib
 description         Supplies technical and tag information about a video or audio file
 long_description    {*}${description}
 homepage            https://mediaarea.net
 categories          devel multimedia
-platforms           darwin
-maintainers         {ctreleaven @ctreleaven} openmaintainer
+maintainers         {makr @mohd-akram} openmaintainer
 license             BSD
 
 # make pkg-config act like on Linux, no '-I/opt/local/include' in cflags
-configure.env-append    PKG_CONFIG_SYSTEM_INCLUDE_PATH=${prefix}/include
+configure.env-append \
+                    PKG_CONFIG_SYSTEM_INCLUDE_PATH=${prefix}/include
 
 # cascade of errors if no autoreconf
 use_autoreconf      yes
-autoreconf.args-append  --force --install
+autoreconf.args-append \
+                    --force --install
 configure.args      --with-libcurl
 
 # otherwise may find headers from libmd, maybe others
-configure.cppflags-delete -I${prefix}/include
+configure.cppflags-delete \
+                    -I${prefix}/include
 
-depends_build-append    port:pkgconfig
-depends_lib-append      port:curl \
-                        port:zenlib \
-                        port:zlib
+depends_build-append \
+                    path:bin/pkg-config:pkgconfig
+depends_lib-append  port:curl \
+                    port:zenlib \
+                    port:zlib
 
 worksrcdir          ${worksrcdir}/Project/GNU/Library
 
-compiler.cxx_standard 2011
+compiler.cxx_standard \
+                    2011
+
 # see https://trac.macports.org/ticket/67223
-compiler.blacklist-append {clang < 900}
+compiler.blacklist-append \
+                    {clang < 900}

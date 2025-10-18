@@ -4,17 +4,18 @@ PortSystem          1.0
 PortGroup           R 1.0
 
 # Revert to GitHub once updated there.
-R.setup             cran r-lib rlang 1.1.2
+R.setup             cran r-lib rlang 1.1.4
 revision            0
 categories-append   devel
 maintainers         {@barracuda156 gmail.com:vital.had} openmaintainer
 license             MIT
 description         Low-level API for programming with R
-long_description    rlang is a collection of frameworks and APIs for programming with R.
+long_description    ${name} is a collection of frameworks and APIs \
+                    for programming with R.
 homepage            https://rlang.r-lib.org
-checksums           rmd160  81238d59b0db0a010d588e7214fc973f0bddac92 \
-                    sha256  2a0ee1dc6e5c59b283c32db5e74e869922a336197cb406fe92622b6ec66f8092 \
-                    size    763521
+checksums           rmd160  867cfc502e411c7205fb04f37b57dc4553f39590 \
+                    sha256  f2d74527508bf3287102470beb27de0d234c3cbba399c28d3312f2c83c64a6e1 \
+                    size    767041
 
 depends_test-append port:R-cli \
                     port:R-covr \

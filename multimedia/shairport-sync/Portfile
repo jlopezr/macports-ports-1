@@ -2,36 +2,53 @@
 
 PortSystem          1.0
 PortGroup           github 1.0
+PortGroup           legacysupport 1.1
 
-github.setup        mikebrady shairport-sync 2.8.6
-revision            3
+# _dprintf
+legacysupport.newest_darwin_requires_legacy 10
+
+github.setup        mikebrady shairport-sync 4.3.5
+revision            0
 
 categories          multimedia
-platforms           darwin
 license             MIT BSD ISC
 maintainers         gmail.com:ale275 \
                     openmaintainer
 description         Shairport Sync is an AirPlay audio player
 long_description    AirTunes emulator. Shairport Sync adds multi-room capability with Audio Synchronisation.
 
-checksums           rmd160  642f43d32f7bae3cddc7038ae9b48456882096c2 \
-                    sha256  99083c7134b1ad99adcdbdcc2d4122ff5e67853a754119d580c5173fbe8bfbc1
+checksums           rmd160  5d2aed5c9b6b0db02d7ed7d2c24ee64625181abf \
+                    sha256  66e985e8e51e8e2c5883c95f68063e2b27d81eb372c8f048acf46dd80a94c118 \
+                    size    565099
+github.tarball_from archive
 
-depends_build       port:pkgconfig \
+depends_build       path:bin/pkg-config:pkgconfig \
                     port:autoconf \
                     port:automake
+
+set ffmpeg_ver      6
 
 depends_lib         path:lib/libssl.dylib:openssl \
                     port:popt \
                     port:soxr \
                     port:libao \
                     port:libdaemon \
-                    port:libconfig-hr
+                    port:libconfig-hr \
+                    port:libplist \
+                    port:libsodium \
+                    port:libgcrypt \
+                    port:ffmpeg${ffmpeg_ver}
 
 use_autoreconf      yes
 autoreconf.args     -fvi
 
-configure.args      --with-os-type=darwin \
+configure.pkg_config_path   ${prefix}/libexec/ffmpeg${ffmpeg_ver}/lib/pkgconfig
+
+# airplay-2 is not supported on macOS
+# https://github.com/mikebrady/shairport-sync/issues/1860
+# https://github.com/mikebrady/shairport-sync/issues/1947
+
+configure.args      --with-os=darwin \
                     --with-ssl=openssl \
                     --with-dns_sd \
                     --with-ao \

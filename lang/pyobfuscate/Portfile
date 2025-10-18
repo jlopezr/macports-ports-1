@@ -6,10 +6,12 @@ PortGroup           python 1.0
 
 # Couldn't figure how to fetch the project's releases.
 github.setup        astrand pyobfuscate 79cd76aa6526a34b5f0dbf39c904ae8393188034
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 version             0.3
 revision            2
 categories          lang python
-platforms           darwin
+platforms           {darwin any}
 supported_archs     noarch
 license             GPL-2
 maintainers         nomaintainer

@@ -7,7 +7,6 @@ PortSystem          1.0
 set building_qt4    1
 PortGroup           qt4 1.0
 PortGroup           xcodeversion 1.0
-PortGroup           compiler_blacklist_versions 1.0
 
 name                qt4-mac
 version             4.8.7
@@ -63,6 +62,9 @@ platform darwin 22 {
 platform darwin 23 {
      macosx_deployment_target 12.0
 }
+platform darwin 24 {
+     macosx_deployment_target 12.0
+}
 
 # find a way to specify the OS MINOR version.  For OSX 10.X, this
 # value will be X.  The type is this variable is integer, so we can
@@ -95,11 +97,11 @@ if {${macosx_deployment_target} ne ""} {
 # because this port is so old and thus we want to make sure this
 # port works on these newer macOS versions first.
 platform darwin {
-    if { ${os.major} > 23 } {
+    if { ${os.major} > 24 } {
         depends_lib
         depends_run
         pre-fetch {
-            ui_error "$name does not currently build on macOS versions later than 13 Ventura."
+            ui_error "$name does not currently build on macOS versions later than 15 Sequoia."
             error "unsupported platform"
         }
     }
@@ -438,6 +440,16 @@ platform darwin {
     }
 }
 
+# Support aarch64
+patchfiles-append patch-no-x86-simd-on-aarch64.diff \
+                  patch-defaultarch.test.diff \
+                  patch-features-mac-arm64.diff \
+                  patch-qmake-generator.diff \
+                  patch-qatomic.diff \
+                  patch-stat64.diff \
+                  patch-Platform.h.diff \
+                  patch-thread_state.diff
+
 # the version header file is part of C++20
 # newer versions of Clang find VERSION instead
 post-extract {
@@ -473,9 +485,6 @@ if {${SDK} eq ""} {
         set SDK ${developer_dir}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX${sdk_version}.sdk
     }
 }
-
-# no support for ARM64 yet
-supported_archs ppc ppc64 i386 x86_64
 
 post-patch {
     # set ARCHES in configure (per the third patchfile above), for
@@ -948,14 +957,14 @@ post-destroot {
         reinplace -q "/QMAKE_PRL_LIBS/s|-F\[^ \]*|FREPLACEME|1" \
             ${fixfile}
         reinplace -q "/QMAKE_PRL_LIBS/s|-F\[^ \]*||g" ${fixfile}
-        reinplace -q "s|FREPLACEME|-F${prefix}/Library/Frameworks|1" \
+        reinplace -q "s|FREPLACEME|-F${frameworks_dir}|1" \
             ${fixfile}
     }
     foreach fixfile [exec find ${dr_qt} -name "*.la"] {
         reinplace -q "/dependency_libs/s|-F\[^ \]*|FREPLACEME|1" \
             ${fixfile}
         reinplace -q "/dependency_libs/s|-F\[^ \]*||g" ${fixfile}
-        reinplace -q "s|FREPLACEME|-F${prefix}/Library/Frameworks|1" \
+        reinplace -q "s|FREPLACEME|-F${frameworks_dir}|1" \
             ${fixfile}
     }
 

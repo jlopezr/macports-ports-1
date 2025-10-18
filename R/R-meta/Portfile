@@ -3,25 +3,38 @@
 PortSystem          1.0
 PortGroup           R 1.0
 
-R.setup             cran cran meta 6.5-0
+R.setup             cran guido-s meta 8.0-1
 revision            0
-categories-append   math
-maintainers         {@barracuda156 gmail.com:vital.had} openmaintainer
-license             {GPL-2 GPL-3}
+platforms           {darwin any}
+maintainers         nomaintainer
+license             GPL-2+
 description         General package for meta-analysis
 long_description    {*}${description}
-checksums           rmd160  e73e20c639233025aa19e741f7e1215c31cb7c81 \
-                    sha256  427d64334c7652b0a386c86f8c99537ffe0339c4ee9e53f1cf9eddfaad227adf \
-                    size    520012
+homepage            https://github.com/guido-s/meta
+checksums           rmd160  3772dd219d44e879ef0b45b2e546441a148273a4 \
+                    sha256  4453dbb45873dac74a561be04e57fe4c40398abeb0a533e1f9ae5202d8c2a726 \
+                    size    978774
 supported_archs     noarch
 
 depends_lib-append  port:R-CompQuadForm \
+                    port:R-dplyr \
                     port:R-lme4 \
+                    port:R-magrittr \
+                    port:R-metadat \
                     port:R-metafor \
+                    port:R-purrr \
+                    port:R-readr \
+                    port:R-stringr \
                     port:R-xml2
 
 depends_test-append port:R-BiasedUrn \
+                    port:R-brglm2 \
                     port:R-estmeansd \
-                    port:R-pimeta
+                    port:R-pimeta \
+                    port:R-knitr \
+                    port:R-pimeta \
+                    port:R-rmarkdown \
+                    port:R-robvis \
+                    port:R-writexl
 
 test.run            yes

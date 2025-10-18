@@ -4,11 +4,13 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-multidict
-version             6.0.4
+version             6.6.4
+revision            0
+
 categories-append   devel
 license             Apache-2
 
-python.versions     37 38 39 310 311 312
+python.versions     39 310 311 312 313
 
 maintainers         {ipglider.org:miguel @ipglider} openmaintainer
 
@@ -18,10 +20,8 @@ long_description    Multidict is dict-like collection of key-value pairs where \
 
 homepage            https://github.com/aio-libs/multidict
 
-checksums           rmd160  b009004705817a02e7a4f99ba91bb5970b71307c \
-                    sha256  3666906492efb76453c0e7b97f2cf459b0682e7402c0489a95484965dbc1da49 \
-                    size    51304
+checksums           rmd160  015a46fb3c55a4f8b3a48898437d1352f8cd8fcf \
+                    sha256  d2d4e4787672911b48350df02ed3fa3fffdc2f2e8ca06dd6afdf34189b76a9dd \
+                    size    101843
 
-if {${name} ne ${subport}} {
-    depends_build-append    port:py${python.version}-setuptools
-}
+compiler.c_standard 2011

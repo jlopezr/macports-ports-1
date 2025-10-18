@@ -3,16 +3,14 @@
 PortSystem          1.0
 
 PortGroup           cmake 1.1
-PortGroup           compiler_blacklist_versions 1.0
-PortGroup           conflicts_build 1.0
 PortGroup           github 1.0
 
-github.setup        fmtlib fmt 10.1.1
+github.setup        fmtlib fmt 10.2.1
 name                libfmt10
 revision            0
-checksums           rmd160  6fe307eb6853ffaf4f96313f77375101344a709c \
-                    sha256  78b8c0a72b1c35e4443a7e308df52498252d1cefc2b08c9a97bc9ee6cfe61f8b \
-                    size    851454
+checksums           rmd160  e6c385e8789599ed098ca5ea4094b0c8a788029f \
+                    sha256  1250e4cc58bf06ee631567523f48848dc4596133e163f02615c97f78bab6c811 \
+                    size    854665
 
 categories          devel
 license             MIT
@@ -25,8 +23,6 @@ long_description    fmt (formerly cppformat) is an open-source formatting librar
 homepage            https://fmt.dev
 
 github.tarball_from archive
-
-conflicts_build     gtest
 
 set port_ver_major  [lindex [split ${version} .] 0]
 
@@ -89,6 +85,12 @@ pre-activate {
 }
 
 variant tests description {Enable test support} {
+    PortGroup       conflicts_build 1.0
+
+    # If gtest is active, build failures occur; let port use the internal version
+    conflicts_build-append \
+                    gtest
+
     configure.pre_args-replace \
                     -DCMAKE_BUILD_WITH_INSTALL_RPATH:BOOL=ON \
                     -DCMAKE_BUILD_WITH_INSTALL_RPATH:BOOL=OFF
@@ -100,4 +102,7 @@ variant tests description {Enable test support} {
     test.run        yes
 }
 
-github.livecheck.regex "(${port_ver_major}\.\[0-9.\]+)"
+# TODO: Update pg 'github' to use this API
+livecheck.url       https://api.github.com/repos/${github.author}/${github.project}/tags?per_page=200
+livecheck.curloptions
+livecheck.regex     "\"name\": \"(${port_ver_major}\.\[0-9\.\]+)\","

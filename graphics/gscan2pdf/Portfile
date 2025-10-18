@@ -5,7 +5,7 @@ PortGroup           perl5 1.0
 
 name                gscan2pdf
 version             2.13.2
-revision            0
+revision            1
 
 categories          graphics
 maintainers         nomaintainer
@@ -24,8 +24,9 @@ checksums           rmd160  cd8f0929ad4947fe8bff187254eda1372fdd5f0f \
 perl5.major         5.34
 
 depends_lib         port:ImageMagick \
-                    port:librsvg \
+                    path:lib/pkgconfig/librsvg-2.0.pc:librsvg \
                     port:p${perl5.major}-config-general \
+                    port:p${perl5.major}-data-uuid \
                     port:p${perl5.major}-date-calc \
                     port:p${perl5.major}-filesys-df \
                     port:p${perl5.major}-goocanvas2 \

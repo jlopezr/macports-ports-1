@@ -4,7 +4,8 @@ PortSystem          1.0
 PortGroup           cmake 1.1
 PortGroup           github 1.0
 
-github.setup        rordenlab dcm2niix 1.0.20220720 v
+github.setup        rordenlab dcm2niix 1.0.20250506 v
+github.tarball_from archive
 version             ${github.version}
 
 revision            0
@@ -18,25 +19,27 @@ long_description    dcm2niix is a designed to convert neuroimaging data from \
                     the DICOM format to the NIfTI format
 
 license             BSD MIT
-platforms           darwin
 
 checksums \
-    rmd160  a16a3b41fb8422844bd60b7449a61554d149ce9b \
-    sha256  54fc31c9a17d19818fc85f3bc6b71b3e6da4105ad5ef02180c8d3df769ddda4b \
-    size    432763
+    rmd160  589a542696d936ce6c8a09a794adbc4823c9a874 \
+    sha256  1b24658678b6c24141e58760dbea9fe2786ffdd736bcc37a36d9cdabc731bafa \
+    size    536544
 
 variant docs description {Install man pages} {
-    depends_build-append    port:py310-sphinx \
-                            port:py310-sphinxcontrib-applehelp \
-                            port:py310-sphinxcontrib-devhelp \
-                            port:py310-sphinxcontrib-htmlhelp \
-                            port:py310-sphinxcontrib-jsmath \
-                            port:py310-sphinxcontrib-qthelp \
-                            port:py310-sphinxcontrib-serializinghtml
+    depends_build-append    port:py313-sphinx \
+                            port:py313-sphinxcontrib-applehelp \
+                            port:py313-sphinxcontrib-devhelp \
+                            port:py313-sphinxcontrib-htmlhelp \
+                            port:py313-sphinxcontrib-jsmath \
+                            port:py313-sphinxcontrib-qthelp \
+                            port:py313-sphinxcontrib-serializinghtml
     configure.args-append   -DBUILD_DOCS=ON
 }
 
+default_variants        +docs
+
 depends_lib-append      port:openjpeg \
+                        port:yaml-cpp \
                         port:zlib
 
 depends_build-append    port:pkgconfig
@@ -50,11 +53,10 @@ compiler.cxx_standard   2011
 
 # Linking with yaml-cpp currently broken; haven't chased down; revisit later.
 # Disabling BATCH_VERSION until this is resolved.
-configure.args-append   -DUSE_OPENJPEG=ON \
-                        -DBATCH_VERSION=OFF \
-                        -DZLIB_IMPLEMENTATION=custom \
-                        -DZLIB_ROOT=${prefix}
-
+configure.args-append   -DUSE_OPENJPEG=System \
+                        -DBATCH_VERSION=ON \
+                        -DZLIB_IMPLEMENTATION=System \
+                        -DYAML-CPP_IMPLEMENTATION=System
 
 # cmake re-runs during build; retain configured CC and CXX (Only an issue in
 # the default configuration on <= 10.6 where we are not using system clang.)
@@ -62,7 +64,7 @@ build.env-append        "CC=${configure.cc} [get_canonical_archflags cc]" \
                         "CXX=${configure.cxx} [get_canonical_archflags cxx]"
 
 patch {
-    reinplace "/NAMES/s/$/ sphinx-build-3.10/" docs/CMakeLists.txt
+    reinplace "/NAMES/s/$/ sphinx-build-3.13/" docs/CMakeLists.txt
 }
 
 post-destroot {

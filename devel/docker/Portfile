@@ -3,7 +3,9 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/docker/cli 24.0.6 v
+go.setup            github.com/docker/cli 28.3.3 v
+# Delete this on next update to use golang PortGroup's default ('archive')
+github.tarball_from tarball
 revision            0
 name                docker
 categories          devel
@@ -16,16 +18,17 @@ long_description    Docker is an open source project to pack, ship \
                     This port contains command line utilities for interacting \
                     with Docker, but not the core daemon.
 
-checksums           rmd160  6f94dbb32290e93ac789907e9526c6e9a1bedf19 \
-                    sha256  2b0d42fdf03568b02ad39ac2f68fa69a47a659f457db562518c084bdf9932da5 \
-                    size    6244734
+checksums           rmd160  22b18668f8e245344f64c6d7c0a5bec32539528b \
+                    sha256  b2782833c4be762ecb60f6c1af3e88eaf760e4cd54a4cc36d5a66df6fb3e1dfc \
+                    size    7611098
 
 build.target        github.com/docker/cli/cmd/docker
 
-patchfiles          plugin-path.diff
+depends_build-append \
+                    bin:go-md2man:go-md2man
 
 post-patch {
-    reinplace s+__PREFIX__+${prefix}+g \
+    reinplace s+/usr/lib+${prefix}/lib+g \
         ${worksrcpath}/cli-plugins/manager/manager_unix.go
 }
 
@@ -46,6 +49,37 @@ pre-build {
 
 destroot {
     xinstall -m 755 ${worksrcpath}/${name} ${destroot}${prefix}/bin/
+
+    foreach src [glob ${worksrcpath}/man/*.?.md] {
+        set page [file rootname [file tail ${src}]]
+        set section [string range [file extension ${page}] 1 end]
+        set dst ${destroot}${prefix}/share/man/man${section}/${page}
+
+        # skip dockerd; it's not provided on macOS
+        if {${page} ne "dockerd.8"} {
+        ui_info "${src} -> ${dst}"
+        xinstall -d [file dirname ${dst}]
+            system -W ${worksrcpath}/man "go-md2man -out ${dst} -in ${src}"
+        }
+    }
+
+    # install completion for various shells
+    set bash_completions_dir ${destroot}${prefix}/share/bash-completion/completions
+    set fish_completions_dir ${destroot}${prefix}/share/fish/vendor_completions.d
+    set zsh_completions_dir ${destroot}${prefix}/share/zsh/site-functions
+    xinstall -d \
+        ${bash_completions_dir} \
+        ${fish_completions_dir} \
+        ${zsh_completions_dir}
+    xinstall -m 644 \
+        [glob ${worksrcpath}/contrib/completion/bash/*] \
+        ${bash_completions_dir}
+    xinstall -m 644 \
+        [glob ${worksrcpath}/contrib/completion/fish/*] \
+        ${fish_completions_dir}
+    xinstall -m 644 \
+        [glob ${worksrcpath}/contrib/completion/zsh/*] \
+        ${zsh_completions_dir}
 }
 
 github.livecheck.regex  {([^"r]+)}

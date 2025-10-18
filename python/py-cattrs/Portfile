@@ -4,37 +4,41 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-cattrs
-version             22.2.0
+version             25.1.1
 revision            0
+
 license             MIT
 maintainers         nomaintainer
 supported_archs     noarch
 platforms           {darwin any}
 
-description         cattrs is an open source Python library for structuring and unstructuring data.
-long_description    {*}${description}. cattrs works best with attrs classes, dataclasses and the usual Python collections, \
-                    but other kinds of classes are supported by manually registering converters.
+description         ${name} is an open-source Python library \
+                    for structuring and unstructuring data.
+long_description    {*}${description}. ${name} works best with attrs classes, \
+                    dataclasses and the usual Python collections, \
+                    but other kinds of classes are supported \
+                    by manually registering converters.
 
 homepage            https://github.com/python-attrs/cattrs
 
-checksums           rmd160  8ae5c1ed14d8f66d7b8445f41cd4abadca6b3c78 \
-                    sha256  f0eed5642399423cf656e7b66ce92cdc5b963ecafd041d1b24d136fdde7acf6d \
-                    size    30050
+checksums           rmd160  8ade59af643d8491d13923c0506144abe055f4ed \
+                    sha256  c914b734e0f2d59e5b720d145ee010f1fd9a13ee93900922a2f3f9d593b8382c \
+                    size    435016
 
-python.versions     37 38 39 310 311
-python.pep517       yes
+python.versions     39 310 311 312 313
 
 if {${name} ne ${subport}} {
+    python.pep517_backend   hatch
+
     depends_build-append \
-                    port:py${python.version}-poetry-core
+                    port:py${python.version}-hatch-vcs
 
     depends_lib-append \
-                    port:py${python.version}-attrs \
-                    port:py${python.version}-exceptiongroup
+                    port:py${python.version}-attrs
 
-    if {${python.version} < 38} {
-        depends_lib-append  port:py${python.version}-typing_extensions
+    if {${python.version} < 311} {
+        depends_lib-append \
+                    port:py${python.version}-exceptiongroup \
+                    port:py${python.version}-typing_extensions
     }
-
-    livecheck.type  none
 }

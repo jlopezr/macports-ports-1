@@ -5,6 +5,8 @@ PortGroup           github 1.0
 PortGroup           common_lisp 1.0
 
 github.setup        Shinmera atomics 2c6b90272d09378a40c684c466401a02efa1200b
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 name                cl-atomics
 version             20230703
 revision            0
@@ -14,7 +16,7 @@ checksums           rmd160  c460b897b5fcf58eb080c95430f64548eee8dbb5 \
                     size    8586
 
 categories-append   devel
-maintainers         {@catap korins.ky:kirill} openmaintainer
+maintainers         nomaintainer
 license             zlib
 
 description         Portability layer for atomic operations like compare-and-swap (CAS)

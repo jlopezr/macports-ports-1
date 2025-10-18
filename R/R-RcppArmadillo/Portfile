@@ -3,7 +3,7 @@
 PortSystem          1.0
 PortGroup           R 1.0
 
-R.setup             cran RcppCore RcppArmadillo 0.12.6.6.1
+R.setup             cran RcppCore RcppArmadillo 14.2.2-1
 revision            0
 categories-append   math
 maintainers         {@barracuda156 gmail.com:vital.had} openmaintainer
@@ -11,9 +11,9 @@ license             GPL-2+
 description         Rcpp integration for the Armadillo Templated Linear Algebra Library
 long_description    {*}${description}
 homepage            https://dirk.eddelbuettel.com/code/rcpp.armadillo.html
-checksums           rmd160  91a510de82bd61eda9bc10159481d9eac95a9b1f \
-                    sha256  9a6abd298ac1a87c2c85722f7561c40c424d27909cb014bf421b13f7050dffc0 \
-                    size    1403301
+checksums           rmd160  37db6eff6bf147cae952e3c59feefe2512c59eba \
+                    sha256  d12981ac8c9b60b543b37334479314ad3d09e3cb5393a72594da3d0e1a2cc828 \
+                    size    1397189
 
 depends_lib-append  port:R-Rcpp
 

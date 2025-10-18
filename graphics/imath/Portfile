@@ -5,9 +5,13 @@ PortGroup                       cmake 1.1
 PortGroup                       github 1.0
 PortGroup                       legacysupport 1.1
 
-name                            imath
-github.setup                    AcademySoftwareFoundation Imath 3.1.9 v
+github.setup                    AcademySoftwareFoundation imath 3.1.12 v
+github.tarball_from             archive
 revision                        0
+
+checksums                       rmd160  c8ba063582077302524ac8b49431e73a79c9aa6c \
+                                sha256  8a1bc258f3149b5729c2f4f8ffd337c0e57f09096e4ba9784329f40c4a9035da \
+                                size    604232
 
 categories                      graphics
 license                         BSD
@@ -22,12 +26,6 @@ long_description                Imath is a basic, light-weight, and efficient C+
                                 including optimized implementations of vector and matrix arrays.
 
 homepage                        https://www.openexr.com
-
-github.tarball_from             tarball
-
-checksums                       rmd160  be07d6f6766752d69f464ff52d3aa88b978f118a \
-                                sha256  b95c260a4dcf3f2d581013ef29cf838265f10ea463f0e05efd486b348f2ef63c \
-                                size    598707
 
 # NOTE: legacysupport needed for 'CLOCK_MONOTONIC'
 

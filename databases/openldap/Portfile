@@ -7,12 +7,12 @@ PortGroup           legacysupport 1.1
 name                openldap
 conflicts           openldap-devel
 set my_name         openldap
-version             2.6.6
-revision            1
+version             2.6.10
+revision            0
 
-checksums           rmd160  9b610cefef7fd0a3dc47bf4881129e304656a3ac \
-                    sha256  082e998cf542984d43634442dbe11da860759e510907152ea579bdc42fe39ea0 \
-                    size    6475109
+checksums           rmd160  3d6673f0bccf5bff7deb856fd361766a9b0c8edb \
+                    sha256  c065f04aad42737aebd60b2fe4939704ac844266bc0aeaa1609f0cad987be516 \
+                    size    6517089
 
 categories          databases
 license             openldap
@@ -35,14 +35,16 @@ extract.suffix      .tgz
 legacysupport.newest_darwin_requires_legacy \
                     16
 
+# ../slap-config.h:182: error: redefinition of typedef ConfigArgs
+compiler.c_standard 2011
+
 depends_lib-append \
                     port:cyrus-sasl2 \
                     port:db48 \
                     port:libfetch \
                     path:lib/libssl.dylib:openssl \
                     path:bin/perl:perl5 \
-                    port:tcp_wrappers \
-                    path:lib/pkgconfig/icu-uc.pc:icu
+                    port:tcp_wrappers
 
 # Needed for `gdate` on older macOS releases
 depends_test-append \
@@ -52,6 +54,7 @@ patchfiles-append   patch-ltmain.diff
 patchfiles-append   patch-dynamic_lookup-11.diff
 patchfiles-append   patch-fix_implicit.diff
 patchfiles-append   patch-libressl.diff
+
 # Use 'gdate', rather than 'date', for tests
 patchfiles-append   patch-tests-gdate.diff
 
@@ -73,8 +76,13 @@ platform darwin {
     if {${os.major} >= 22} {
         # The openldap build uses soelim from groff, and newer OS versions do
         # not provide groff as part of the base OS install.
+        #
+        # Replace soelim command from heavy port groff with lightweight mandoc.
         depends_build-append \
-                    port:groff
+                    port:mandoc
+
+        # Use command 'msoelim', rather than 'soelim', when using `mandoc`.
+        patchfiles-append   patch-soelim-name.diff
     }
 }
 
@@ -99,8 +107,10 @@ startupitem.start   "${prefix}/libexec/slapd -u ldap -f ${prefix}/etc/openldap/s
 startupitem.stop    "\[ -r \${PID} \] && kill \$(cat \${PID})"
 
 variant aci description {Enable per-object ACIs (experimental)} {
+    # Latest release requires enabling dynamic ACLs, along with per-object ACIs
     configure.args-append \
-                    --enable-aci
+                    --enable-aci \
+                    --enable-dynacl
 }
 
 variant overlays description {Enable all available overlays} {

@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                cproto
-version             4.7v
+version             4.7y
 revision            0
 categories          devel
 maintainers         nomaintainer
@@ -22,9 +22,9 @@ master_sites        https://invisible-island.net/archives/${name}/ \
 
 extract.suffix      .tgz
 
-checksums           rmd160  54d2890dd0e97d175439b2f801e32636f9fc16f9 \
-                    sha256  f3dec3f6102770196976459c4b44ac27355f6120da76e5231ec1323e379d1511 \
-                    size    193874
+checksums           rmd160  ab56ba8c8b00f6ed94cd25102d065233a0a87cbf \
+                    sha256  0bd1d8be8ff0a4ca43f947f95750d34f64eda93c9e2ca79100fd60140b7c6331 \
+                    size    197318
 
 depends_lib         port:flex
 depends_build       port:bison

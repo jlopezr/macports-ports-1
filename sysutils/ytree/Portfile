@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           makefile 1.0
 
 name                ytree
-version             2.06
+version             2.10
 revision            0
 
 description         Ytree - a (curses-based) file manager similar to DOS \
@@ -22,9 +22,9 @@ license             GPL-2
 maintainers         {gmail.com:herby.gillot @herbygillot} \
                     openmaintainer
 
-checksums           rmd160  e136e3d920fdd3501dc1c82d951784ffdc34e810 \
-                    sha256  411a88efbf599e7cad5540bb03b66dd33c967b1470067a7e09541c36f9ef59e6 \
-                    size    119412
+checksums           rmd160  82fd72996d02ddb7ff32d68da5aa032da905bdb4 \
+                    sha256  3bbbbd32f568cdae3e03fc735b1783d8cba605a2ca6056d1b971143d7ddd517d \
+                    size    123235
 
 patchfiles          patch-Makefile.diff
 

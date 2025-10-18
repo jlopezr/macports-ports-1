@@ -3,10 +3,9 @@
 PortSystem          1.0
 PortGroup           cmake 1.1
 PortGroup           gitea 1.0
-PortGroup           compiler_blacklist_versions 1.0
 
 gitea.domain        git.skyjake.fi
-gitea.setup         gemini lagrange 1.17.5 v
+gitea.setup         gemini lagrange 1.19.3 v
 revision            0
 categories          net gemini
 license             BSD
@@ -15,46 +14,41 @@ maintainers         {@sikmir disroot.org:sikmir} openmaintainer
 description         A Beautiful Gemini Client
 long_description    {*}${description}
 
-checksums           rmd160  e07c9c839a7f2fee65a046eccc851cf242172ba5 \
-                    sha256  96c8bb810cabd6f2d3964be5a92cb41a51a0ae1d663c10c54e047a18b2e67181 \
-                    size    7733889
+checksums           rmd160  8c15530e6d8ab5ff02bb8f951465767e8ed7f181 \
+                    sha256  5a88854998e7c63ae1cb16be56882351d900a4dfeb82c11e2401530397d1794e \
+                    size    8930804
 
 worksrcdir          ${name}
 
 depends_build-append \
                     port:pkgconfig \
                     port:zip
-depends_lib-append  port:the_Foundation
-
-variant gui conflicts tui description {Build the GUI interface} {
-    depends_lib-append \
+depends_lib-append  port:the_Foundation \
                     port:fribidi \
                     path:lib/pkgconfig/harfbuzz.pc:harfbuzz \
                     port:libsdl2 \
                     port:mpg123 \
+                    port:opusfile  \
                     port:webp
 
-    destroot {
-        copy ${build.dir}/Lagrange.app ${destroot}${applications_dir}
-    }
+destroot {
+    copy ${build.dir}/Lagrange.app ${destroot}${applications_dir}
 }
 
-variant tui conflicts gui description {Build the TUI interface} {
+variant tui description {Build the TUI interface} {
     configure.args-append \
-                    -DENABLE_TUI=YES \
-                    -DENABLE_MPG123=NO \
-                    -DENABLE_WEBP=NO \
-                    -DENABLE_FRIBIDI=NO \
-                    -DENABLE_HARFBUZZ=NO \
-                    -DENABLE_POPUP_MENUS=NO \
-                    -DENABLE_IDLE_SLEEP=NO
+                    -DENABLE_TUI=YES
 
     depends_lib-append \
                     port:ncurses \
                     port:sealcurses
-}
 
-default_variants    +gui
+    post-destroot {
+        copy ${build.dir}/clagrange ${destroot}${prefix}/bin
+        file mkdir ${destroot}${prefix}/share/lagrange
+        copy ${build.dir}/Lagrange.app/Contents/Resources/resources.lgr ${destroot}${prefix}/share/lagrange
+    }
+}
 
 compiler.c_standard 2011
 compiler.blacklist-append {clang < 800}

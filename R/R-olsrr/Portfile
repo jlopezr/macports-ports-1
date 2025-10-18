@@ -3,32 +3,34 @@
 PortSystem          1.0
 PortGroup           R 1.0
 
-R.setup             github rsquaredacademy olsrr 0.5.3 v
-revision            1
+R.setup             github rsquaredacademy olsrr 0.6.1 v
+revision            0
 categories-append   math
-maintainers         {@barracuda156 gmail.com:vital.had} openmaintainer
+maintainers         nomaintainer
 license             MIT
+platforms           {darwin any}
+supported_archs     noarch
 description         Tools for building OLS regression models
 long_description    {*}${description}
 homepage            https://olsrr.rsquaredacademy.com
-checksums           rmd160  b07f92a611219891f5b23baa34f5f1b72de25c30 \
-                    sha256  97a136e040c7527c1ffb5752ebb743492680e1d6c4e8c0c67563f2480098fb3a \
-                    size    5739814
+checksums           rmd160  95649d89d2b387d916aabf3cc4d15ac48e2396c2 \
+                    sha256  08ae926b4bed064514727c44b316e52c30a864de759b880af1cf0eaf77db694f \
+                    size    17668060
+github.tarball_from archive
 
 depends_lib-append  port:R-car \
-                    port:R-data.table \
                     port:R-ggplot2 \
                     port:R-goftest \
                     port:R-gridExtra \
                     port:R-nortest \
-                    port:R-Rcpp
+                    port:R-Rcpp \
+                    port:R-xplorerr
 
 depends_test-append port:R-covr \
                     port:R-descriptr \
                     port:R-knitr \
                     port:R-rmarkdown \
                     port:R-testthat \
-                    port:R-vdiffr \
-                    port:R-xplorerr
+                    port:R-vdiffr
 
 test.run            yes

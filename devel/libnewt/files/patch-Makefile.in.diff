@@ -1,6 +1,11 @@
---- Makefile.in.orig	2022-11-29 05:04:29.000000000 -0600
-+++ Makefile.in	2022-12-03 02:55:44.000000000 -0600
-@@ -7,11 +7,16 @@
+Add support for building macOS dylibs.
+
+Build whiptcl and python modules as bundles, not dylibs.
+
+TODO: PR URLs
+--- Makefile.in.orig	2025-03-10 08:29:06.000000000 -0500
++++ Makefile.in	2025-08-14 10:26:57.000000000 -0500
+@@ -7,16 +7,22 @@
  LDFLAGS = @LDFLAGS@
  CPPFLAGS = -D_GNU_SOURCE @CPPFLAGS@
  GNU_LD = @GNU_LD@
@@ -14,19 +19,28 @@
 +else
  SOEXT = so
 +endif
++BUNDLEEXT = so
  
  PYTHONVERS = @PYTHONVERS@
  WHIPTCLLIB = @WHIPTCLLIB@
-@@ -26,17 +31,28 @@
+ ifneq ($(WHIPTCLLIB),)
+-WHIPTCLSO = $(WHIPTCLLIB).$(SOEXT)
++WHIPTCLSO = $(WHIPTCLLIB).$(BUNDLEEXT)
+ else
+ WHIPTCLSO =
+ endif
+@@ -26,17 +32,30 @@
  NDIALOGOBJS = whiptail.o dialogboxes.o
  WHIPTCLOBJS = shared/whiptcl.o shared/dialogboxes.o
  LIBNEWT = libnewt.a
-+ifeq ($(SOEXT),dylib)
++ifeq ($(UNAME_S),Darwin)
 +SHARED = -dynamiclib
++BUNDLE = -bundle
 +LIBNEWTSH = libnewt.$(VERSION).$(SOEXT)
 +LIBNEWTSONAME = libnewt.$(SONAME).$(SOEXT)
 +else
 +SHARED = -shared
++BUNDLE = -shared
  LIBNEWTSH = libnewt.$(SOEXT).$(VERSION)
  LIBNEWTSONAME = libnewt.$(SOEXT).$(SONAME)
 +endif
@@ -34,7 +48,7 @@
            scrollbar.o textbox.o scale.o grid.o windows.o buttonbar.o \
  	  checkboxtree.o
  
-+ifeq ($(SOEXT),dylib)
++ifeq ($(UNAME_S),Darwin)
 +SHLIBFLAGS= -install_name $(libdir)/$(LIBNEWTSONAME) -current_version $(VERSION) -compatibility_version $(SONAME)
 +else
  ifneq ($(GNU_LD),)
@@ -46,18 +60,56 @@
  
  SHCFLAGS = -fPIC
  
-@@ -105,8 +121,8 @@
+@@ -65,7 +84,7 @@
+ TARGET=depend $(PROGS)
+ endif
+ 
+-all:	$(TARGET) _snack.$(SOEXT)
++all:	$(TARGET) _snack.$(BUNDLEEXT)
+ 
+ test:	test.o $(LIBNEWT)
+ 	$(CC) -g -o test test.o $(LIBNEWT) $(LDFLAGS) $(LIBS)
+@@ -82,7 +101,7 @@
+ showkey:	showkey.o $(LIBNEWT)
+ 	$(CC) -g -o showkey showkey.o $(LIBNEWT) $(LDFLAGS) $(LIBS)
+ 
+-_snack.$(SOEXT):   snack.c $(LIBNEWTSH)
++_snack.$(BUNDLEEXT):	snack.c $(LIBNEWTSH)
+ ifneq ($(PYTHONVERS),)
+ 	@for ver in $(PYTHONVERS); do \
+ 		pyconfig=$$ver-config; \
+@@ -96,8 +115,8 @@
+ 		PLDFLAGS=`$$pyconfig --ldflags --embed || $$pyconfig --ldflags`; \
+ 		echo $(CC) $(SHCFLAGS) $(CFLAGS) $(CPPFLAGS) $$PCFLAGS -c -o $$ver/snack.o snack.c; \
+ 		$(CC) $(SHCFLAGS) $(CFLAGS) $(CPPFLAGS) $$PCFLAGS -c -o $$ver/snack.o snack.c; \
+-		echo $(CC) --shared $(LDFLAGS) $$PLDFLAGS -o $$ver/_snack.$(SOEXT) $$ver/snack.o -L. -lnewt $(LIBS); \
+-		$(CC) --shared $(LDFLAGS) $$PLDFLAGS -o $$ver/_snack.$(SOEXT) $$ver/snack.o -L. -lnewt $(LIBS); \
++		echo $(CC) $(BUNDLE) $(LDFLAGS) $$PLDFLAGS -o $$ver/_snack.$(BUNDLEEXT) $$ver/snack.o -L. -lnewt $(LIBS); \
++		$(CC) $(BUNDLE) $(LDFLAGS) $$PLDFLAGS -o $$ver/_snack.$(BUNDLEEXT) $$ver/snack.o -L. -lnewt $(LIBS); \
+ 	done
+ endif
+ 	touch $@
+@@ -105,8 +124,8 @@
  whiptail: $(NDIALOGOBJS) $(LIBNEWTSH)
  	$(CC) -g -o whiptail $(NDIALOGOBJS) -L. $(LDFLAGS) -lnewt $(LIBS) -lpopt
  
 -whiptcl.$(SOEXT): $(WHIPTCLOBJS) $(LIBNEWTSH)
 -	$(CC) -shared $(SHCFLAGS) $(LDFLAGS) -o whiptcl.$(SOEXT) $(WHIPTCLOBJS) -L. -lnewt  $(LIBTCL) -lpopt $(LIBS)
 +$(WHIPTCLSO): $(WHIPTCLOBJS) $(LIBNEWTSH)
-+	$(CC) $(SHARED) $(SHCFLAGS) $(LDFLAGS) -o $(WHIPTCLSO) $(WHIPTCLOBJS) -L. -lnewt  $(LIBTCL) -lpopt $(LIBS)
++	$(CC) $(BUNDLE) $(SHCFLAGS) $(LDFLAGS) -o $(WHIPTCLSO) $(WHIPTCLOBJS) -L. -lnewt $(LIBTCL) -lpopt $(LIBS)
  
  $(LIBNEWT): $(LIBOBJS)
  	ar rv $@ $^
-@@ -126,7 +142,7 @@
+@@ -118,7 +137,7 @@
+ 
+ clean:
+ 	rm -f $(PROGS) *.o $(LIBNEWT) core $(LIBNEWTSH)  \
+-		$(SHAREDDIR)/*.o *.$(SOEXT)*
++		$(SHAREDDIR)/*.o *.$(SOEXT)* *.$(BUNDLEEXT)
+ 
+ depend:
+ 	$(CC) $(CFLAGS) $(CPPFLAGS) -M $(SOURCES) > .depend
+@@ -126,7 +145,7 @@
  sharedlib: $(LIBNEWTSH)
  
  $(LIBNEWTSH): $(SHAREDOBJS)
@@ -66,12 +118,20 @@
  	ln -fs $(LIBNEWTSONAME) libnewt.$(SOEXT)
  	ln -fs $(LIBNEWTSH) $(LIBNEWTSONAME)
  
-@@ -151,7 +167,7 @@
- 	install -m 755 $(LIBNEWTSH) $(instroot)/$(libdir)
- 	ln -sf $(LIBNEWTSONAME) $(instroot)/$(libdir)/libnewt.$(SOEXT)
- 	ln -sf $(LIBNEWTSH) $(instroot)/$(libdir)/$(LIBNEWTSONAME)
--	[ -n "$(WHIPTCLSO)" ] && install -m 755 whiptcl.$(SOEXT) $(instroot)/$(libdir) || :
-+	[ -n "$(WHIPTCLSO)" ] && install -m 755 $(WHIPTCLSO) $(instroot)/$(libdir) || :
- 	[ -n "$(PYTHONVERS)" ] && for ver in $(PYTHONVERS) ; do \
- 	   [ -d $(instroot)/$(libdir)/$$ver/site-packages ] || install -m 755 -d $(instroot)/$(libdir)/$$ver/site-packages ;\
- 	   install -m 755 $$ver/_snack.$(SOEXT) $(instroot)/$(libdir)/$$ver/site-packages ;\
+@@ -159,13 +178,13 @@
+ 	install -m 755 $(WHIPTCLSO) $(instroot)/$(libdir)
+ endif
+ 
+-install-py: _snack.$(SOEXT)
++install-py: _snack.$(BUNDLEEXT)
+ ifneq ($(PYTHONVERS),)
+ 	@for ver in $(PYTHONVERS); do \
+ 		PLATLIB=`$$ver -c "import sysconfig; print(sysconfig.get_path('platlib'))"`; \
+ 		[ -d $(instroot)/$$PLATLIB ] || install -m 755 -d $(instroot)/$$PLATLIB ;\
+-		echo install -m 755 $$ver/_snack.$(SOEXT) $(instroot)/$$PLATLIB;\
+-		install -m 755 $$ver/_snack.$(SOEXT) $(instroot)/$$PLATLIB;\
++		echo install -m 755 $$ver/_snack.$(BUNDLEEXT) $(instroot)/$$PLATLIB;\
++		install -m 755 $$ver/_snack.$(BUNDLEEXT) $(instroot)/$$PLATLIB;\
+ 		echo install -m 644 snack.py $(instroot)/$$PLATLIB;\
+ 		install -m 644 snack.py $(instroot)/$$PLATLIB;\
+ 	done

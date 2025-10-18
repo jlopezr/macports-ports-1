@@ -5,21 +5,25 @@ PortGroup           python 1.0
 
 name                py-editorconfig
 python.rootname     EditorConfig
-version             0.12.3
+version             0.17.1
 revision            0
 
 platforms           {darwin any}
 supported_archs     noarch
-license             BSD
+license             PSF-2.0
 maintainers         {reneeotten @reneeotten} openmaintainer
 
 description         EditorConfig File Locator and Interpreter for Python
 long_description    {*}${description}
 
-homepage            https://editorconfig.org/
+homepage            https://github.com/editorconfig/editorconfig-core-py
 
-checksums           rmd160  458973a038828fe7b166d7b11c36e9cb7cf786fb \
-                    sha256  57f8ce78afcba15c8b18d46b5170848c88d56fd38f05c2ec60dbbfcb8996e89e \
-                    size    13329
+distname            editorconfig-${version}
 
-python.versions     37 38 39 310 311 312
+checksums           rmd160  057bee3fade6ec48ee8fe9e145db3001c3ae7dba \
+                    sha256  23c08b00e8e08cc3adcddb825251c497478df1dada6aefeb01e626ad37303745 \
+                    size    14695
+
+python.versions     310 311 312 313 314
+
+patchfiles-append   patch-pyproject.toml.diff

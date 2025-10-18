@@ -3,21 +3,23 @@
 PortSystem          1.0
 PortGroup           R 1.0
 
-R.setup             cran plamen.mirazchiyski RALSA 1.3.7
+R.setup             cran plamen.mirazchiyski RALSA 1.5.0
 revision            0
+platforms           {darwin any}
 maintainers         nomaintainer
 license             GPL-2
 description         R Analyzer for Large-Scale Assessments
 long_description    {*}${description}
 homepage            https://ralsa.ineri.org
-checksums           rmd160  a8c194734ad7508c348256f67dcf681ce9197a57 \
-                    sha256  a3d29709d4d46370c03144f3da5e3145fe2cbb7b7798a10dc3075c43b96a5b4a \
-                    size    315305
+checksums           rmd160  13f1d7e72cee695fbfe55fd0aef0f81a196c33f5 \
+                    sha256  7597ffff02dec2f22a82593ee55613a3df290951d55f071a92fe5d9c6f7d6fd7 \
+                    size    348976
 supported_archs     noarch
 
 depends_lib-append  port:R-data.table \
                     port:R-DT \
                     port:R-ggplot2 \
+                    port:R-haven \
                     port:R-Hmisc \
                     port:R-import \
                     port:R-openxlsx \
@@ -28,6 +30,7 @@ depends_lib-append  port:R-data.table \
                     port:R-shinydashboard \
                     port:R-shinyFiles \
                     port:R-shinyjs \
+                    port:R-shinyWidgets \
                     port:R-stringi \
                     port:R-stringr
 

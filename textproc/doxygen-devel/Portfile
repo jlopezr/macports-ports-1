@@ -2,7 +2,6 @@
 
 PortSystem              1.0
 PortGroup               cmake 1.1
-PortGroup               compiler_blacklist_versions 1.0
 PortGroup               conflicts_build 1.0
 PortGroup               legacysupport 1.1
 
@@ -18,12 +17,12 @@ conflicts               doxygen
 set my_name             doxygen
 
 # please don't update doxygen without first checking the build status of doxygen-devel
-version                 1.9.8
+version                 1.14.0
 revision                0
 epoch                   0
-checksums               rmd160  28b49414adeaea5579436c32aa89a923680508f7 \
-                        sha256  05e3d228e8384b5f3af9c8fd6246d22804acb731a3a24ce285c8986ed7e14f62 \
-                        size    8087770
+checksums               rmd160  19a791f53d93d910557d54af27369e57712bdfb8 \
+                        sha256  d4536d11ab13037327d8d026b75f5a86b7ccb2093e2f546235faf61fd86e6b5d \
+                        size    8681251
 
 categories              textproc devel
 license                 GPL-2
@@ -53,7 +52,7 @@ distname                ${my_name}-${version}
 dist_subdir             ${my_name}
 distfiles               ${distname}.src${extract.suffix}
 
-set py_ver              3.11
+set py_ver              3.13
 set py_ver_nodot        [string map {. {}} ${py_ver}]
 configure.python        ${prefix}/bin/python${py_ver}
 
@@ -65,9 +64,6 @@ conflicts_build         libmd
 patchfiles-append       patch-src-portable_c.c.diff
 patchfiles-append       patch-CMakeLists.txt.diff
 patchfiles-append       patch-longtabu.diff
-
-# https://trac.macports.org/ticket/68581
-patchfiles-append       patch-pthread_threadid_np.diff
 
 depends_build-append \
                         port:bison \
@@ -198,7 +194,21 @@ variant qt5 conflicts qt4 description {Include the GUI wizard based on Qt5} {
                         -Dforce_qt=Qt5
 }
 
+# LLVM/Clang version to use for the clangparser variant.
+set llvm_version 20
+
+variant clangparser description {Use libclang for CLANG_ASSISTED_PARSING} {
+    depends_lib-append port:clang-${llvm_version}
+    # Tell doxygen to use libclang.
+    # Tell its cmake where to find clang and llvm.
+    # Tell cmake to embed the rpath for libclang.
+    configure.args-append \
+        -Duse_libclang=ON \
+        -DCMAKE_PREFIX_PATH=${prefix}/libexec/llvm-${llvm_version} \
+        -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON
+}
+
 livecheck.type          regex
 livecheck.name          ${my_name}
 livecheck.url           ${homepage}/download.html
-livecheck.regex         {latest version of doxygen is (\d+(?:\.\d+)*)}
+livecheck.regex         {(\d+(?:\.\d+)*)\.src}

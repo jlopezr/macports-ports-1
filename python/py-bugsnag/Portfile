@@ -4,14 +4,14 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-bugsnag
-version             4.6.0
+version             4.7.1
 revision            0
 categories-append   devel
 license             MIT
 supported_archs     noarch
 platforms           {darwin any}
 
-python.versions     39 310 311
+python.versions     39 310 311 312
 
 maintainers         nomaintainer
 homepage            https://github.com/bugsnag/bugsnag-python
@@ -19,9 +19,9 @@ homepage            https://github.com/bugsnag/bugsnag-python
 description         Automatic error monitoring for django, flask etc.
 long_description    {*}${description}
 
-checksums           rmd160  8efcf5e236d4382185a4fa1731d62d3e0088916c \
-                    sha256  abe8716036a33d5911fc01cb7d346afc4f287cedd47a92cda28512fc22c837fe \
-                    size    67321
+checksums           rmd160  bf089ff7eae03d5b202d2b1727c2aab266442a0b \
+                    sha256  98408fe17d4a7f300a56535407a6448b9844d9b528c44527908868fc3646e873 \
+                    size    73492
 
 if {${name} ne ${subport}} {
     depends_lib-append \

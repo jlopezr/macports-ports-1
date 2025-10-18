@@ -4,16 +4,17 @@ PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           legacysupport 1.1
 
-github.setup        htop-dev htop 3.2.2
+github.setup        htop-dev htop 3.4.1
+github.tarball_from releases
 revision            0
 epoch               1
+use_xz              yes
 
-checksums           rmd160  ae15c339a9a162725ef2a11a661a71bbbb1ae33f \
-                    sha256  06d783175e21e3afbee3a052ee1b6cee84de2774c10c3abb54d57daf9a669d4f \
-                    size    369943
+checksums           rmd160  27c59724782eec3eaa98155f485356594ed8b389 \
+                    sha256  904f7d4580fc11cffc7e0f06895a4789e0c1c054435752c151e812fead9f6220 \
+                    size    427444
 
 categories          sysutils
-platforms           darwin
 maintainers         {cal @neverpanic} openmaintainer
 license             GPL-2
 
@@ -22,16 +23,19 @@ long_description    ${name} is {*}${description} systems. It aims to be a better
 
 homepage            https://htop.dev
 
-depends_build       port:autoconf \
+depends_build-append \
+                    port:autoconf \
                     port:automake \
                     port:libtool \
                     port:pkgconfig
 
-depends_lib         port:ncurses
+depends_lib-append  port:ncurses
 
 pre-configure {
     system -W ${worksrcpath} "sh autogen.sh"
 }
+
+configure.args      --disable-unwind
 
 post-destroot {
     # Delete the .png and .desktop files

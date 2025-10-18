@@ -9,7 +9,7 @@ categories          lang java
 license             GPL-2
 supported_archs     noarch
 platforms           any
-maintainers         {easieste @easye} {@catap korins.ky:kirill} openmaintainer
+maintainers         {easieste @easye} openmaintainer
 description         A Common Lisp implementation that runs on the JVM
 long_description    \
     Armed Bear Common Lisp is conforming, contemporary \
@@ -23,7 +23,6 @@ long_description    \
     application.
     
 homepage            https://abcl.org
-platforms           darwin
 master_sites        https://abcl.org/releases/${version}/
 distname            abcl-src-${version}
 

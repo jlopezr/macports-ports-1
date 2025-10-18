@@ -3,35 +3,34 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        osxfuse osxfuse 4.5.0 macfuse-
+github.setup        macfuse macfuse 5.0.7 macfuse-
 revision            0
 name                macfuse
 conflicts           osxfuse
 categories          fuse
-platforms           darwin
 supported_archs     arm64 x86_64
 license             Restrictive
-maintainers         {outlook.com:mohd.akram @mohd-akram} {ra1nb0w @ra1nb0w} openmaintainer
+maintainers         {makr @mohd-akram} {ra1nb0w @ra1nb0w} openmaintainer
 
 description         FUSE for macOS
 
 long_description    FUSE extends macOS by adding support for user space file \
                     systems.
 
-homepage            https://osxfuse.github.io/
+homepage            https://macfuse.github.io/
 
 github.tarball_from releases
 distname            ${name}-${version}
 use_dmg             yes
 
-checksums           rmd160  ff3fbf4c08e6cbadfc25304e481daa0c90d62ebb \
-                    sha256  9df7257315a9b9a97a9ba3a76011cabed7bc3784515b69fa098f8d81efec726d \
-                    size    5974209
+checksums           rmd160  04326dd1374a2cf8361afff35d8414ac81c7cf8a \
+                    sha256  ce8ddf7bd00fb7b333ffb6598a455507880dd560fa46da21a56a2312623bf295 \
+                    size    10558323
 
-if {${os.platform} eq "darwin" && ${os.major} < 16} {
+if {${os.platform} eq "darwin" && ${os.major} < 21} {
     known_fail yes
     pre-fetch {
-        ui_error "${name} is only supported on macOS 10.12 or later."
+        ui_error "${name} is only supported on macOS 12 or later."
         return -code error "unsupported platform version"
     }
 }
@@ -46,37 +45,57 @@ post-extract {
 
 use_configure       no
 
+set fs_dir /Library/Filesystems
+set dir ${fs_dir}/macfuse.fs
+
 build {
     system -W ${pkg} "install_name_tool -id ${prefix}/lib/libfuse.2.dylib \
         usr/local/lib/libfuse.2.dylib"
-
+    system -W ${pkg} "install_name_tool -id ${prefix}/lib/libfuse3.4.dylib \
+        usr/local/lib/libfuse3.4.dylib"
     system -W ${pkg} "install_name_tool \
         -id ${prefix}/Library/Frameworks/macFUSE.framework/Versions/A/macFUSE \
         -change /usr/local/lib/libfuse.2.dylib ${prefix}/lib/libfuse.2.dylib \
         Library/Frameworks/macFUSE.framework/Versions/A/macFUSE"
-
     system -W ${pkg} "codesign -fs - \
         usr/local/lib/libfuse.2.dylib \
+        usr/local/lib/libfuse3.4.dylib \
         Library/Frameworks/macFUSE.framework/Versions/A/macFUSE"
+    reinplace "s|/usr/local|${prefix}|g" {*}[glob ${pkg}/usr/local/lib/pkgconfig/*]
+    # remove FSKit extension if FSKit.framework does not exist
+    if {![file exists /System/Library/Frameworks/FSKit.framework]} {
+        delete ${pkg}${dir}/Contents/Resources/macfuse.app
+        delete ${pkg}${dir}/Contents/_CodeSignature
+    }
 }
-
-set dir /Library/Filesystems/macfuse.fs
 
 destroot {
-    copy ${pkg}/Library/Filesystems ${destroot}${prefix}/Library
+    copy ${pkg}${fs_dir} ${destroot}${prefix}/Library
     xinstall -W ${pkg}${dir}/Contents/Resources -m 4755 load_macfuse mount_macfuse \
         ${destroot}${prefix}${dir}/Contents/Resources
+
     copy {*}[glob ${pkg}/Library/Frameworks/*] ${destroot}${prefix}/Library/Frameworks
+
     copy {*}[glob ${pkg}/usr/local/include/*] ${destroot}${prefix}/include
-    copy {*}[glob ${pkg}/usr/local/lib/pkgconfig/*] ${destroot}${prefix}/lib/pkgconfig
-    reinplace "s|/usr/local|${prefix}|g" [glob ${destroot}${prefix}/lib/pkgconfig/*]
     copy {*}[glob -type f ${pkg}/usr/local/lib/*] ${destroot}${prefix}/lib
-    # remove unwanted files like ._uninstall_macfuse.app
-    system "find  ${destroot}${prefix} -type f -iname '._*' -delete"
+    copy {*}[glob ${pkg}/usr/local/lib/pkgconfig/*] ${destroot}${prefix}/lib/pkgconfig
 }
 
-notes  "
+variant fs_link description "Link ${name} to a .fs bundle in /Library/Filesystems" {
+    post-destroot {
+        xinstall -d ${destroot}${fs_dir}
+        ln -sf ${prefix}${dir} ${destroot}${dir}
+    }
+
+    destroot.violate_mtree  yes
+}
+
+if {![variant_isset fs_link]} {
+    notes "
     Run the following before using macFUSE:
 
         sudo ln -fsn ${prefix}${dir} ${dir}
-"
+
+    Alternatively, use the +fs_link variant to automatically create this symlink.
+    "
+}

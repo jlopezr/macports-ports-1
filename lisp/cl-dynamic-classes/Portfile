@@ -5,6 +5,8 @@ PortGroup           github 1.0
 PortGroup           common_lisp 1.0
 
 github.setup        hraban dynamic-classes ebd7405603f67b16e8f2bc08ce8e2bcfcf439501
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 
 # NOTE: repository was moved from github user gwkkwg to hraban,
 # and github produces archive which contains user name inside
@@ -20,7 +22,7 @@ checksums           rmd160  ee14b1f24393ca1e8f6ad2c464041c32a3074e82 \
                     size    7368
 
 categories-append   devel
-maintainers         {@catap korins.ky:kirill} openmaintainer
+maintainers         nomaintainer
 license             MIT
 
 description         Classes how you want them, when you want them

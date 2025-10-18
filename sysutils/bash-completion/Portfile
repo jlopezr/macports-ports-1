@@ -3,9 +3,9 @@
 PortSystem      1.0
 PortGroup       github 1.0
 
-github.setup    scop bash-completion 2.11
+github.setup    scop bash-completion 2.16.0
+revision        0
 epoch           1
-revision        1
 categories      sysutils
 platforms       any
 supported_archs noarch
@@ -19,15 +19,13 @@ long_description \
 github.tarball_from releases
 use_xz yes
 
-checksums       rmd160  c38855cb1e3379c815d5491234ee589b91c44e3f \
-                sha256  73a8894bad94dee83ab468fa09f628daffd567e8bef1a24277f1e9a0daf911ac \
-                size    311004
+checksums       rmd160  73955e663e297542ebf9ff69af4664e6cc7fa193 \
+                sha256  3369bd5e418a75fb990863925aed5b420398acebb320ec4c0306b3eae23f107a \
+                size    464764
 
 depends_run     port:bash
 
 patchfiles      patch-vpnc.diff \
-                patch-fix-quote-readline-by-ref.diff \
-                patch-remove-pkgutil.diff \
                 patch-xine-add-more-formats.diff \
                 patch-xpdf-support-compressed-pdf.diff
 

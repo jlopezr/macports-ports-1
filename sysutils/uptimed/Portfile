@@ -3,15 +3,14 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        rpodgorny uptimed 0.4.3 v
+github.setup        rpodgorny uptimed 0.4.7 v
 revision            0
-checksums           rmd160  98ac756015f49ac8ef1ea9801412efab8deba7e0 \
-                    sha256  11add61c39cb2a50f604266104c5ceb291ab830939ed7c84659c309be1e1e715 \
-                    size    55396
+checksums           rmd160  670d7ce47cf9882db2dde8ba782dac7d327486d6 \
+                    sha256  2f669d2968ca1d0865b7a97791c9dbcca759631a1afc5d6702964f070a57252b \
+                    size    56796
 
 categories          sysutils
 license             GPL-2
-platforms           darwin
 maintainers         nomaintainer
 
 description         uptime record daemon
@@ -50,3 +49,5 @@ post-destroot {
 
 startupitem.create      yes
 startupitem.executable  ${prefix}/sbin/uptimed -f
+
+github.livecheck.regex  {([0-9.]+)}

@@ -4,7 +4,7 @@ PortSystem              1.0
 PortGroup               github 1.0
 PortGroup               cmake 1.1
 
-github.setup            jlblancoc nanoflann 1.5.0 v
+github.setup            jlblancoc nanoflann 1.7.1 v
 categories              math science
 platforms               any
 maintainers             {mcalhoun @MarcusCalhoun-Lopez} openmaintainer
@@ -14,9 +14,10 @@ description             A C++11 header-only library for Nearest Neighbor (NN) se
 
 long_description        {*}${description}
 
-checksums               rmd160  ea1d4a95a8cdd155f8bdb19e39176b978aa3c915 \
-                        sha256  4a37eda5a1ade90a33d2485f75df92939e9e145717ff2e141cda6709e294cd47 \
-                        size    518828
+checksums               rmd160  187f708b6a94190218d50b67031963475f682040 \
+                        sha256  887e4e57e9c5fbf1c2937f9f5a9bc461c4786d54729b57a9c19547bdedb46986 \
+                        size    522904
+github.tarball_from     archive
 
 compiler.cxx_standard   2011
 

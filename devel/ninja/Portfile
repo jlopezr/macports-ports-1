@@ -2,14 +2,18 @@
 
 PortSystem          1.0
 PortGroup           github 1.0
+PortGroup           legacysupport 1.1
+
+# O_CLOEXEC
+# https://github.com/ninja-build/ninja/issues/2645
+legacysupport.newest_darwin_requires_legacy 10
 
 epoch               1
-github.setup        ninja-build ninja 1.11.1 v
-revision            1
-
-checksums           rmd160  f4df91397c25c64f5ab31df5e2390c54ced99ae2 \
-                    sha256  31747ae633213f1eda3842686f83c2aa1412e0f5691d1c14dbbcc67fe7400cea \
-                    size    229479
+github.setup        ninja-build ninja 1.13.1 v
+revision            0
+checksums           rmd160  6765fd1becaccc480b857bdf7953405dfdd43ff3 \
+                    sha256  f0055ad0369bf2e372955ba55128d000cfcc21777057806015b45e4accbebf23 \
+                    size    292098
 
 categories          devel
 maintainers         {ryandesign @ryandesign} openmaintainer
@@ -34,6 +38,18 @@ long_description    Ninja is yet another build system. It takes as input    \
 
 homepage            https://ninja-build.org
 github.tarball_from archive
+checksums-prepend   ${distfiles}
+set gtest_version   1.16.0
+set gtest_distname  googletest-${gtest_version}
+set gtest_distfile  ${gtest_distname}${extract.suffix}
+master_sites        ${master_sites}:main \
+                    https://github.com/google/googletest/archive/v${gtest_version}:gtest
+distfiles           ${distfiles}:main \
+                    ${gtest_distfile}:gtest
+checksums-append    ${gtest_distfile} \
+                    rmd160  d3183abe7ab17d19d47b2ccf520a3b4e076804eb \
+                    sha256  78c676fc63881529bf97bf9d45948d905a66833fbfa5318ea2cd7478cb98f399 \
+                    size    876245
 
 installs_libs       no
 
@@ -43,7 +59,14 @@ patchfiles          patch-configure.py-bootstrap-only.diff \
 depends_build-append \
                     port:re2c
 
-set py_ver          3.11
+# Required by googletest
+compiler.cxx_standard \
+                    2014
+
+# ./src/jobserver-posix.cc:130:10: error: no viable conversion from returned value of type 'unique_ptr<(anonymous namespace)::PosixJobserverClient, default_delete<(anonymous namespace)::PosixJobserverClient>>' to function return type 'unique_ptr<Jobserver::Client, default_delete<Jobserver::Client>>'
+compiler.blacklist {clang < 900}
+
+set py_ver          3.13
 set py_ver_nodot    [string map {. {}} ${py_ver}]
 
 depends_lib-append  port:python${py_ver_nodot}
@@ -55,6 +78,7 @@ configure.pre_args  configure.py
 default configure.args \
                     {--with-python=${configure.python}}
 configure.post_args --bootstrap \
+                    --gtest-source-dir=${workpath}/${gtest_distname} \
                     --verbose
 configure.universal_args
 
@@ -79,13 +103,6 @@ destroot {
         COPYING \
         README.md \
         ${destroot}${docdir}
-}
-
-platform darwin {
-    if {${os.major} == 8} {
-        patchfiles-append patch-tiger-no-posix-spawn.diff
-        patchfiles-append patch-tiger-sysconf.diff
-    }
 }
 
 test.run            yes

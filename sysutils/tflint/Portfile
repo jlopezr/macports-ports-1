@@ -3,8 +3,8 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/terraform-linters/tflint 0.49.0 v
-github.tarball_from archive
+go.setup            github.com/terraform-linters/tflint 0.55.1 v
+go.offline_build    no
 revision            0
 
 description         \
@@ -19,11 +19,10 @@ license             MIT
 maintainers         {gmail.com:herby.gillot @herbygillot} \
                     openmaintainer
 
-checksums           rmd160  2360b34c7bc52cc62156eec574f0f605b4413a13 \
-                    sha256  556ddf20e24f687595eb55b9982276ec38974a75eb10f1fe6917e34d7cd725a8 \
-                    size    1313224
+checksums           rmd160  71fc57af118a12d1b80cb4167c51df52a293d6c1 \
+                    sha256  3359b66294fbc39c079071b421ff1c63b2897f87fccb8dd5067ee8759b8b6db4 \
+                    size    1403471
 
-go.offline_build no
 build.cmd           make
 build.args          build
 

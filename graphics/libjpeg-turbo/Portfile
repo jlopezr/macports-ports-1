@@ -2,15 +2,22 @@
 
 PortSystem          1.0
 PortGroup           cmake 1.1
+PortGroup           github 1.0
 PortGroup           muniversal 1.0
 
+# Please keep libjpeg-turbo and libjpeg-turbo-devel as similar as possible
+
 name                libjpeg-turbo
-version             2.1.5.1
+conflicts           libjpeg-turbo-devel mozjpeg
+set my_name         libjpeg-turbo
+version             3.1.2
+revision            0
+github.setup        ${my_name} ${my_name} ${version}
+github.tarball_from releases
+
 categories          graphics
 license             BSD
 maintainers         {larryv @larryv} {mascguy @mascguy} {jmr @jmroot}
-
-conflicts           libjpeg-turbo-devel mozjpeg
 
 description         SIMD-accelerated libjpeg-compatible JPEG codec \
                     library
@@ -25,16 +32,18 @@ long_description    libjpeg-turbo is a JPEG image codec that uses SIMD \
                     highly-optimized Huffman coding routines. In many \
                     cases, the performance of libjpeg-turbo rivals \
                     that of proprietary high-speed JPEG codecs.
-homepage            https://www.libjpeg-turbo.org/
-master_sites        sourceforge:project/${name}/${version}
+homepage            https://www.${my_name}.org
 
-checksums           md5 aed60d4d776dd5cf00b5a01c609d50f7 \
-                    sha1 3ec9f6a19781a583285d93c2c4653f3dbe845fcc \
-                    rmd160 4b4634dd3e5c94359dd07c2fa49f719aecee4ddd \
-                    sha256 2fdc3feb6e9deb17adec9bafa3321419aa19f8f4e5dea7bf8486844ca22207bf \
-                    size   2264936
+dist_subdir         ${my_name}
 
-configure.args      -DWITH_JPEG8=ON
+checksums           rmd160 4cdf80bbbd32cf4e1e2f7364be338d3a62148fab \
+                    sha256 8f0012234b464ce50890c490f18194f913a7b1f4e6a03d6644179fa0f867d0cf \
+                    size   2512033
+
+configure.args-append \
+                    -DENABLE_SHARED:BOOL=ON \
+                    -DENABLE_STATIC:BOOL=ON \
+                    -DWITH_JPEG8:BOOL=ON
 
 if {${universal_possible} && [variant_isset universal]} {
     if {"x86_64" in ${configure.universal_archs} || "i386" in ${configure.universal_archs}} {
@@ -52,16 +61,24 @@ if {${universal_possible} && [variant_isset universal]} {
     }
 }
 
-variant java description "Add Java support" {
+variant java description {Add Java support} {
     PortGroup           java 1.0
 
     java.version        1.8
     java.fallback       openjdk8
-    configure.args-append -DWITH_JAVA=ON
+    configure.args-append \
+                        -DWITH_JAVA:BOOL=ON
 }
 
-test.run            yes
-test.env            CTEST_OUTPUT_ON_FAILURE=1
+variant tests description {Enable tests} {
+    configure.pre_args-replace \
+                        -DCMAKE_BUILD_WITH_INSTALL_RPATH:BOOL=ON \
+                        -DCMAKE_BUILD_WITH_INSTALL_RPATH:BOOL=OFF
+
+    test.run            yes
+    test.env-append \
+                        CTEST_OUTPUT_ON_FAILURE=1
+}
 
 # Betas are numbered x.x.9x
-livecheck.regex     [string cat ${name}- {(\d+\.\d+\.(?:\d|[0-8]\d)(?:\.[0-9]+)*)} [quotemeta ${extract.suffix}]]
+github.livecheck.regex  {(\d+\.\d+\.(?:\d|[0-8]\d)(?:\.[0-9]+)*)}

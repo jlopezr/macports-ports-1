@@ -3,13 +3,13 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        koalaman shellcheck 0.9.0 v
-revision            4
+github.setup        koalaman shellcheck 0.11.0 v
+github.tarball_from archive
+revision            0
 categories          devel haskell
 
 license             GPL-3+
-maintainers         {cal @neverpanic} openmaintainer
-platforms           darwin
+maintainers         nomaintainer
 
 description         ShellCheck, a static analysis tool for shell scripts
 long_description    The goals of ShellCheck are: \
@@ -24,11 +24,15 @@ long_description    The goals of ShellCheck are: \
                     otherwise working script to fail under future \
                     circumstances.
 
-checksums           rmd160  d553c8251fa8f3d28f262b0069d87c481a6764d0 \
-                    sha256  23037152b669776138312d66a4d7e57076cba5935a0814210f1c06435bac3266 \
-                    size    456737
+checksums           rmd160  e3f3e65cbf8ad9428bb34f8769165ef0e6edae71 \
+                    sha256  8b07554f92e4fbfc33f1539a1f475f21c6503ceae8f806efcc518b1f529f7102 \
+                    size    467540
 
 livecheck.url       https://hackage.haskell.org/package/ShellCheck
+
+installs_libs       no
+depends_build-append \
+                    port:pandoc
 
 variant stack \
     description {Use stack to build.} {}
@@ -39,5 +43,11 @@ if { [variant_isset "stack"] } {
     PortGroup       haskell_cabal 1.0
 }
 
-# remove after 0.9.1
-patchfiles-append   patch-ghc-9.6.diff
+post-build {
+    system -W ${worksrcpath} "./manpage"
+}
+
+post-destroot {
+    xinstall -m 0644 ${worksrcpath}/${name}.1 \
+        ${destroot}${prefix}/share/man/man1/
+}

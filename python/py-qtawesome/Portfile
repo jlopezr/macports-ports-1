@@ -4,7 +4,8 @@ PortSystem          1.0
 PortGroup           python 1.0
 PortGroup           github 1.0
 
-github.setup        spyder-ide qtawesome 1.3.0 v
+github.setup        spyder-ide qtawesome 1.4.0 v
+github.tarball_from archive
 revision            0
 name                py-qtawesome
 
@@ -17,11 +18,11 @@ description         Iconic Fonts in PyQt and PySide applications.
 long_description    QtAwesome enables iconic fonts such as Font Awesome and \
                     Elusive Icons in PyQt and PySide applications.
 
-checksums           rmd160  63ef48f2127b1c0e2c9cdde32886f8010c8d3156 \
-                    sha256  1307b7e14bc1853bcd7138ff05b3ecad9e1ea23952494d859af0ab9a94a0025b \
-                    size    2737643
+checksums           rmd160  9880d0e5130ec77fed0d38f22eef4cd5161b90b3 \
+                    sha256  4b05beb43a5144e1221e0be2ee55a4fe363be89fd74a635f9172dffc35798fb4 \
+                    size    2892421
 
-python.versions     38 39 310 311
+python.versions     39 310 311 312 313
 
 if {${name} ne ${subport}} {
     depends_lib-append \

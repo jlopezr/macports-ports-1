@@ -6,10 +6,10 @@ PortGroup           github 1.0
 
 qt5.depends_component qtdeclarative
 
-github.setup        thp pyotherside 1.6.0
+github.setup        thp pyotherside 1.6.2
+github.tarball_from archive
 revision            0
 categories          devel qt5
-platforms           darwin
 license             ISC
 maintainers         {amake @amake} openmaintainer
 
@@ -18,9 +18,9 @@ long_description    A Qt 5 QML Plugin that provides access to a Python 3 interpr
 
 homepage            https://thp.io/2011/pyotherside/
 
-checksums           rmd160  a745de7fb86455046b991c2df17b9d60df97f3ed \
-                    sha256  ce608e2377d17212277725e34af93d65c689b41ce47661343258c209857b2ff0 \
-                    size    183670
+checksums           rmd160  e4048623a47df4f69d107afe545d83ed4d656dab \
+                    sha256  9afe075f165c78ec584892887a6411fe1476f2115cf3bba026105bde29292a4b \
+                    size    184620
 
 # https://trac.macports.org/ticket/65293
 if { ${os.platform} eq "darwin" && (( ${os.major} >= 15 && ${os.major} <= 16 ) || ${os.major} >= 20 ) } {
@@ -29,7 +29,7 @@ if { ${os.platform} eq "darwin" && (( ${os.major} >= 15 && ${os.major} <= 16 ) |
 
 qt5.min_version 5.6
 
-set python.branch   3.10
+set python.branch   3.12
 set python.version  [join [split ${python.branch} "."] ""]
 
 depends_lib-append  port:python${python.version}

@@ -3,21 +3,20 @@
 PortSystem      1.0
 
 PortGroup       legacysupport 1.1
-PortGroup       compiler_blacklist_versions 1.0
 
 name            sbcl
 
 # Note to maintainers:
 #
-# Please bump the revision of math/maxima (and when it exists
-# math/maxima-devel) and fricas when this port changes.
-version         2.3.11
+# Please bump the revisions of math/maxima, math/fricas and possibly
+# math/maxima-devel when this port changes.
+version         2.5.5
 revision        0
 epoch           1
 
 categories      lang
 license         BSD
-maintainers     {easieste @easye} {@catap korins.ky:kirill} openmaintainer
+maintainers     {easieste @easye} openmaintainer
 
 description     The Steel Bank Common Lisp system
 
@@ -36,9 +35,17 @@ homepage        http://www.sbcl.org
 patchfiles      0001-fix-building-when-root-directory-contain-non-ASCII-c.patch \
                 0002-add-MacPorts-XDG_DATA_DIRS.patch
 
-checksums       rmd160  da7eba742a18aff9fd6509aac767fe1af6d800bb \
-                sha256  84beeb8d72c87897847fc0285adcb3fa4f481bdb39102c4fb9ab79684184ad29 \
-                size    7688028
+# https://github.com/sbcl/sbcl/pull/62
+patchfiles-append \
+                0003-runtime.c-fix-time-header-for-LISP_FEATURE_AVOID_CLO.patch
+# https://github.com/sbcl/sbcl/pull/64
+patchfiles-append \
+                0004-fix-pthread-macOS.patch
+
+checksums           rmd160  9d6e8d59951b7c3a9f6baf72aa3a7c80149af9e9 \
+                    sha256  6502670afb361ba9be44a2fafe9af9b59e7b24ae509a791a66b5481f2955950b \
+                    size    8258925
+
 
 if {${name} eq ${subport}} {
     master_sites \
@@ -56,15 +63,16 @@ subport sbcl-devel {
     PortGroup   github  1.0
 
     github.setup \
-                sbcl sbcl 7e5c8161aeb33a11f6e853c40a7eedb6a6c38971
-    version     20231125
+                sbcl sbcl 411fb247c2e0d8e713ccd32729ce70c07783fec4
+    version     20240924
     revision    0
 
     conflicts   sbcl
 
-    checksums   rmd160  69b87a2a2d6e06d239d0dda2aaedd44a9d6ab4b9 \
-                sha256  c312a4094ae1d3ed6bc6afbdbdd84645afe142f65e647fcc886e043b66ecbcfa \
-                size    9721278
+    checksums   rmd160  e7d661a26319cc88e9fe3fb4ea53cb2af11550e2 \
+                sha256  c93da098c5937a23bf93c991206f42a25fe0a32adb098b17d276d53d3c63f712 \
+                size    10289958
+    github.tarball_from archive
 
     pre-build {
         system -W ${worksrcpath} "echo '\"${version}\"' > version.lisp-expr"
@@ -132,22 +140,15 @@ build.target    make.sh
 build.args-append \
                 --prefix=${prefix}
 
-# unfortunately sbcl-bootstrap doesn't support macOS Sonoma yet, use ECL instead
-# See: https://trac.macports.org/ticket/68271
-if {${os.major} >= 23} {
-    depends_build-append \
-                path:bin/ecl:ecl
+variant bootstrap_ecl description { Use ECL to bootstrap compilation instead of SBCL binary. } {}
 
-    build.args-append \
-                --xc-host=${prefix}/bin/ecl
+if { ![variant_isset bootstrap_ecl]  } {
+    depends_build-append           port:sbcl-bootstrap
+    depends_skip_archcheck-append  sbcl-bootstrap
+    build.args-append              --xc-host=${prefix}/libexec/sbcl-bootstrap/bin/sbcl
 } else {
-    depends_build-append \
-                port:sbcl-bootstrap
-    depends_skip_archcheck-append \
-                sbcl-bootstrap
-
-    build.args-append \
-                --xc-host=${prefix}/libexec/sbcl-bootstrap/bin/sbcl
+    depends_build-append           path:bin/ecl:ecl
+    build.args-append              --xc-host=${prefix}/bin/ecl
 }
 
 if {${configure.build_arch} eq "i386"} {

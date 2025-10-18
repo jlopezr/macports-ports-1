@@ -5,6 +5,8 @@ PortGroup           github 1.0
 PortGroup           common_lisp 1.0
 
 github.setup        Shinmera mmap b045b6c6f986770f89c57423b26e8b1626eb1033
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 name                cl-mmap
 version             20230902
 revision            0
@@ -14,7 +16,7 @@ checksums           rmd160  12fdb5e5f54ba0b286117ba3792fd3afbdfebb44 \
                     size    13624
 
 categories-append   devel
-maintainers         {@catap korins.ky:kirill} openmaintainer
+maintainers         nomaintainer
 license             zlib
 
 description         yet another CL deflate decompressor

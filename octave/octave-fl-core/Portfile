@@ -3,17 +3,13 @@
 PortSystem          1.0
 PortGroup           octave 1.0
 
-octave.setup        fl-core 1.0.0
-revision            9
-platforms           darwin
-license             GPL-2+
+octave.setup        sourceforge octave fl-core 1.0.2
+revision            0
+license             GPL-3
 maintainers         {mps @Schamschula} openmaintainer
-description         The package contains code for basic functions in Fuzzy Logic for \
-                    Octave.
+description         Basic functions in Fuzzy Logic.
 long_description    {*}${description}
 
-checksums           rmd160  83407ab60255867d14ae1e7e844c8bee14dd4b6a \
-                    sha256  5ec025ecdc05aede186fad48c28fe8053888e6571ba557a22173649f7c0c0a1d \
-                    size    10357
-
-patchfiles          patch-src-fl_compose.cc.diff
+checksums           rmd160  9822eb0de45a32413445cc8d5c297d011a422de6 \
+                    sha256  39e8b73ff29d1e8d11c5bafc436c01821c70e0a6ffb1f8906176c8e097751e59 \
+                    size    14212

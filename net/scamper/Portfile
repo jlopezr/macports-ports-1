@@ -1,22 +1,89 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem          1.0
+PortGroup           openssl 1.0
 
 name                scamper
-version             cvs-20130824
+version             20250729
+revision            0
 categories          net
-platforms           darwin
 license             GPL-2
-maintainers         gmail.com:henkpoley \
-                    luckie.org.nz:mjl
+maintainers         {@matthewluckie luckie.org.nz:mjl} openmaintainer
+
 description         Conduct Internet measurements
-long_description    scamper is a program that is able to conduct Internet \
+long_description    ${name} is a program that is able to conduct Internet \
                     measurement tasks to large numbers of IPv4 and IPv6 \
                     addresses, in parallel, to fill a specified \
                     packets-per-second rate. Currently, it supports the \
                     well-known ping and traceroute techniques, as well as \
                     radargun, ally, mercator, sting, and parts of tbit.
-homepage            http://www.caida.org/tools/measurement/scamper/
-master_sites        http://www.caida.org/tools/measurement/scamper/code/
-checksums           rmd160 f4caeae59f93d3b33e1773c00579f6ee5cce69a9 \
-                    sha256 ec586382cfe80e2b8716d26a8794173153ef528b9080aa4682d5c6898a80a7b0
+
+homepage            https://www.caida.org/catalog/software/scamper
+master_sites        ${homepage}/code/
+
+checksums           rmd160  31a29281a75709d50a9787bb8a8a2b51c7009834 \
+                    sha256  153c0580ab4bf96549d62d3c49e6faa82708e7da6f877dadb15c8cf89c8648dd \
+                    size    3260686
+
+distname            ${name}-cvs-${version}
+
+livecheck.regex     ${name}-cvs-(\[0-9\]+\[a-z\]*)${extract.suffix}
+
+if {${subport} eq ${name}} {
+    configure.args-append \
+                    --enable-sc_hoiho \
+                    --enable-sc_minrtt \
+                    --enable-sc_uptime \
+                    --with-pcre2
+
+    depends_lib-append  path:lib/liblzma.dylib:xz \
+                    path:lib/libbz2.dylib:bzip2 \
+                    port:pcre2 \
+                    port:sqlite3
+}
+
+# Python subports
+set python_versions {39 310 311 312 313}
+foreach v ${python_versions} {
+    subport py${v}-${name} {
+        PortGroup           python 1.0
+
+        categories          net python
+
+        depends_lib-append  port:${name}
+
+        use_configure       yes
+
+        python.default_version ${v}
+        python.add_dependencies no
+        build.cmd           make
+        build.target
+        destroot.cmd        make install
+        destroot.destdir    DESTDIR=${destroot}
+
+        livecheck.type      none
+    }
+}
+
+# Python bindings for supported Python versions
+if {[string match "py*" ${subport}]} {
+    description             Python ${python.branch} bindings for scamper
+    long_description        {*}${description}.
+
+    depends_lib-append      port:python${python.version}
+
+    configure.args-append   --with-python
+    configure.env           PYTHON=${python.bin}
+    configure.env-append    PYTHON_SITE_PKG=${python.pkgd}
+
+    post-patch {
+        reinplace "s|\$(scamper_la_DEPENDENCIES)||g" \
+            ${worksrcpath}/lib/python/Makefile.in
+        reinplace "s|../libscamperfile/libscamperfile.la|-lscamperfile|g" \
+            ${worksrcpath}/lib/python/Makefile.in
+        reinplace "s|../libscamperctrl/libscamperctrl.la|-lscamperctrl|g" \
+            ${worksrcpath}/lib/python/Makefile.in
+    }
+
+    build.dir              ${worksrcpath}/lib/python
+}

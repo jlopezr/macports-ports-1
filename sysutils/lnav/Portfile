@@ -4,9 +4,7 @@ PortSystem          1.0
 PortGroup           github          1.0
 PortGroup           legacysupport   1.1
 
-github.setup        tstack lnav 0.11.2 v
-github.tarball_from archive
-revision            1
+name                lnav
 
 homepage            https://lnav.org
 
@@ -24,9 +22,36 @@ license             BSD
 maintainers         {gmail.com:herby.gillot @herbygillot} \
                     openmaintainer
 
-checksums           rmd160  29e795873cab2b113c0e2046cfd30f91c9f06bd4 \
-                    sha256  03b72fd02faccdbf98fcdeba62306794b677b8bcf49d6023117808f88ed627dc \
-                    size    12379373
+subport ${name}-devel {}
+
+if {${name} eq ${subport}} {
+    # Main Port
+    github.setup        tstack lnav 0.12.4 v
+    github.tarball_from archive
+    revision            0
+
+    conflicts           lnav-devel
+
+    checksums           ${distname}${extract.suffix} \
+                        rmd160  56cd862cf38839db6af05baa500972d6b589fe17 \
+                        sha256  ee6ea75cbfd736f6ad8b32212883e45a1a64e48085a14757d2cfffa90ebb8e75 \
+                        size    21550635
+
+    github.livecheck.regex {([0-9.]+)}
+
+} else {
+    # Devel
+    github.setup        tstack lnav 0.13.2 v
+    github.tarball_from archive
+    revision            0
+
+    conflicts           lnav
+
+    checksums           ${distname}${extract.suffix} \
+                        rmd160  a9bf26193c9a77df9d6353328174e53a9603a5c9 \
+                        sha256  3501b921c0acb435f85bd2ce589b4d8ba205a87ed855926e65a6ad165431b331 \
+                        size    35349126
+}
 
 depends_lib-append  path:lib/libssl.dylib:openssl \
                     port:bzip2 \
@@ -52,5 +77,3 @@ configure.args-append \
                     --with-sqlite3
 
 use_autoreconf      yes
-
-github.livecheck.regex {([0-9.]+)}

@@ -4,13 +4,12 @@ PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           gpg_verify 1.0
 PortGroup           compilers 1.0
-PortGroup           compiler_blacklist_versions 1.0
 
 compilers.choose    fc f77 f90
 compilers.setup     require_fortran -g95
 compiler.blacklist-append {clang < 900}
 
-github.setup        JuliaLang julia 1.9.4 v
+github.setup        JuliaLang julia 1.12.0 v
 revision            0
 categories-append   lang math science
 maintainers         {ieee.org:s.t.smith @essandess} \
@@ -30,9 +29,9 @@ github.tarball_from releases
 distfiles           ${name}-${version}-full${extract.suffix}
 
 checksums           ${name}-${version}-full${extract.suffix} \
-                    rmd160  ed13cb65b9a3458494fa6ed4eda8d703134feb3e \
-                    sha256  61843b9647fd06d3b2994f3277a64de1cb5a5a5297d930b8c8e3bc0e93740024 \
-                    size    294983229
+                    rmd160  48a1370df8db2f35a6c072531ef7c6c318ec013e \
+                    sha256  2dba42b3f143564f96c60948d1100db0902aa3cb98ebf89c156b4091f05d9b89 \
+                    size    575249348
 
 extract.only        ${distfiles}
 
@@ -57,8 +56,6 @@ if {[option gpg_verify.use_gpg_verification]} {
 # julia build is `make && make install`
 # see https://github.com/JuliaLang/julia/blob/master/Makefile
 
-patchfiles          patch-Makefile.diff
-
 use_configure       no
 
 build.target        {}
@@ -66,7 +63,7 @@ build.target        {}
 pre-build {
     # create a `gfortran` symbolic link
     xinstall -m 0755 -d ${workpath}/bin
-    ln -s ${configure.fc} ${workpath}/bin/gfortran
+    ln -sf ${configure.fc} ${workpath}/bin/gfortran
 
     build.env-append \
         PATH=$env(PATH):${workpath}/bin \
@@ -93,17 +90,20 @@ post-destroot {
     move ${dpw}/julia-${version}/lib/julia ${destroot}${prefix}/lib
     move ${dpw}/julia-${version}/lib/libjulia.${short_version}.dylib ${destroot}${prefix}/lib
     move ${dpw}/julia-${version}/lib/libjulia.dylib ${destroot}${prefix}/lib
-    move ${dpw}/julia-${version}/lib/libjulia.${major_version}.dylib ${destroot}${prefix}/lib
+    move ${dpw}/julia-${version}/lib/libjulia.${version}.dylib ${destroot}${prefix}/lib
     # see https://github.com/JuliaLang/julia/pull/48931
     move ${dpw}/julia-${version}/libexec/julia ${destroot}${prefix}/libexec/julia
     move ${dpw}/julia-${version}/share/julia ${destroot}${prefix}/share
+    delete ${destroot}${prefix}/share/man
+    move ${dpw}/julia-${version}/share/man ${destroot}${prefix}/share
 
     delete ${destroot}${prefix}/var
 
     system -W ${destroot}${prefix}/bin "install_name_tool -add_rpath ${prefix}/lib julia"
+    system -W ${destroot}${prefix}/lib/julia "install_name_tool -change ${worksrcpath}/usr/lib/libccalllazyfoo.dylib @rpath/libccalllazyfoo.dylib libccalllazybar.dylib"
     if {${os.arch} eq "arm"} {
         # manually fix code signature on arm
-        system -W ${destroot}${prefix} "/usr/bin/codesign --sign - --force lib/libjulia.${short_version}.dylib"
+        system -W ${destroot}${prefix} "/usr/bin/codesign --sign - --force lib/libjulia.${version}.dylib"
     }
 }
 

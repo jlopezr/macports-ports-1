@@ -1,13 +1,12 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem          1.0
-PortGroup           github 1.0
 PortGroup           python 1.0
 
-github.setup        coin-or pulp 2.7.0
+name                py-pulp
+
+version             3.2.1
 revision            0
-name                py-${github.project}
-github.tarball_from tarball
 
 categories-append   science math
 
@@ -23,14 +22,13 @@ long_description    PuLP is an LP modeler written in Python. PuLP can generate M
 
 homepage            https://coin-or.github.io/pulp/
 
-checksums           rmd160  4d38dc7b0a50a1c04dae849e3bba970d35ef9177 \
-                    sha256  7434e4213b4486b6c50434022c472451d8819c78f34db2153dfe8d85ade07920 \
-                    size    28002026
+checksums           rmd160  e05e7b9b2d4f3e6d866c804376c850123d1dc1a8 \
+                    sha256  fc6c02c47c06342c586b175924add753cad7638ff6149b3b43e87ac6709ac469 \
+                    size    16297436
 
-python.versions     39 310 311
+python.versions     39 310 311 312 313
 
 if {${name} ne ${subport}} {
     depends_build-append \
-                    port:py${python.version}-pytest-runner \
-                    port:py${python.version}-setuptools
+                    port:py${python.version}-pytest-runner
 }

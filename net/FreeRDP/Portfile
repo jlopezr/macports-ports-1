@@ -5,24 +5,24 @@ PortGroup           github  1.0
 PortGroup           cmake   1.1
 
 epoch               3
-github.setup        FreeRDP FreeRDP 2.7.0
+github.setup        FreeRDP FreeRDP 3.17.2
+github.tarball_from releases
 revision            0
 categories          net
-platforms           darwin
 license             Apache
 maintainers         nomaintainer
 description         A Remote Desktop Protocol implementation
 long_description    FreeRDP is a free implementation of the Remote Desktop Protocol (RDP), released \
                     under the Apache license.
 
-homepage            http://www.freerdp.com
+homepage            https://www.freerdp.com
 
-checksums           rmd160  593ea88c790f863de87b0d16752f3f1e70c1527f \
-                    sha256  18ccee68356cd4c62f9e4e42786777d8ad87d53598905ed7fc6e8de41b620b4b \
-                    size    7274814
+checksums           rmd160  ee60f05ec2fb784da454dfac9e441962d4d86823 \
+                    sha256  c42c712ad879bf06607b78b8c3fad98e08c82f73f4e0bc1693552900041e692a \
+                    size    10556445
 
 depends_build-append \
-                    port:pkgconfig
+                    path:bin/pkg-config:pkgconfig
 
 depends_lib-append  port:xorg-libX11 \
                     port:xorg-libXcursor \
@@ -39,15 +39,16 @@ depends_lib-append  port:xorg-libX11 \
                     path:lib/pkgconfig/libusb-1.0.pc:libusb \
                     path:lib/pkgconfig/cairo.pc:cairo
 
-# Mac has 64bit filesystem too
-patchfiles-append   patch-64bitfs.diff
+worksrcdir          freerdp-${version}
 
-# disable rdpsnd on macOS < 10.10 since
-# AVAudioBuffer was introduced in 10.10
-if { ${os.major} <= 13 } {
+# AVAudioBuffer was introduced in OS X 10.10
+if {${os.platform} eq "darwin" && ${os.major} < 14} {
     configure.args-append \
         -DCHANNEL_RDPSND=OFF
 }
+
+# Disable check on cmake build type so we can control compiler flags
+patchfiles-append patch-cmake_ignore_build_type.diff
 
 post-patch {
     if {[string match "*gcc*" ${configure.compiler}]} {
@@ -59,6 +60,9 @@ post-patch {
 
 use_xcode           yes
 
+# Related to state on macOS: https://github.com/FreeRDP/FreeRDP/issues/10558
+# Server is non-functional, even if it compiles, thus -DWITH_SERVER=OFF
+# SDL client is currently recommended over native Mac client
 configure.args-append \
                     -DWITH_ALSA=OFF \
                     -DWITH_CCACHE=OFF \
@@ -72,12 +76,21 @@ configure.args-append \
                     -DWITH_FAAC=OFF \
                     -DWITH_SOXR=OFF \
                     -DWITH_CUPS=ON \
-                    -DWITH_CAIRO=ON
+                    -DWITH_CAIRO=ON \
+                    -DWITH_PKCS11=OFF \
+                    -DWITH_SERVER=OFF \
+                    -DWITH_CLIENT_MAC=OFF \
+                    -DWITH_CLIENT_SDL_VERSIONED=ON \
+                    -DWITH_CLIENT_SDL2=OFF \
+                    -DWITH_CLIENT_SDL3=OFF
 
 # ffmpeg only supports VDA (video hardware acceleration, mostly H264) on 10.6.3+ (#48397)
-if {${os.major} > 10 || (${os.major} == 10 && ${os.minor} >= 3)} {
+if {${os.platform} ne "darwin" || ${os.major} > 10 || (${os.major} == 10 && ${os.minor} >= 3)} {
+    set ffmpeg_ver          6
     configure.args-replace  -DWITH_FFMPEG=OFF -DWITH_FFMPEG=ON
-    depends_lib-append      path:lib/libavcodec.dylib:ffmpeg
+    depends_lib-append      port:ffmpeg${ffmpeg_ver}
+    configure.pkg_config_path \
+                            ${prefix}/libexec/ffmpeg${ffmpeg_ver}/lib/pkgconfig
 }
 
 # I've seen manpage building fail for unclear reasons, so provide a variant to turn it off
@@ -117,3 +130,47 @@ variant codecs description {support MP3, FAAD2, FAAC and SOXR codecs} {
 }
 
 build.post_args-append -k
+
+set app_dir         ${applications_dir}/MacFreeRDP.app/Contents
+variant cocoa description {build native macOS/Cocoa client} {
+    configure.args-replace \
+                    -DWITH_CLIENT_MAC=OFF \
+                    -DWITH_CLIENT_MAC=ON
+
+    post-destroot {
+        xinstall -d ${destroot}${app_dir}
+        move ${destroot}${prefix}/Info.plist ${destroot}${prefix}/PkgInfo \
+            ${destroot}${app_dir}
+
+        xinstall -d ${destroot}${app_dir}/MacOS
+        move ${destroot}${prefix}/bin/MacFreeRDP ${destroot}${app_dir}/MacOS
+
+        xinstall -d ${destroot}${app_dir}/Resources
+        move ${destroot}${prefix}/share/FreeRDP.icns \
+            {*}[glob ${destroot}${prefix}/share/*.nib] \
+            ${destroot}${app_dir}/Resources
+
+        xinstall -d ${destroot}${app_dir}/Resources/en.lproj
+        move {*}[glob ${destroot}${prefix}/share/*.strings] \
+            ${destroot}${app_dir}/Resources/en.lproj
+    }
+}
+
+variant sdl2 description {build SDL2 client} {
+    depends_lib-append port:libsdl2_ttf
+    configure.args-replace \
+                    -DWITH_CLIENT_SDL2=OFF \
+                    -DWITH_CLIENT_SDL2=ON
+}
+
+variant sdl3 description {build SDL3 client} {
+    depends_lib-append port:SDL3_ttf
+    configure.args-replace \
+                    -DWITH_CLIENT_SDL3=OFF \
+                    -DWITH_CLIENT_SDL3=ON
+}
+if {${os.platform} eq "darwin" && ${os.major} < 20} {
+    default_variants-append +sdl2
+} else {
+    default_variants-append +sdl3
+}

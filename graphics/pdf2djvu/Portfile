@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           github 1.0
 
 github.setup        jwilk pdf2djvu 0.9.19
-revision            5
+revision            8
 categories          graphics textproc
 platforms           darwin
 license             GPL-2
@@ -38,6 +38,9 @@ patchfiles          patch-i18n.hh.diff \
 
 configure.cxxflags-append -std=c++17
 compiler.cxx_standard  2017
+
+# https://trac.macports.org/ticket/71371
+compiler.blacklist-append macports-clang-19 {macports-clang-2*}
 
 # explicitly configure to build with system libuuid, overriding pkg-config
 # this prevents linking with ossp-uuid if it is installed

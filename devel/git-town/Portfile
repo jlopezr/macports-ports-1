@@ -3,26 +3,32 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/git-town/git-town 7.8.0 v
+go.setup            github.com/git-town/git-town 18.3.2 v
+go.package          github.com/git-town/git-town/v18
+go.offline_build    no
+github.tarball_from archive
+revision            0
+
+homepage            https://www.git-town.com/
 
 description         High-level command-line interface for Git
 long_description    {*}${description}
-
 
 categories          devel
 installs_libs       no
 license             MIT
 maintainers         {karpenko.ca:alexei @akarpenko} \
+                    {gmail.com:herby.gillot @herbygillot} \
                     openmaintainer
 
-homepage            https://www.git-town.com/
-
-checksums           sha256  d6e06d395def2116b76cb63f548a9a4cccaed12cb804c84396f4150568609673 \
-                    rmd160  cf88fb00c64ce4100b464a3f390f676d4a3f6499 \
-                    size    2532916
+checksums           sha256  ec762f740f100b1d8c0478bc17246bd2df24158763f35e5d0a414f7e90b44aee \
+                    rmd160  0010163e69cdc4bcb6cdf1b433a68ae57eb8f141 \
+                    size    4475313
 
 build.pre_args-append \
-    -ldflags \"-X ${go.package}/src/cmd.version=v${version}\"
+    -ldflags \" \
+        -X ${go.package}/internal/config.GitTownVersion=v${version} \
+    \"
 
 destroot {
     xinstall -m 0755 ${worksrcpath}/${name} ${destroot}${prefix}/bin/

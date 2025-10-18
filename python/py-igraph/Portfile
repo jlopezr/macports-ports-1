@@ -4,15 +4,12 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-igraph
-python.rootname     igraph
-python.pep517       yes
-version             0.11.3
-revision            0
+version             0.11.9
+revision            1
 categories-append   math science
-platforms           darwin
 license             GPL-2+
 
-python.versions     38 39 310 311 312
+python.versions     39 310 311 312 313
 
 maintainers         {snc @nerdling} {gmail.com:szhorvat @szhorvat} openmaintainer
 
@@ -24,19 +21,21 @@ long_description    Python interface to the igraph library for network analysis 
 
 homepage            https://igraph.org/python/
 
-checksums           rmd160  7daedae06c885556c84217c10fb0d44821dfa7e9 \
-                    sha256  e55df60f882a51b8e8c1c5e7e940c5f90685d75634ea6df63bebcc983397adfa \
-                    size    4483128
+checksums           rmd160  678bbeea28cd4d2062f1183efba4a0d2c1a638c3 \
+                    sha256  c57ce44873abcfcfd1d61d7d261e416d352186958e7b5d299cf244efa6757816 \
+                    size    4587322
 
 variant external_igraph description {Use external igraph library} { }
-
-default_variants +external_igraph
 
 if {${name} ne ${subport}} {
     compiler.c_standard     1999
     compiler.cxx_standard   2011
 
     depends_lib-append      port:py${python.version}-texttable
+
+    # Removes the CMake dependency from pyproject.toml
+    # We use MacPorts's CMake instead
+    patchfiles              remove-cmake-dependency.patch
 
     if {[variant_isset external_igraph]} {
         # Build with external igraph library
@@ -52,7 +51,8 @@ if {${name} ne ${subport}} {
         depends_lib-append      port:arpack \
                                 port:glpk \
                                 port:gmp \
-                                port:libxml2
+                                port:libxml2 \
+                                port:plfit
 
         depends_build-append    path:bin/cmake:cmake
 
@@ -67,7 +67,7 @@ if {${name} ne ${subport}} {
             -DIGRAPH_USE_INTERNAL_GLPK=OFF
             -DIGRAPH_USE_INTERNAL_GMP=OFF
             -DIGRAPH_USE_INTERNAL_LAPACK=OFF
-            -DIGRAPH_USE_INTERNAL_PLFIT=ON
+            -DIGRAPH_USE_INTERNAL_PLFIT=OFF
             -DIGRAPH_OPENMP_SUPPORT=OFF
             -DBLA_VENDOR=Apple
         }
@@ -75,18 +75,13 @@ if {${name} ne ${subport}} {
         build.env-append        IGRAPH_CMAKE_EXTRA_ARGS=[join $extra_cmake_args]
     }
 
-    # Some test dependencies are disabled for Python 3.12 until they become available.
-    if {${subport} ne "py312-${python.rootname}"} {
-        # python-igraph optionally makes use of these, and some tests depend on them.
-        # If they are not installed, the corresponding tests will simply be skipped.
-        depends_test-append     port:py${python.version}-matplotlib \
-                                port:py${python.version}-networkx \
-                                port:py${python.version}-numpy \
-                                port:py${python.version}-pandas \
-                                port:py${python.version}-scipy
-    } else {
-        depends_test-append     port:py${python.version}-numpy
-    }
+    # python-igraph optionally makes use of these, and some tests depend on them.
+    # If they are not installed, the corresponding tests will simply be skipped.
+    depends_test-append     port:py${python.version}-matplotlib \
+                            port:py${python.version}-networkx \
+                            port:py${python.version}-numpy \
+                            port:py${python.version}-pandas \
+                            port:py${python.version}-scipy
 
     test.run yes
 }

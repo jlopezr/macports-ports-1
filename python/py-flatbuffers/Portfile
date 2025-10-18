@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-flatbuffers
-version             23.5.26
+version             25.2.10
 revision            0
 license             Apache-2
 platforms           {darwin any} linux
@@ -16,14 +16,10 @@ description         Python runtime library for use with the Flatbuffers \
                     serialization format.
 long_description    {*}${description}
 
-homepage            https://google.github.io/flatbuffers/
+homepage            https://flatbuffers.dev/
 
-python.versions     37 38 39 310 311 312
+python.versions     38 39 310 311 312 313
 
-checksums           rmd160  2fb80007f288cb1343130e32a1d948414a48c2bc \
-                    sha256  9ea1144cac05ce5d86e2859f431c6cd5e66cd9c78c558317c7955fb8d4c78d89 \
-                    size    22114
-
-if {${name} ne ${subport}} {
-    livecheck.type  none
-}
+checksums           rmd160  836790f7d4df7db6a893f7ea53159fb9b2f42049 \
+                    sha256  97e451377a41262f8d9bd4295cc836133415cc03d8cb966410a4af92eb00d26e \
+                    size    22170

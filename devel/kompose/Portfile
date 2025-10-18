@@ -3,13 +3,13 @@
 PortSystem              1.0
 PortGroup               golang 1.0
 
-go.setup                github.com/kubernetes/kompose 1.24.0 v
+go.setup                github.com/kubernetes/kompose 1.37.0 v
+go.offline_build        no
 revision                0
 maintainers             {emcrisostomo @emcrisostomo} \
+                        {gmail.com:herby.gillot @herbygillot} \
                         openmaintainer
-platforms               darwin
 categories              devel
-supported_archs         x86_64
 
 description             Go from Docker Compose to Kubernetes
 
@@ -17,15 +17,12 @@ long_description        {*}${name} is a tool to help users who are \
                         familiar with docker-compose move to Kubernetes \
                         kompose takes a Docker Compose file and translates \
                         it into Kubernetes resources.
-homepage                http://kompose.io/
+homepage                https://kompose.io/
 license                 Apache-2
 
-checksums               rmd160  df807b8354a26307fdba3b61ecd34ce4f06d6f79 \
-                        sha256  ff425a5711027d66d69669969800fa6ee0974239b6061a3847ead3d9f1789cb5 \
-                        size    344151
-
-# Allow deps to fetched at build time
-go.offline_build no
+checksums               rmd160  e766fc52594501fa85cfefec493366961d7ccdc5 \
+                        sha256  92cddf4a1d86e3ec18506e13706bfd0adfa9cb5dcecf362f60bf2affabcee1c0 \
+                        size    17994350
 
 build.cmd               make
 build.target            bin

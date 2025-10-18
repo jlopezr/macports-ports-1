@@ -3,12 +3,11 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/carvel-dev/ytt 0.46.2 v
-go.package          github.com/vmware-tanzu/carvel-ytt
-github.tarball_from archive
+go.setup            github.com/carvel-dev/ytt 0.52.0 v
+go.package          carvel.dev/ytt
 revision            0
 
-homepage            https://carvel.dev/ytt
+homepage            https://${go.package}
 
 description         \
     YAML templating tool that works on YAML structure instead of text
@@ -54,9 +53,9 @@ destroot {
 }
 
 checksums           ${distname}${extract.suffix} \
-                        rmd160  2580166b659ee2a09cdaa5bb2988df41d4b2f113 \
-                        sha256  6213d4a9d62952a0d6fe11796fa63e6b552910ee19a84a6a22b2d62cf0a61181 \
-                        size    1349136
+                        rmd160  fb3d162220b6d25a91bfbd38c203faaedf280e10 \
+                        sha256  130758548c465eb2707813890597e59209cb802a9c47b1196969cae0374a07ea \
+                        size    1349793
 
 go.vendors          gopkg.in/yaml.v3 \
                         lock    v3.0.1 \

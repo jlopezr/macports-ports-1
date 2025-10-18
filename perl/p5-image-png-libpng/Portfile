@@ -4,17 +4,17 @@ PortSystem          1.0
 PortGroup           perl5 1.0
 
 perl5.branches      5.28 5.30 5.32 5.34
-perl5.setup         Image-PNG-Libpng 0.57
-revision            1
+perl5.setup         Image-PNG-Libpng 0.59
+revision            0
 license             {Artistic-1 GPL}
 maintainers         nomaintainer
 description         Image::PNG::Libpng is a Perl library for accessing the contents of \
                     PNG (Portable Network Graphics) images.
 long_description    ${description}
 
-checksums           rmd160  2f3b5be4ff3a092a3e3927a829e485d50a5318e9 \
-                    sha256  909b1c4118eab82c812104602a1c4784cdb0efd400e410bda6710994b85ee8a0 \
-                    size    870387
+checksums           rmd160  9ecf1c2953cd0da7130c6739147d4d65ade95943 \
+                    sha256  e1f9f5f58a8ce98870529f5680841fb33e304272f39faaed5c2f7929ce6f58d7 \
+                    size    1097877
 
 if {${perl5.major} != ""} {
     depends_build-append \

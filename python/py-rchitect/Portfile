@@ -4,17 +4,18 @@ PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           python 1.0
 
-github.setup        randy3k rchitect 0.4.4 v
+github.setup        randy3k rchitect 0.4.7 v
 name                py-rchitect
 revision            0
 license             MIT
+categories-append   R
 maintainers         {@barracuda156 gmail.com:vital.had} openmaintainer
 description         Mapping R API to Python
 long_description    {*}${description}
 
-checksums           rmd160  1d4334509a3a74f0c18ddaebb103e36d19ca7275 \
-                    sha256  92104aacc5bc957c6f898d7a2258d4bbc65610d24f073e05724b78941df83484 \
-                    size    36364
+checksums           rmd160  bb59329174468a86f483ec318d1d5ec2b3100a91 \
+                    sha256  8283d0e026d1d38a4cf67983d58a7537cb1dc82d78d9c057b45ad8786a654057 \
+                    size    36402
 github.tarball_from archive
 
 python.versions     39 310 311

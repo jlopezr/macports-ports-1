@@ -3,9 +3,8 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/xataio/pgroll 0.2.0 v
+go.setup            github.com/xataio/pgroll 0.10.0 v
 go.offline_build    no
-github.tarball_from archive
 revision            0
 
 homepage            https://xata.io/blog/pgroll-schema-migrations-postgres
@@ -29,9 +28,12 @@ license             Apache-2
 maintainers         {gmail.com:herby.gillot @herbygillot} \
                     openmaintainer
 
-checksums           rmd160  29548f45cbd46b5150ef777ca8aff62521a26bad \
-                    sha256  51a465be97cefd4deb97d78314c90d3b948733c162850a4f218561425ac445c3 \
-                    size    346640
+checksums           rmd160  bffcba723de9bbe4f3d269e40f6649ecad94feed \
+                    sha256  a589431e37ad6dc16af8e8835d6c1094cd3c767abe11743cc1f2816f6a8a538e \
+                    size    561453
+
+github.livecheck.regex \
+                    {([0-9.]+)}
 
 build.pre_args-append \
     -ldflags=\"-X ${go.package}/cmd.Version=${version}\"

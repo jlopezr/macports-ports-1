@@ -2,7 +2,7 @@
 
 PortSystem          1.0
 
-version             2.40.1
+version             2.81.0
 revision            0
 
 # Github CLI is failing to build on 10.12 and below.
@@ -54,13 +54,11 @@ if ${source_build} {
 
     use_parallel_build  no
 
-    checksums           rmd160  9e39597c0e38fa0fffb62a95386fa38f0d4485f3 \
-                        sha256  0bb2af951b4716067747184b5b5bbd90c270edee5b45a84e62a5a803bf7ef467 \
-                        size    931399
+    checksums           rmd160  3c7226fc2ba6bb57892e13ba484cfe3264fdeb66 \
+                        sha256  11550fd0e06043f29d03fd973dd67cb77b2fee462a76084e0812c2099c6689dc \
+                        size    15794402
 
-    github.tarball_from archive
-
-    dist_subdir     ${name}
+    dist_subdir         ${name}
 
     patch {
         # Do not override GOOS, GOARCH, GOARM and other environment variables
@@ -76,9 +74,9 @@ if ${source_build} {
 
     distname        gh_${version}_macOS_amd64
 
-    checksums       rmd160  f60e07efc37fecacb1a15e6906e2646d604937e6 \
-                    sha256  759add6b7756538e025841696dce85394c0dbad48729eb2e27f5f988c5eb9acb \
-                    size    11423782
+    checksums       rmd160  a1dc4d6d8544a05bead699d1613b100080b46e1a \
+                    sha256  197e55f4e4a5728fa9c3cacf3891cb04a0874493664a80b0d9bde1223173f205 \
+                    size    18952644
 
     use_configure   no
     use_zip         yes
@@ -91,10 +89,8 @@ destroot {
         # standard legacysupport tweaks don't work, since the install here is
         # from a binary tarball ... have to tweak the binary to use the legacy
         # support library, which in turn uses the System.B library.
-        # Add legacysupport for 10.11 and older for clock_gettime support
-        if {${os.major} <= 15} {
-            system -W ${destroot}${prefix}/bin "install_name_tool -change /usr/lib/libSystem.B.dylib ${prefix}/lib/libMacportsLegacySupport.dylib gh"
-        }
+        # Add legacysupport for all non-source versions for utimensat() support
+        system -W ${destroot}${prefix}/bin "install_name_tool -change /usr/lib/libSystem.B.dylib ${prefix}/lib/libMacportsLegacySystem.B.dylib gh"
     }
 
     set docdir ${prefix}/share/doc/${name}

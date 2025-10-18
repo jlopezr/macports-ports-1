@@ -4,11 +4,12 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                reuse
-version             1.0.0
+version             5.0.2
 revision            0
-checksums           rmd160  cbe9f860eb83ab37e70af8df3103d5efb2464557 \
-                    sha256  db3022be2d87f69c8f508b928023de3026f454ce17d01e22f770f7147ac1e8d4 \
-                    size    253938
+
+checksums           rmd160  e30da944759932c95b7b5847f09506792d162349 \
+                    sha256  878016ae5dd29c10bad4606d6676c12a268c12aa9fcfea66403598e16eed085c \
+                    size    358798
 
 categories          devel
 supported_archs     noarch
@@ -22,7 +23,8 @@ long_description    {*}${description}
 
 homepage            https://reuse.software/
 
-python.versions     310
+python.default_version \
+                    312
 python.pep517       yes
 python.pep517_backend \
                     poetry
@@ -32,6 +34,8 @@ depends_lib-append  port:py${python.version}-binaryornot \
                     port:py${python.version}-jinja2 \
                     port:py${python.version}-license-expression \
                     port:py${python.version}-python-debian \
-                    port:py${python.version}-requests
+                    port:py${python.version}-tomlkit \
+                    port:py${python.version}-attrs \
+                    port:py${python.version}-click
 
-patchfiles          version.patch
+depends_run-append  path:share/curl/curl-ca-bundle.crt:curl-ca-bundle

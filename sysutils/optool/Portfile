@@ -5,11 +5,12 @@ PortGroup           github 1.0
 PortGroup           xcode 1.0
 
 github.setup        alexzielenski optool 0.1
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 set optool_commit   a20c514
 revision            0
 categories          sysutils
-maintainers         {raimue @raimue} \
-                    openmaintainer
+maintainers         nomaintainer
 license             BSD
 
 description         Editor for Mach-O binaries
@@ -51,7 +52,7 @@ post-extract {
 patchfiles          patch-ldflags-objc.diff \
                     patch-argparsermacOS-12.diff \
                     patch-coreparse-macOS-12.diff
-patch.pre_args      -p1
+patch.pre_args-replace  -p0 -p1
 
 if { ${os.major} < 12 } {
     # optool/defines.h:68:22: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]

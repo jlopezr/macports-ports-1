@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                smlnj
-version             110.99.3
+version             110.99.8
 categories          lang ml
 license             BSD
 maintainers         {toby @tobypeterson} openmaintainer
@@ -27,31 +27,31 @@ checksums
 
 # Files needed for basic distribution.
 set srcs [list \
-    doc.tgz                 5a7f0b15564b34529693516da6face5d6d8702f91a6bf80a49e886bd752d8423 32a4a7acc31cdd838f79f55cb555dcdd9c186363 2506809 \
-    boot.amd64-unix.tgz     3464473a9434dafe165619c014e36d7b6506cf2f0826c562a342a73af9b16603 1d849cfdf7bf5d668fd374c632247566d3f0e42b 5971321 \
-    boot.ppc-unix.tgz       33c04a79625eaf6162a3e1e2c560f9e038f0191ae166edfe49cb5afb04732af0 f1a3ef274b70c977f398e760c1514eea7de7e532 5839528 \
-    boot.x86-unix.tgz       3517b9e2258da5c119363ed58fe8b8b00426070d8d3c10ead5ae5d1d7bf5a0c5 cfc478b1d9b6226bd890d5c713276b22d9960fb6 5923052 \
-    config.tgz              c04264f461c84114b2666b5a4544d0e66d8c0b4137534e137510e055de444197 9c24ec58b7096a2f9a020c0e458da64f2f1aa78b 23167   \
-    cm.tgz                  499fed8ec350e92a4c066dd40c3ec0a77434a3293958b4bb787fd1b08373847b 435c28ca9bb608ac40e737825e03746432a07262 220282  \
-    compiler.tgz            d428e00b66117df81dbf46f0f3c07bf8119e4804dfad334b89cca6acd0cf4fba 075ea80335af8492aeac536045129185a62b5cb4 856614  \
-    runtime.tgz             4d2fa1d6092af058d12f21c86f7349c8850022193fe190c7ae27008d2a521720 7e1393fa58a8ac6cc0e8acf98a4e4e8f162dbf88 334293  \
-    system.tgz              d2a4e51fc9e3ff2914902fd98eea9b8219786f9413d04155334d1f0a986486ad 38a1c84b7a24211777b3dc412b54f43ee1061719 283393  \
-    MLRISC.tgz              5677101c949a74d0a5991cf1f4f8e9e002a0db065043d160ed68ae0fd94e0534 05b4542625416ed9c1e7c80831c4d9fc8b56f344 1457337 \
-    smlnj-lib.tgz           c5bcd055746c6198288429f28f087d6e5d6e6b8df369eba35b19419461d8e1c5 30e714294f9d63e6e77197a0095348eb89a6abb8 641512  \
-    old-basis.tgz           002b69f3584b18092d82d8b25458c0da843e0ccb8eb3144df53d841c8c146b46 57ee85b9ee5a7a437f032dd8d2edbd83ba9d29cf 1363    \
-    ckit.tgz                8b1414487beafbd075a6c2ffb8252e766528abdd757412ecf089e732b571b2e5 5e9762dbaabdb01c4f910ef80cdc243e321c02b3 200785  \
-    nlffi.tgz               154dcf0839c9ce3d8a69b3264f10759021e99d42fc04be5542007272eafd2f63 2da0c69b6bb42bdd1444b59743ff41f86f948390 74810   \
-    cml.tgz                 83a72ce62fbd3a5b9aca09b4c6f5f80365becefa1cec424e10cf1b03ffff7752 b3a980c502b3f6a9a55b658a23b70674c4d01ff9 103973  \
-    eXene.tgz               981ec9ce71d4fb306b880b5cb49efeabb0079309869662fd8d1b865a0e191688 7a5f9131c60328621206bfea6915ea27c7997c37 714453  \
-    ml-lpt.tgz              937447260119657c1d2eb4ba5e91f7eb6ee900506b9c71d4b8ae37403d48f78a 2376de496d52aa2ed1a6595a7a5b80c2aa586d3b 267067  \
-    ml-lex.tgz              9e5097d532590e63680ddedffd349424ab340d27118fa57269b578945c4ab8ee 4ad54d1aa907c2d02e0557513129a0b9f9ff4127 28038   \
-    ml-yacc.tgz             218a8ad4e70808843ec25077b0060f6ddab72c088cae3150f8ffceda128c7349 2cb3f2a62dc2ec0e2b8464ae9ea96e455f754e02 101376  \
-    ml-burg.tgz             8e523d3d1d50fbf3d0e6c36a1d23b6fc850b5833e26b6f7435ee0ab9d30d4aa0 eacdc0edd575b0315bd747daf95e018a175723f6 40357   \
-    pgraph.tgz              8e24305c79142191bf300e215b12a0ef2afbedaee7bf38cbeaa091c475130d71 34a46478509ffffce1acd639ec171f5c1780103f 5367    \
-    trace-debug-profile.tgz 1d71ab09c5b9e7b991483325582dfa2b6130005af8f463afbf00aecede01f576 84c346f2e7b5bcd81fe443452745d1055b1a09a3 3890    \
-    heap2asm.tgz            aff2f65d68895e69b70b531be62fafbcc1cc7ed8b9c8504e3731e51bdf698679 ff22d2e90e9cb8148f4b5031b8e667ef2854df80 1763    \
-    smlnj-c.tgz             4dff4d93d443af9d3019607965b81ab600d67c59e7f42289473662280aaf24fe 6fafbf3981820d8211c39807a930af3e933ebf1f 10591   \
-    asdl.tgz                3e16bd262e25b95e481937d9c32382932776b033397afb6b16da313d6839700a e73b0d63d9bac95527684c8995427f39a3586a4d 241353  \
+    doc.tgz                 2669760e8db2b9f32d37cd1abc3f5f7d1b79be84e62c522e31339a8972e11f0a cb67217323f75c307e423e424b91c2c306526821 2509346 \
+    boot.amd64-unix.tgz     b9d2dec5a4a77be7caf3badc1166ae4cbd912fb7b22c041c9459477f5df8f064 260f372d30d006cbad015e79c9cdd739dd4a0bc3 6013620 \
+    boot.ppc-unix.tgz       e59dc97593e2a0e3caba01230cc78ca599657915d7102dd1da74a335a6bd9cf6 6fbe8783a1bd7936035bcc43e47029591b10ceea 5886764 \
+    boot.x86-unix.tgz       e13b425d1f8d8d32531f94cf75751deaeb3028b91df1f5758ca2ac7aca727493 3becb0b8ce9a62d1221ba8c488e8c444d976fe96 5967264 \
+    config.tgz              eb7a6f2171c8e1727e4769a7eef72f72ec5ff1ae8561dd608880997898db023b 250c5dbb82c0353b52f34321f8d87e29438baaba 23316   \
+    cm.tgz                  2418c6e8e5f0d05e8388349de0ed70886991c718f8817aecf9b6957af3b85ddd 808bff793de66c013f8c3749b14a75a15895b38d 220342  \
+    compiler.tgz            1ac10587a5e11008b5e38fabd81d26e67edb5a53f09e6e5bf3d2714c1480186c a6ffeaf63c4f3e60331663c8567d62ecd7ff3196 894876  \
+    runtime.tgz             ab85624d2dff3ae1e4342851ac408e00d5ac866bb4106b45752585e631c86dc5 2ea1a223dab8f26c5fe4994dffa88094bae73884 337793  \
+    system.tgz              fa246932f8d4895498013400d54f7b483520703b34bfbe5e2ee7a684b23dcf94 448b0dc9d59fdc077ade151973a28b8a81ad16f9 296676  \
+    MLRISC.tgz              7ca58e6ebdaeba5445d07094686d7dc705241e5484c81d8e983be3b17f7dd38a 2604d15f3c5625773dd060516240543beb99f45d 1457378 \
+    smlnj-lib.tgz           efd13179137fc3f4e08be2f8158ead87924a061d466b94aa94b67b904ae360ad 791581ab7b2fba7b0e863e25b948b9b11b6571fb 667412  \
+    old-basis.tgz           aa4385afeb25c05fe432a1fddf8e911c7a8c085524860b78dc925e7613631c72 fb91eb61c11388f19f563095360a014dfb5c92a7 1361    \
+    ckit.tgz                57178904126f8822468e24f47dbee75cac4fc6b339799b4e8c7b7df8dc39c19f e131fe2eb32eae01441b19d1b858b2dae34de6df 200752  \
+    nlffi.tgz               9a2c1671e06c07d3388ae1638303d7d4ae8b8f1d8d5cfacbdd87336eb4a411ca 22ff873cdcfa9a6e83823829f59d506a5472600d 74683   \
+    cml.tgz                 a45d3365d4adf113162afed86fab37193bdf06220839f1ea5cb02cfad147d367 667f420ff92162df32af3b92a7e594cfc98f8dae 103965  \
+    eXene.tgz               5e468b333c824d80f8bc7addf37899e341139591fc4d004eedce16a6a7121772 e9f25149890aad26509690181b34c9c59302df7a 714408  \
+    ml-lpt.tgz              bc167b41441229a2cdd7bd6eb0f1b2391bb14a0f7ae5e800c08d8781fca52165 44b9c82d309f4a974c2c4fea486d3c359f3bb4ed 267346  \
+    ml-lex.tgz              7f6712a3323c40264907213814517c14024f20d01791f4d47932c279b612f32c f85ee3e0bc4ab095051136062e84cddf5e965ab6 28027   \
+    ml-yacc.tgz             792ef3cef12490183cb5e3f729bf3030b5e881433accbba49015c8128d269b56 1861f67628f6373bc15db8148041c6387ae64eab 101359  \
+    ml-burg.tgz             b512a84e00b478606f6b2ea77d2fb0f3e5c59ead88ea868196d3e148d2826a2e 50d70eca1352d44e669015c94b90c68a35adc185 40287   \
+    pgraph.tgz              b7b96b9c8507a3d40f60ff5553149cf815bdf0fa5cec9b81ba48de9ef1f2fa39 1faaf73a9e4b969b990e37612c7dff035fb179c3 5363    \
+    trace-debug-profile.tgz 644118d78c2b0316b22d43bb10a7271517ec37bf1922838d5e43422745b28209 79400bf7e825a42fa6aec99fcc4a08b75a8c79c1 3889    \
+    heap2asm.tgz            33de23e8495c5d18d461b4591a7bc739105da24118a260b6741e216c554e74e3 4b77aeb72afd56ef659140e26e13199c3ac0e3d4 1719    \
+    smlnj-c.tgz             79b657ea68083c204c038ca0095309ae1f089ea54563f90d6446348f06c5c3a1 dcfb71f643f64eaf2bc157d2f79d76d1721c2879 10591   \
+    asdl.tgz                9cd88b7168c6ab2132a7d255aed8bec13d8b8312aa395d0634ae73fcdc4a4c6d 81992c1fbb73be2cf9cb6617a425d35e05aaecf5 241689  \
 ]
 
 foreach {tarball sha256 rmd160 size} $srcs {
@@ -64,8 +64,7 @@ extract.mkdir       yes
 extract.only        config.tgz
 
 ### patch ###
-patchfiles          patch-config__install.sh-correct-compiler.diff \
-                    patch-_arch.diff
+patchfiles          patch-config__install.sh-correct-compiler.diff
 
 post-patch {
     reinplace "s|@CC@|${configure.cc}|" ${worksrcpath}/config/install.sh
@@ -88,7 +87,7 @@ configure {
         ${worksrcpath}/config/targets
     reinplace "s|#request nowhere|request nowhere|" \
         ${worksrcpath}/config/targets
-    reinplace "s|#request heap2asm|request heap2asm|" \
+    reinplace "s|#  request heap2asm|  request heap2asm|" \
         ${worksrcpath}/config/targets
 }
 

@@ -3,18 +3,16 @@
 PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           meson 1.0
-PortGroup           compiler_blacklist_versions 1.0
 PortGroup           legacysupport 1.1
 
 # needed for clock_gettime and static_assert to work on older OS X versions
 legacysupport.newest_darwin_requires_legacy 15
 
-github.setup        Genymobile scrcpy 2.3.1 v
+github.setup        Genymobile scrcpy 3.3 v
 revision            0
 github.tarball_from archive
 
 categories          multimedia
-platforms           darwin
 license             Apache-2
 maintainers         {bochtler.io:macports @MarcelBochtler} \
                     openmaintainer
@@ -29,13 +27,14 @@ extract.only        ${distfiles}
 distfiles-append    ${name}-server-v${version}:bootstrap
 
 checksums           ${distname}${extract.suffix} \
-                    rmd160  5ff0b8a66eb77e6e914eac3c0b73cf77fd5b1450 \
-                    sha256  76f38779f00d91d0b46a399ebca32c82ff1facdbd843871b7e46c2e7cad38a42 \
-                    size    401278 \
+                    rmd160  af82fa5a71ec6275bd21fb255e4c2a296150167b \
+                    sha256  6636f97f3a5446e3a1c845545108cf692bbd9cdc02cacfda099a2789ca7f6d56 \
+                    size    464716 \
                     ${name}-server-v${version} \
-                    rmd160  d418586f74046a4a7c9ae7c7a9c035d4ab27139f \
-                    sha256  f6814822fc308a7a532f253485c9038183c6296a6c5df470a9e383b4f8e7605b \
-                    size    66007
+                    rmd160  d6468c1eff3785b0f8b4be02bfe957cb9c4dffdb \
+                    sha256  351cb2edc7e4c2c75f09a7933fdabcf137be52e2602df154f24ec02db46e9e51 \
+                    size    90752
+
 depends_build-append \
                     port:pkgconfig
 

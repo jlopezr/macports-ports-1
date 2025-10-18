@@ -5,6 +5,8 @@ PortGroup               github 1.0
 PortGroup               common_lisp 1.0
 
 github.setup            vseloved rutils 79cb02922f025e818ef4100957abdc9f8d671e2c
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from     tarball
 name                    cl-rutils
 version                 20220915
 revision                1
@@ -14,7 +16,7 @@ checksums               rmd160  4b7dd50c65ea944cab4f6e553fc7cc8056af3482 \
                         size    171817
 
 categories-append       devel
-maintainers             {@catap korins.ky:kirill} openmaintainer
+maintainers             nomaintainer
 license                 MIT
 
 description             Radical Utilities for Common Lisp

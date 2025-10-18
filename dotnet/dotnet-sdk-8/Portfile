@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                dotnet-sdk-8
-version             8.0.100
+version             8.0.414
 revision            0
 categories          dotnet devel
 license             MIT
@@ -20,23 +20,23 @@ long_description    .NET is a free, cross-platform, open source developer platfo
                     to build for web, mobile, desktop, games, and IoT.
 
 homepage            https://dotnet.microsoft.com/
-platforms           darwin
+platforms           {darwin any} {darwin >= 21}
 supported_archs     x86_64 arm64
 
 switch ${build_arch} {
     x86_64 {
         set dotnet_rid osx-x64
         distname            dotnet-sdk-${version}-osx-x64
-        checksums           rmd160  89af8cfb083b79f7f4b6e5881bf4349ed28a0332 \
-                            sha256  cfbde9f7ef322332bcd0749fc5da843c09cf78e1cc4d10d3358d3ae4dc655c24 \
-                            size    212677343
+        checksums           rmd160  120f64d7fc73cef5833103f437b46e22bb51402d \
+                            sha256  46ccc2123d6f352c3fcc5fcb8a9f3836a153a01f3b4e984c0f6957425481814a \
+                            size    214473266
     }
     arm64 {
         set dotnet_rid osx-arm64
         distname            dotnet-sdk-${version}-osx-arm64
-        checksums           rmd160  a492a04d9fd3e74cefeba16e89113d20641d45d6 \
-                            sha256  e6ba41f9340fe71875bb569df92fa8e400f0cf71abf3cf19e5f1f8bd5e3e7bf5 \
-                            size    207464431
+        checksums           rmd160  c9d53e249fe16072a28ed009067df6518f1d648d \
+                            sha256  39838fd05f15ef471a2ba6321edffbcf4605d469134cb215f25107daf36f9955 \
+                            size    209310520
     }
     default {
         known_fail yes
@@ -47,7 +47,7 @@ switch ${build_arch} {
     }
 }
 
-master_sites        https://dotnetcli.azureedge.net/dotnet/Sdk/${version}/
+master_sites        https://builds.dotnet.microsoft.com/dotnet/Sdk/${version}/
 
 worksrcdir          ${name}-${version}
 extract.mkdir       yes
@@ -62,7 +62,7 @@ build {}
 
 destroot {
     set dotnet_home ${prefix}/share/dotnet
-    set dotnet_runtime_version 8.0.0
+    set dotnet_runtime_version 8.0.20
 
     # ASP.NET Core Targeting Pack
     set aspnet_target_dir /packs/Microsoft.AspNetCore.App.Ref
@@ -90,8 +90,6 @@ destroot {
     set dotnet_manifest_version 8.0.100
     xinstall -d ${destroot}${dotnet_home}/sdk-manifests
     move ${worksrcpath}/sdk-manifests/${dotnet_manifest_version} ${destroot}${dotnet_home}/sdk-manifests
-    # remove this once all sdk-manifests are out of rc
-    move ${worksrcpath}/sdk-manifests/8.0.100-rc.2 ${destroot}${dotnet_home}/sdk-manifests
 
     # Templates
     set dotnet_templates_version ${dotnet_runtime_version}
@@ -100,5 +98,5 @@ destroot {
 }
 
 livecheck.type      regex
-livecheck.url       https://dotnet.microsoft.com/en-us/download/dotnet/8.0
+livecheck.url       https://dotnet.microsoft.com/download/dotnet/8.0
 livecheck.regex     "SDK (\\d+(?:\\.\\d+)*)"

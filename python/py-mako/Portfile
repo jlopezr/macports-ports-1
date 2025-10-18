@@ -4,16 +4,14 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-mako
-python.rootname     Mako
-version             1.2.4
+version             1.3.10
 revision            0
 categories-append   www
 license             MIT
 supported_archs     noarch
 platforms           {darwin any}
 
-python.versions     27 37 38 39 310 311
-python.pep517       yes
+python.versions     27 39 310 311 312 313
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -36,27 +34,27 @@ long_description    Mako is a template library written in Python. \
 
 homepage            https://www.makotemplates.org/
 
-checksums           rmd160  219876a1534e9f136869579a066858105c56002d \
-                    sha256  d60a3903dc3bb01a18ad6a89cdbe2e4eadc69c0bc8ef1e3773ba53d44c3f7a34 \
-                    size    497021
+checksums           rmd160  56de463ae2c79e144c681dd7e92b165e4f63c991 \
+                    sha256  99579a6f39583fa7e5630a28c3c1f440e4e97a414b80372649c0ce338da2ea28 \
+                    size    392474
 
 if {${name} ne ${subport}} {
 
     if {${python.version} eq 27} {
         version             1.1.6
         revision            0
+        python.rootname     Mako
         checksums           rmd160  542024ab96ad5443cc44210f927b25915f5ce70e \
                             sha256  4e9e345a41924a954251b95b4b28e14a301145b544901332e658907a7464b6b2 \
                             size    495132
         python.pep517       no
-        depends_lib-append  port:py${python.version}-beaker
-    } elseif {${python.version} eq 37} {
-        depends_lib-append  port:py${python.version}-importlib-metadata
+        depends_lib-append  port:py${python.version}-setuptools \
+                            port:py${python.version}-beaker
+    } else {
+        patchfiles          patch-wheel-pyproject.toml.diff
     }
 
-    # Mako depends on pkg_resources from setuptools
-    depends_lib-append  port:py${python.version}-setuptools \
-                        port:py${python.version}-markupsafe
+    depends_lib-append  port:py${python.version}-markupsafe
 
     livecheck.type      none
 }

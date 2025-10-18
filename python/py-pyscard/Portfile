@@ -2,28 +2,27 @@
 
 PortSystem          1.0
 PortGroup           python 1.0
-PortGroup           github 1.0
 
-github.setup        LudovicRousseau pyscard 2.0.7
 name                py-pyscard
+version             2.3.0
 license             GPL
 maintainers         {amake @amake} openmaintainer
 
 description         Smartcard module for Python.
-long_description    ${description}
+long_description    {*}${description}
 
 homepage            https://pyscard.sourceforge.io/
 
-checksums           rmd160  611442ec4e1eb9efddba4843b572c0b21164c101 \
-                    sha256  5e6c08208ec17646ce99037a8e2ba528e06502417064e5f684585a2465fe43d4 \
-                    size    177649
+checksums           rmd160  51f484378534738c43e8e26fd36b6eaa8e8648b8 \
+                    sha256  621928e217e3b1d3c791086bf0c9f307fc4ae004a9b1a430536acc1a6eb50003 \
+                    size    159897
 
-python.versions     37 38 39 310 311
+python.versions     39 310 311 312 313
 
 if {${name} ne ${subport}} {
-    depends_build-append \
-        port:py${python.version}-setuptools
-
     depends_lib-append \
         port:swig-python
+
+    patchfiles-append  0001-Remove-requirement-provided-by-MacPorts.patch
+    patch.pre_args-replace  -p0 -p1
 }

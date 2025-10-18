@@ -3,10 +3,11 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/schollz/croc 9.6.6 v
-go.package          github.com/schollz/croc/v9
-github.tarball_from archive
+go.setup            github.com/schollz/croc 10.2.3 v
+go.package          github.com/schollz/croc/v10
+go.offline_build    no
 revision            0
+epoch               1
 
 homepage            https://schollz.com/blog/croc6
 
@@ -29,11 +30,9 @@ license             MIT
 maintainers         {gmail.com:herby.gillot @herbygillot} \
                     openmaintainer
 
-checksums           rmd160  b129edc6e13c8ec0c8bfabe7c0f31dbec24e9c86 \
-                    sha256  9dd954e0068df2be416c71161665bfc283f150d30ba0bf96cee723701e93616f \
-                    size    511129
-
-go.offline_build no
+checksums           rmd160  5b97bb067d0ac5266c185911c1328020c58c0992 \
+                    sha256  96c17b9fa6c55c0a1e02937c5f2d34bd2ce5b7ef6f844f16eac8d155c1b8a119 \
+                    size    585413
 
 build.pre_args-append \
     -ldflags \" -s -w  \

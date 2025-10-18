@@ -4,7 +4,9 @@ PortSystem                  1.0
 PortGroup                   github 1.0
 PortGroup                   cmake 1.1
 
-github.setup                kokkos kokkos 3.7.01
+github.setup                kokkos kokkos 4.3.01
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from         tarball
 conflicts                   kokkos-devel
 revision                    0
 categories                  devel
@@ -13,31 +15,30 @@ maintainers                 {mcalhoun @MarcusCalhoun-Lopez} openmaintainer
 description                 implements a programming model in C++ for writing performance portable applications targeting all major HPC platforms
 long_description            Kokkos Core {*}${description}.
 
-checksums                   rmd160  b73fbb7e3cc532545100412415bcb602414f7656 \
-                            sha256  b9888a524345dd3ad6c6bb04b2e3e7f854a5caf61c3b09b628f2b1526ec45105 \
-                            size    2305267
+checksums                   rmd160  f4e600d10da7f8dea9b6394984cefa42c022c9be \
+                            sha256  eeffca89eb75584c4ac8bd55e8a3fcfb130400a696ba94fce7cfb5c77978131d \
+                            size    2431476
 
 subport kokkos-devel {
-    github.setup            kokkos kokkos 843fca336a8bc056b6650310f6c5152f06e3b7e7
-    version                 2023.12.08
+    github.setup            kokkos kokkos 7ff4042fd2dc1d1fe6ae280179fc693ad6dac6ac
+    version                 2024.11.11
     conflicts               kokkos
-    maintainers-append      {@barracuda156 gmail.com:vital.had}
-    checksums               rmd160  8c592d45beb5899bc034f7b23569332881c30c30 \
-                            sha256  8c125e7a8232685e670de5287c07b82c7fb50919bdd0238cea97528aae829204 \
-                            size    2413022
+    checksums               rmd160  9dbaa78dd8ce208793f74098df08c56935d6644c \
+                            sha256  208b253350c7d658678e307313085facb31b27a9a872dd0a614bebb6478292de \
+                            size    2447151
     github.tarball_from     archive
-    # 32-bit support added in: https://github.com/kokkos/kokkos/pull/5916
-
-    compiler.cxx_standard   2017
+    github.livecheck.branch develop
+    # Kokkos_HostSpace.cpp:79:11: error: aligned allocation function
+    # of type 'void *(std::size_t, std::align_val_t, const std::nothrow_t &)
+    # noexcept' is only available on macOS 10.13 or newer
+    if {${os.platform} eq "darwin" && ${os.major} < 17} {
+        if {${configure.cxx_stdlib} eq "libc++"} {
+            configure.cxxflags-append -fno-aligned-allocation
+        }
+    }
 }
 
-if {${subport} ne "kokkos-devel"} {
-    # Keep this until support for 32-bit platforms is merged into master.
-    # https://github.com/kokkos/kokkos/blob/5ad609661e570ba6aa7716a26a91cb67d559f8a2/CMakeLists.txt#L126
-    supported_archs         arm64 x86_64 ppc64
-}
-
-compiler.cxx_standard       2014
+compiler.cxx_standard       2017
 compiler.openmp_version     4.0
 
 depends_lib-append          port:hwloc
@@ -47,14 +48,9 @@ configure.args-append       -DBUILD_SHARED_LIBS=ON \
                             -DKokkos_ENABLE_SERIAL=ON \
                             -DKokkos_ENABLE_HWLOC=ON
 
-if {${subport} eq "kokkos-devel"} {
-    if {[string match *clang* ${configure.compiler}]} {
-        # https://github.com/macports/macports-ports/pull/17877#discussion_r1183486766
-        configure.ldflags-append \
-                            -L${prefix}/lib/libomp \
-                            -lomp
-    }
-}
+# see https://github.com/macports/macports-base/commit/7c91604891fa0d071b8d598490c4dc2edb8e0031
+# see https://github.com/macports/macports-ports/pull/17877#discussion_r1183486766
+compiler.log_verbose_output no
 
 variant tests description {Enable tests} {
     configure.args-append   -DKokkos_ENABLE_TESTS=ON

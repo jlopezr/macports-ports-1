@@ -1,7 +1,7 @@
 PortSystem 1.0
 
 name                    diffstat
-version                 1.65
+version                 1.68
 categories              devel
 license                 MIT
 maintainers             {toby @tobypeterson}
@@ -14,9 +14,9 @@ platforms               darwin
 master_sites            https://invisible-island.net/archives/${name}/ \
                         https://invisible-mirror.net/archives/${name}/
 extract.suffix          .tgz
-checksums               rmd160 8a0ff6ff8004177c8014e3a3d14574d63b9042d7 \
-                        sha256 8cf27424926debcd85921755c3915559288244bd103f62d740dc6b83b557a28a \
-                        size 295596
+checksums               rmd160 05f2c1721bac073c5abd901735f9948b34ce3e7f \
+                        sha256 89f9294a8ac74fcef6f1b9ac408f43ebedf8d208e3efe0b99b4acc16dc6582c7 \
+                        size 308003
 
 configure.args          --mandir=${prefix}/share/man
 

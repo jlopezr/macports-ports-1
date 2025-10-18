@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           cmake 1.1
 
-github.setup        KhronosGroup Vulkan-Tools 1.3.261.1 sdk-
+github.setup        KhronosGroup Vulkan-Tools 1.4.321.0 vulkan-sdk-
 github.tarball_from archive
 name                vulkan-tools
 revision            0
@@ -17,24 +17,28 @@ description         Vulkan tools
 long_description    Provides vulkaninfo command for checking Vulkan installation configuration status
 homepage            https://vulkan.lunarg.com
 
-depends_build-append port:vulkan-headers
+depends_build-append    port:vulkan-headers \
+                        port:vulkan-volk \
+                        path:bin/glslang:glslang \
+                        path:bin/glslc:shaderc
+
 depends_lib-append  port:vulkan-loader
 
+checksums           sha256  f897f76b1fae6b85b567ee86d7bc1ba6f5b1a13d3bfa5fe0f07fdb81609f7b75 \
+                    rmd160  cbd9089abb89889c82c595abe7a0a3afa0aed60f \
+                    size    807441
 
-checksums           sha256  07543d761b5ae53e380fdf7a3f42bd706f2cf1ad04a310381fcf386fefb814c6 \
-                    rmd160  8590f141f6050569d74fa9e4eabf0711d087dd82 \
-                    size    801322
-
-patchfiles          cmake.patch
-
-set py_ver          3.11
+set py_ver          3.13
 set py_ver_nodot    [string map {. {}} ${py_ver}]
 foreach stage {configure build destroot test} {
     ${stage}.env-append PATH=${frameworks_dir}/Python.framework/Versions/${py_ver}/bin:$env(PATH)
 }
 depends_build-append port:python${py_ver_nodot}
 
+# TODO: cube, icd
 configure.args-append \
                     -DBUILD_CUBE=OFF \
                     -DBUILD_ICD=OFF \
-                    -DVULKAN_LOADER_INSTALL_DIR=${prefix}/lib
+                    -DDTOOLS_VULKANINFO=ON \
+                    -DDTOOLS_CODEGEN=ON \
+                    -DVULKAN_LOADER_INSTALL_DIR=${prefix}

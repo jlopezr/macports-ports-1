@@ -7,13 +7,13 @@ PortGroup           github           1.0
 name                py-murmurhash
 # Don't upgrade past py-spaCy's highest supported version.
 github.setup        explosion murmurhash 1.0.10 v
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 revision            0
 
 checksums           rmd160  b31b30e3e349394069f90bd0f0f193f4f9484910 \
                     sha256  62254b101542f4f715fbc8219ed0e53c0daa800e80de35b5c2a7663a48a2d0fb \
                     size    12422
-
-supported_archs     arm64 x86_64
 
 license             MIT
 
@@ -26,16 +26,9 @@ long_description    {*}${description}
 github.livecheck.regex {([0-9.]+)}
 
 # Supported python versions
-python.versions     37 38 39 310 311
+python.versions     39 310 311 312 313
 
 if {${name} ne ${subport}} {
-    depends_build-append \
-        port:py${python.version}-setuptools \
-        port:py${python.version}-wheel
-
     depends_lib-append \
         port:py${python.version}-cython
-
-    depends_test-append \
-        port:py${python.version}-pytest
 }

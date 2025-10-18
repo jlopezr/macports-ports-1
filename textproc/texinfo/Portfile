@@ -7,11 +7,10 @@ PortGroup           perl5 1.0
 if {[string match *gcc* ${configure.compiler}]} {
     # https://trac.macports.org/ticket/65995
     PortGroup       muniversal 1.0
-
 }
 
 name                texinfo
-version             7.1
+version             7.2
 revision            0
 categories          textproc
 license             GPL-3+
@@ -31,21 +30,26 @@ long_description    Texinfo is the official documentation format of \
                     if only the info command is used).
 homepage            https://www.gnu.org/software/texinfo/
 
-perl5.major         5.34
+perl5.require_variant yes
+perl5.conflict_variants yes
+perl5.branches 5.28 5.30 5.32 5.34 5.36 5.38
+perl5.default_branch 5.34
+perl5.create_variants ${perl5.branches}
 
 depends_build       port:gettext \
                     port:help2man
 depends_lib         port:gettext-runtime \
                     port:libiconv \
+                    port:libunistring \
                     port:ncurses \
                     port:perl${perl5.major}
 
 master_sites        gnu
 use_xz              yes
 
-checksums           rmd160  06ef5a2e7a25855805c1f3723a4a36170105bf2f \
-                    sha256  deeec9f19f159e046fdf8ad22231981806dac332cc372f1c763504ad82b30953 \
-                    size    5545720
+checksums           rmd160 e6ba34142ecfed2add55e288f9739d30ba103d1d \
+                    sha256 0329d7788fbef113fa82cb80889ca197a344ce0df7646fe000974c5d714363a6 \
+                    size   6408432
 
 # https://trac.macports.org/wiki/WimplicitFunctionDeclaration#strchr
 configure.checks.implicit_function_declaration.whitelist-append strchr
@@ -67,10 +71,6 @@ pre-destroot {
         ${destroot}${prefix}/share/doc/${name}
 }
 
-post-destroot {
-    file delete -force ${destroot}${prefix}/lib/charset.alias
-}
-
 # mktexlsr is provided by texlive-bin (and needed only if texlive-bin
 # is installed). texlive-bin may be installed/uninstalled independently
 # of texinfo (but not at the same time, unless a locking mechanism is
@@ -79,14 +79,14 @@ post-destroot {
 post-activate {
     if {[file exists ${prefix}/bin/mktexlsr]} {
         ui_debug {Rebuilding TeX ls-R filename databases}
-        system ${prefix}/bin/mktexlsr
+        catch {system ${prefix}/bin/mktexlsr}
     }
 }
 
 post-deactivate {
     if {[file exists ${prefix}/bin/mktexlsr]} {
         ui_debug {Rebuilding TeX ls-R filename databases}
-        system ${prefix}/bin/mktexlsr
+        catch {system ${prefix}/bin/mktexlsr}
     }
 }
 

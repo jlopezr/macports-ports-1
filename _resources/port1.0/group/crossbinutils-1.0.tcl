@@ -91,6 +91,31 @@ array set crossbinutils.versions_info {
         sha256  ae9a5789e23459e59606e6714723f2d3ffc31c03174191ef0d015bdf06007450 \
         size    26765692
     }}
+    2.42 {xz {
+        rmd160  1aecf0d749c7eb0941f7e1f0be0006d8a8833dd8 \
+        sha256  f6e4d41fd5fc778b06b7891457b3620da5ecea1006c6a4a41ae998109f85a800 \
+        size    27567160
+    }}
+    2.43 {xz {
+        rmd160  b634d06c82b630337f4b5aa1c91646d9946f592a \
+        sha256  b53606f443ac8f01d1d5fc9c39497f2af322d99e14cea5c0b4b124d630379365 \
+        size    28175768
+    }}
+    2.43.1 {xz {
+        rmd160  6f8ed9d308d81752726f80939826621ed441d11b \
+        sha256  13f74202a3c4c51118b797a39ea4200d3f6cfbe224da6d1d95bb938480132dfd \
+        size    28174300
+    }}
+    2.44 {xz {
+        rmd160  44386f5741ed548a4648f0b71192a301efa4e351 \
+        sha256  ce2017e059d63e67ddb9240e9d4ec49c2893605035cd60e92ad53177f4377237 \
+        size    27285788
+    }}
+    2.45 {xz {
+        rmd160  04407793ec050b946eb982f1572e2806c63a3fb2 \
+        sha256  c50c0e7f9cb188980e2cc97e4537626b1672441815587f1eab69d2a1bfbef5d2 \
+        size    27868232
+    }}
 }
 
 proc crossbinutils.setup {target version} {
@@ -98,12 +123,11 @@ proc crossbinutils.setup {target version} {
 
     crossbinutils.target ${target}
 
-    name            ${target}-binutils
-    version         ${version}
-    categories      cross devel
-    platforms       darwin
-    license         GPL-3+
-    maintainers     nomaintainer
+    default name        ${target}-binutils
+    version             ${version}
+    default categories  {cross devel}
+    default license     GPL-3+
+    default maintainers nomaintainer
 
     description     FSF Binutils for ${target} cross development
     long_description \
@@ -168,7 +192,19 @@ proc crossbinutils.setup {target version} {
         --enable-install-libiberty=${prefix}/${crossbinutils.target}/host \
         --infodir=${prefix}/share/info/${target} \
         --mandir=${prefix}/share/man \
-        --datarootdir=${prefix}/share/${crossbinutils.target}
+        --datarootdir=${prefix}/share/${crossbinutils.target} \
+        --with-system-zlib
+
+    # Opportunistic links zstd for compression
+    if {[vercmp ${version} >= "2.40"]} {
+        depends_lib-append  port:zstd
+    }
+
+    # fatal error: error in backend: Cannot select: intrinsic %llvm.x86.sha1rnds4
+    # https://github.com/macports/macports-ports/pull/27345#issuecomment-2601373548
+    if {[vercmp ${version} >= "2.41"]} {
+        compiler.blacklist-append {clang < 1001}
+    }
 
     build.dir ${workpath}/build
 

@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-distlib
-version             0.3.6
+version             0.4.0
 revision            0
 epoch               1
 
@@ -19,16 +19,16 @@ long_description    {*}${description}
 
 homepage            https://bitbucket.org/pypa/distlib
 
-checksums           rmd160  6b9dca7e62a1b689c34c313787c1cc4a819210b5 \
-                    sha256  14bad2d9b04d3a36127ac97f30b12a19268f211063d8f8ee4f47108896e11b46 \
-                    size    607879
+checksums           rmd160  2957faba562850d286d390e0c604ae9ac848b296 \
+                    sha256  feec40075be03a04501a973d81f633735b4b69f98b05450592310c0f401a4e0d \
+                    size    614605
 
-# keep versions for Python < 3.4, these are (indirect) dependencies of py-virtualenv
+# keep version for Python 2.7, this is a (indirect) dependency of py-virtualenv
 # See: <https://trac.macports.org/wiki/Python#VersionPolicy>
-python.versions     27 37 38 39 310 311 312
+python.versions     27 39 310 311 312 313 314
 
 if {${name} ne ${subport}} {
-    if {${python.version} < 36} {
+    if {${python.version} == 27} {
         # version 0.3.5 supports all Python versions, but MacPorts does not have a PEP517
         # compatible build solution for anything below Python 3.6
         version     0.3.4
@@ -38,7 +38,6 @@ if {${name} ne ${subport}} {
                     sha256  e4b58818180336dc9c529bfb9a0b58728ffc09ad92027a3f30b7cd91e3458579 \
                     size    631981
     } else {
-        python.pep517   yes
-        test.run        yes
+        test.run    yes
     }
 }

@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           npm 1.0
 
 name                bash-language-server
-version             5.0.0
+version             5.4.3
 revision            0
 
 categories          devel
@@ -17,6 +17,6 @@ description         A language server for Bash
 long_description    {*}${description}
 homepage            https://github.com/bash-lsp/bash-language-server
 
-checksums           rmd160  ced1a1b1e069bc51242855def932521e1db98476 \
-                    sha256  662af94971656b1ff3004271efc7ea65fc893665793f19e4ff143542fac50c88 \
-                    size    189362
+checksums           rmd160  63baf19d11e7cf5bfbecc3b973603ae4925c5166 \
+                    sha256  bf47e3b983a68e753953394d8ce2b98982af910b41c89d9f4ff5a4dcd077088d \
+                    size    329590

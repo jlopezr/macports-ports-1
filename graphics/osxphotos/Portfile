@@ -4,7 +4,7 @@ PortSystem              1.0
 PortGroup               python 1.0
 
 name                    osxphotos
-version                 0.66.0
+version                 0.73.4
 revision                0
 
 categories              graphics python
@@ -13,8 +13,7 @@ platforms               {darwin any}
 supported_archs         noarch
 
 maintainers             openmaintainer \
-                        {@catap korins.ky:kirill} \
-                        {breun.nl:nils @breun} \
+                        {breun @breun} \
                         {@RhetTbull gmail.com:rturnbull}
 
 license                 MIT
@@ -26,18 +25,24 @@ long_description        {*}${description}
 
 homepage                https://github.com/RhetTbull/osxphotos
 
-checksums               rmd160  d605827f76d919aadebe19aefb152dfb77f3757c \
-                        sha256  04cd5c4d1d549eb4fd67d2aed07bfce89e079ac78462645fe8c4595eba954f0f \
-                        size    2061210
+checksums               rmd160  1cf13cd353c5dc94a86d26927db009c7388b3dbc \
+                        sha256  80c3446320deb14cd3c281b22c5beb8f56fd89ccbd9b89668db6a1bbadf01c10 \
+                        size    2337446
 
-python.default_version  311
+# Python 3.14 supported since 0.73.4, but not all dependencies available for Python 3.14 yet
+python.default_version  313
 
 depends_build-append    port:py${python.version}-setuptools
 
-depends_lib-append      port:py${python.version}-bitmath \
+depends_lib-append      port:py${python.version}-beautifulsoup4 \
+                        port:py${python.version}-bitmath \
                         port:py${python.version}-bpylist2 \
+                        port:py${python.version}-cgmetadata \
                         port:py${python.version}-click \
+                        port:py${python.version}-mac-alias \
+                        port:py${python.version}-makelive \
                         port:py${python.version}-mako \
+                        port:py${python.version}-markdown2 \
                         port:py${python.version}-more-itertools \
                         port:py${python.version}-objexplore \
                         port:py${python.version}-osxmetadata \
@@ -55,13 +60,22 @@ depends_lib-append      port:py${python.version}-bitmath \
                         port:py${python.version}-tenacity \
                         port:py${python.version}-textx \
                         port:py${python.version}-toml \
+                        port:py${python.version}-whenever \
                         port:py${python.version}-wrapt \
                         port:py${python.version}-wurlitzer \
                         port:py${python.version}-xdg-base-dirs \
                         port:py${python.version}-yaml
+
+depends_run-append      port:py${python.version}-utitools
 
 post-destroot {
     xinstall -m 755 -d ${destroot}${prefix}/share/doc/${subport}
     xinstall -m 644 -W ${worksrcpath} LICENSE README.md README.rst \
        ${destroot}${prefix}/share/doc/${subport}
 }
+
+test.run    yes
+test.cmd    osxphotos
+test.target
+test.args   version
+

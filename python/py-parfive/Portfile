@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-parfive
-version             2.0.2
+version             2.2.0
 revision            0
 categories-append   net
 license             MIT
@@ -12,15 +12,16 @@ maintainers         {mps @Schamschula} openmaintainer
 description         A parallel file downloader using asyncio.
 long_description    {*}${description} parfive can handle downloading multiple files in \
                     parallel as well as downloading each file in a number of chunks.
-supported_archs     noarch
-platforms           {darwin any}
 homepage            https://parfive.readthedocs.io/en/stable/
 
-python.versions     37 38 39 310 311
+supported_archs     noarch
+platforms           {darwin any}
 
-checksums           rmd160  36d18698710e57ecbcdcfdcec65d4756887d3e23 \
-                    sha256  908211f9c5cb52dc8b279626872095f3cce15da86893f53b4176deceddcfc85d \
-                    size    31686
+python.versions     39 310 311 312 313
+
+checksums           rmd160  37624883870f8448e9309bbe1cbaad398e7e930a \
+                    sha256  de07d148d898e3f8ad6d6514e1d28e13f51d80de153fa1918c346509a5002e9b \
+                    size    40007
 
 if {${name} ne ${subport}} {
     depends_build-append \
@@ -29,11 +30,6 @@ if {${name} ne ${subport}} {
     depends_lib-append \
                     port:py${python.version}-aiohttp \
                     port:py${python.version}-tqdm
-
-    if {${python.version} eq 37} {
-    depends_lib-append \
-                    port:py${python.version}-typing_extensions
-    }
 }
 
 variant ftp description {Add ftp functionality} {

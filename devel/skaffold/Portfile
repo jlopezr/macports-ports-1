@@ -3,11 +3,11 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        GoogleContainerTools skaffold 2.9.0 v
+github.setup        GoogleContainerTools skaffold 2.16.1 v
 revision            0
 
 categories          devel
-maintainers         {breun.nl:nils @breun} openmaintainer
+maintainers         {breun @breun} openmaintainer
 platforms           darwin
 license             Apache-2
 
@@ -22,9 +22,9 @@ homepage            https://skaffold.dev
 
 github.tarball_from archive
 
-checksums           rmd160  531db148dcc47278cccbf4d76ca83c060f6caf4a \
-                    sha256  92a0e0181ecd3b73a2fd816048c817a19de096a4fb10c2adcb6f74c599f6d9b6 \
-                    size    60514939
+checksums           rmd160  8f85c1108fc27c3b042a9d3ff871c62ff56820e1 \
+                    sha256  ec40b593ffadfe8fcb96085d76db6638f56aebc2767e76046c4237bb925e6678 \
+                    size    64031398
 
 depends_build       port:go
 
@@ -32,6 +32,11 @@ use_configure       no
 
 build.env-append    VERSION=${version} LOCAL=true
 build.target
+
+test.run    yes
+test.cmd    out/${name}
+test.target
+test.args   version
 
 destroot {
     xinstall -m 0755 ${worksrcpath}/out/${name} ${destroot}${prefix}/bin/${name}

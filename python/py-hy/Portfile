@@ -5,8 +5,7 @@ PortGroup python 1.0
 PortGroup select 1.0
 
 name                py-hy
-version             0.27.0
-revision            2
+version             1.1.0
 categories-append   lang
 license             MIT
 platforms           {darwin any}
@@ -20,20 +19,14 @@ long_description    Hy is a Lisp dialect that's embedded in Python. Since Hy \
 
 homepage            https://hylang.org/
 
-checksums           rmd160  db27e11db55871b785eaf249e8c77f2103b6a159 \
-                    sha256  5d646e32b01fea740057b856639c672489d27ec7f9cc882363951c748d2b5ceb \
-                    size    100887
+checksums           rmd160  c2a45714885ced78f1708f93f4260d7f52b57adc \
+                    sha256  c8943ce306341b4b3edab4142f2c7ca55b43415b0ebf6c0e7969290a6eed2948 \
+                    size    120402
 
-python.versions     38 39 310 311
+python.versions     39 310 311 312 313
 
 if {${name} ne ${subport}} {
-    depends_build-append    port:py${python.version}-setuptools \
-                            port:py${python.version}-wheel
-
     depends_lib-append      port:py${python.version}-funcparserlib
-    if {${python.version} < 39} {
-        depends_lib-append  port:py${python.version}-astor
-    }
 
     depends_run-append      port:hy_select
 

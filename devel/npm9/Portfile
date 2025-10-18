@@ -3,10 +3,10 @@
 PortSystem          1.0
 
 name                npm9
-version             9.9.2
+version             9.9.4
 revision            0
 categories          devel
-platforms           darwin
+platforms           any
 supported_archs     noarch
 license             MIT
 maintainers         {ciserlohn @ci42} openmaintainer
@@ -15,7 +15,7 @@ long_description    npm is a package manager for node. \
                     You can use it to install and publish your node programs. \
                     It manages dependencies and does other cool stuff.
 
-conflicts           npm3 npm4 npm5 npm6 npm7 npm8 npm10
+conflicts           npm3 npm4 npm5 npm6 npm7 npm8 npm10 npm11
 
 homepage            https://www.npmjs.com/
 
@@ -27,10 +27,10 @@ extract.suffix      .tgz
 
 # Please keep the sha1 - users can use it to validate sha values
 # published on npmjs.org for the package
-checksums           rmd160  e3e30db584f3f2b966ee2b5a6a2376bbd940cd1e \
-                    sha1    28133f81643bce36c1c8bcb57b51e1ee53583df7 \
-                    sha256  943d748713b73892f35ac391c475be67361cf468fd60ae130b5dd76d39a25ac4 \
-                    size    2718626
+checksums           rmd160  ea5eb592b061a25ffe02d93b0e92f926e851aa69 \
+                    sha1    572bef36e61852c5a391bb3b4eb86c231b1365cd \
+                    sha256  640bdd76a0b9d92e9da6e391abae75fd2f168478e416847f3acdb8373737e0ee \
+                    size    2711670
 
 worksrcdir          "package"
 

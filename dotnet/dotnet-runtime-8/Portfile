@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                dotnet-runtime-8
-version             8.0.0
+version             8.0.20
 revision            0
 categories          dotnet
 license             MIT
@@ -19,21 +19,21 @@ long_description    .NET is a free, cross-platform, open source developer platfo
                     to build for web, mobile, desktop, games, and IoT.
 
 homepage            https://dotnet.microsoft.com/
-platforms           darwin
+platforms           {darwin any} {darwin >= 21}
 supported_archs     x86_64 arm64
 
 switch ${build_arch} {
     x86_64 {
         distname            dotnet-runtime-${version}-osx-x64
-        checksums           rmd160  7808f1b8264dd809f3356e3c4416710dbab507f4 \
-                            sha256  ac54851b166c1df0a8726ff1649c0c118ea9c38d4c8b26268215c2282a6fbf0c \
-                            size    30890194
+        checksums           rmd160  d3411462a5d8f0c4c892734d9fb107c2fac9734d \
+                            sha256  0830f23c3a046ce4489907dcddde1398d60ccc88cdb1a36d004349a5dabae06e \
+                            size    30725634
     }
     arm64 {
         distname            dotnet-runtime-${version}-osx-arm64
-        checksums           rmd160  ee0df181fefd87d08a15e20ec2f0349645361ec8 \
-                            sha256  60d6cb60ae1aab439188f1a7b0b6d62f3f7c25ca71de29e6cef62769a16b2daa \
-                            size    29224894
+        checksums           rmd160  2c9c2e9712c0bf32945995964358ee08da411f47 \
+                            sha256  bb946419626a8ba33126a4bc7acf16f6067b1ee030f3ba869573fdeb3f5c74a7 \
+                            size    29075957
     }
     default {
         known_fail yes
@@ -44,7 +44,7 @@ switch ${build_arch} {
     }
 }
 
-master_sites        https://dotnetcli.azureedge.net/dotnet/Runtime/${version}/
+master_sites        https://builds.dotnet.microsoft.com/dotnet/Runtime/${version}/
 
 worksrcdir          ${name}-${version}
 extract.mkdir       yes
@@ -67,5 +67,5 @@ destroot {
 }
 
 livecheck.type      regex
-livecheck.url       https://dotnet.microsoft.com/en-us/download/dotnet/8.0
+livecheck.url       https://dotnet.microsoft.com/download/dotnet/8.0
 livecheck.regex     ".NET Runtime (\\d+(?:\\.\\d+)*)"

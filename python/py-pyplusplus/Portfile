@@ -4,10 +4,12 @@ PortSystem          1.0
 PortGroup           python 1.0
 PortGroup           github 1.0
 
-github.setup        ompl pyplusplus 1.8.5
+github.setup        ompl pyplusplus 1.8.7
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 name                py-pyplusplus
-epoch               8
-python.versions     37 38 39 310 311
+epoch               10
+python.versions     39 310 311 312 313
 categories-append   devel
 maintainers         {mmoll @mamoll} openmaintainer
 license             Boost-1
@@ -15,9 +17,9 @@ description         Py++ is a framework for creating a code generator for Boost.
 long_description    {*}${description}
 supported_archs     noarch
 platforms           {darwin any}
-checksums           rmd160  f1112161dde977da8df8d64641111932b38229e3 \
-                    sha256  551f3584e0659937cadea8aa020459fd5a790a413066d40a145d293f7ccfc254 \
-                    size    3415355
+checksums           rmd160  5c875345c32c435323b881841e1e77a43f7b914a \
+                    sha256  04e4e261607b95571f3b72a713f2380bf5c0930ad0bfa066df97d4ef018f9ab5 \
+                    size    3415386
 
 if {${name} ne ${subport}} {
     depends_lib-append \

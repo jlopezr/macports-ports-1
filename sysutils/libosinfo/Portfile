@@ -2,11 +2,10 @@
 
 PortSystem          1.0
 PortGroup           meson 1.0
-PortGroup           compiler_blacklist_versions 1.0
 
 name                libosinfo
-version             1.10.0
-revision            3
+version             1.12.0
+revision            0
 
 categories          sysutils gnome
 license             LGPL-2.1+
@@ -18,31 +17,35 @@ long_description    ${description}
 homepage            https://libosinfo.org
 master_sites        https://releases.pagure.org/libosinfo/
 
-checksums           rmd160  d27f2195b01bcce95c1a0b681730282be2eca93b \
-                    sha256  a252e00fc580deb21da0da8c0aa03b8c31e8440b8448c8b98143fab477d32305 \
-                    size    293804
+checksums           rmd160  f6fedadcae4e1f0465701436089a9589c4d7937b \
+                    sha256  ad8557ece26793da43d26de565e3d68ce2ee6bfb8d0113b7cc7dfe07f6bfc6b6 \
+                    size    307984
 
 use_xz              yes
 
 depends_lib         path:lib/pkgconfig/glib-2.0.pc:glib2 \
                     path:lib/pkgconfig/gobject-introspection-1.0.pc:gobject-introspection \
-                    path:lib/pkgconfig/icu-uc.pc:icu \
-                    path:lib/pkgconfig/libsoup-2.4.pc:libsoup \
+                    path:lib/pkgconfig/libsoup-3.0.pc:libsoup \
                     port:libxml2 \
-                    port:libxslt \
-                    port:osinfo-db
+                    port:libxslt
 
 depends_build       path:bin/vala:vala \
                     port:gtk-doc \
                     port:intltool \
-                    port:pkgconfig \
-                    port:check \
-                    port:wget
+                    path:bin/pkg-config:pkgconfig
+
+depends_run         port:hwdata \
+                    port:osinfo-db
+
+# Undefined symbols: "___gcc_personality_v0", "__Unwind_Resume"
+patchfiles-append   patch-unbreak-linking.diff
 
 compiler.blacklist-append *gcc-4.* {clang < 400}
 
+# https://gitlab.com/libosinfo/libosinfo/-/issues/59
 configure.args-append \
-                    --datadir="${prefix}/usr/share/"
+                    -Dwith-pci-ids-path=${prefix}/share/hwdata/pci.ids \
+                    -Dwith-usb-ids-path=${prefix}/share/hwdata/usb.ids
 
 if {${universal_possible} && [variant_isset universal]} {
     foreach arch ${configure.universal_archs} {
@@ -53,5 +56,3 @@ if {${universal_possible} && [variant_isset universal]} {
     build.env-append "CC=${configure.cc} ${configure.cc_archflags}"
     destroot.env-append "CC=${configure.cc} ${configure.cc_archflags}"
 }
-
-destroot.violate_mtree yes

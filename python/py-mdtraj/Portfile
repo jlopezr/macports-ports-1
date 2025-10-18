@@ -5,6 +5,8 @@ PortGroup           python 1.0
 PortGroup           github 1.0
 
 github.setup        mdtraj mdtraj 1.9.7
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 name                py-mdtraj
 homepage            https://www.mdtraj.org
 license             LGPL-2.1+
@@ -21,7 +23,7 @@ checksums           rmd160  c24ae0bad238413357bc6a00101a330f7bfdd8d2 \
                     sha256  ecfae2395037bef36b894ab10508229e99c05495b3e9e33071038c068bd15868 \
                     size    21658021
 
-python.versions     38 39 310
+python.versions     39 310
 
 if {${name} ne ${subport}} {
     depends_build-append    port:py${python.version}-cython

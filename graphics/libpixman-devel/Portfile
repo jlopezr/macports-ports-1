@@ -1,20 +1,23 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem              1.0
-PortGroup               compiler_blacklist_versions 1.0
+PortGroup               legacysupport 1.1
 PortGroup               meson 1.0
 PortGroup               muniversal 1.0
 
 # Please keep the libpixman and libpixman-devel ports as similar as possible.
 
+# posix_memalign
+legacysupport.newest_darwin_requires_legacy 9
+
 name                    libpixman-devel
 conflicts               libpixman
 set my_name             pixman
-version                 0.42.2
-revision                3
-checksums               rmd160  282e3f6fc956391df67398a414b083d221ffdf4d \
-                        sha256  5747d2ec498ad0f1594878cc897ef5eb6c29e91c53b899f7f71b506785fc1376 \
-                        size    652984
+version                 0.46.2
+revision                0
+checksums               rmd160  054f8839e38a4ce635d4b9a7bb934e8e1436a6a1 \
+                        sha256  d075209d18728b1ca5d0bb864aa047a262a1fde206da8a677d6af75b2ee1ae98 \
+                        size    660260
 
 categories              graphics
 maintainers             {ryandesign @ryandesign} {mascguy @mascguy}
@@ -36,12 +39,6 @@ long_description        libpixman is a generic library for manipulating pixel \
 # Disable unexpected download of subprojects
 meson.wrap_mode         nodownload
 
-patchfiles-append       patch-pixman-pixman-vmx.c.diff
-
-# Upstream patch for ARM support. Merged into master; remove for next release.
-# Source: https://gitlab.freedesktop.org/pixman/pixman/-/merge_requests/71
-patchfiles-append       patch-pixman-arm.diff
-
 # Upstream patch for dylib versioning. Expected to be included in next release.
 # See: https://gitlab.freedesktop.org/pixman/pixman/-/issues/81
 patchfiles-append       patch-meson-dylib-versions.diff
@@ -51,18 +48,18 @@ depends_build-append \
 
 # llvm-gcc-4.2 makes cairo fail to generate PDFs properly
 # clang on Xcode 4.1 cannot build libpixman
-compiler.blacklist      llvm-gcc-4.2 {clang < 211.10.1}
+compiler.blacklist-append      {clang < 211.10.1} {*gcc-4.[0-2]}
 
 configure.checks.implicit_function_declaration.whitelist-append \
                         strchr
 
 configure.args-append \
+                        -Ddemos=disabled \
                         -Dgtk=disabled \
                         -Dlibpng=disabled \
                         -Dmmx=disabled \
-                        -Dopenmp=disabled
-
-test.run                yes
+                        -Dopenmp=disabled \
+                        -Dtests=disabled
 
 post-destroot {
     set docdir ${destroot}${prefix}/share/doc/libpixman
@@ -73,9 +70,12 @@ post-destroot {
         ${docdir}
 }
 
-platform darwin 8 powerpc {
-    # apple-gcc-4.2 makes Tiger ppc fail to detect pthread support and then fail to build
-    compiler.blacklist-append apple-gcc-4.2
+variant tests description {Enable test support} {
+    configure.args-replace \
+                        -Dtests=disabled \
+                        -Dtests=enabled
+
+    test.run            yes
 }
 
 livecheck.type          regex

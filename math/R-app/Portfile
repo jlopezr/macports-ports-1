@@ -2,21 +2,36 @@
 
 PortSystem              1.0
 PortGroup               xcode 1.0
+PortGroup               active_variants 1.1
 
 name                    R-app
 
 # Update for newer systems, keep pegged for older. Compatibility see in R.xcodeproj/project.pbxproj
 if {${os.platform} eq "darwin" && ${os.major} > 12} {
-    version             1.80
+    version             1.82
+    set rel_r_ver       4.5.1
+    revision            0
+    # The version of R when this version of R-app was released, used for changing version
+    # info of app bundle to match the actual R version. Should be updated for each R-app release,
+    # and revbumped for each R release.
+
+    distname            Mac-GUI-${version}
+    checksums           ${distname}${extract.suffix} \
+                        rmd160  08245af666c5df968022b9f91434037e1da0acd7 \
+                        sha256  1a1b7d755b2e245acb7e3ced568ed424a70dae0a9b3d9c642bf6149b484350c1 \
+                        size    1400968
 } else {
     # Version for older systems, including PPC. 1.73 still builds but freezes on quit.
     version             1.72
+    set rel_r_ver       4.0.2
+    revision            7
+
+    distname            Mac-GUI-${version}
+    checksums           ${distname}${extract.suffix} \
+                        rmd160  022ddae8a3988c5a33928d520742ddfca73ac21d \
+                        sha256  a30c97b37645b55aff62bc88cccaf92c307f1e84d84d3ecd5c1333afa2b78e76 \
+                        size    1311627
 }
-revision                0
-set rel_r_ver           4.3.2
-# The version of R when this version of R-app was released, used for changing version
-# info of app bundle to match the actual R version. Should be updated for each R-app release,
-# and revbumped for each R release.
 categories              math science aqua
 maintainers             {me.com:kjell.konis @kjellpk} {i0ntempest @i0ntempest} openmaintainer
 license                 GPL-2+
@@ -30,25 +45,13 @@ platforms               macosx
 master_sites            http://cran.rstudio.com/bin/macosx/ \
                         http://cran.us.r-project.org/bin/macosx/
 
-distname                Mac-GUI-${version}
-
-if {${os.platform} eq "darwin" && ${os.major} > 12} {
-    checksums           ${distname}.tar.gz \
-                        rmd160  8c41086f9390e1c5f1a9b6f2a59ed3e84abad164 \
-                        sha256  11a84bd2e26cfd746129bc334ffc78215468497e205d6a8f710e20ac4bead915 \
-                        size    1400603
-} else {
-    checksums           ${distname}.tar.gz \
-                        rmd160  022ddae8a3988c5a33928d520742ddfca73ac21d \
-                        sha256  a30c97b37645b55aff62bc88cccaf92c307f1e84d84d3ecd5c1333afa2b78e76 \
-                        size    1311627
-}
+require_active_variants R aqua
 
 if {${os.platform} eq "darwin" && ${os.major} < 11} {
     # We need to use xib files from older version, newer fail to build with Xcode 3.x.
     set legacy_ver      1.70
-    set legacy_dist     Mac-GUI-${legacy_ver}.tar.gz
-    set main_dist       ${distname}.tar.gz
+    set legacy_dist     Mac-GUI-${legacy_ver}${extract.suffix}
+    set main_dist       ${distname}${extract.suffix}
     distfiles-append    ${legacy_dist}
     checksums-append    ${legacy_dist} \
                         rmd160  1d351ae2b736bb9f6bd26ce164c37c6926d0e171 \
@@ -85,13 +88,8 @@ post-patch {
         ${worksrcpath}/R.xcodeproj/project.pbxproj
     set r_ver [lindex [split [exec ${prefix}/bin/R --version | head -n1] " "] 2]
     reinplace "s|${rel_r_ver}|${r_ver}|g" ${worksrcpath}/InfoPlist.h
-    if {${os.platform} eq "darwin" && ${os.major} > 12} {
-        set rev_file [open ${worksrcpath}/REVISION r]
-        set r_rev [lindex [split [read $rev_file] "\n"] 0]
-    } else {
-        set rev_file [open ${worksrcpath}/updateSVN r]
-        set r_rev [lindex [split [lsearch -inline [split [read $rev_file] "\n"] "SVNREV=*"] "="] 1]
-    }
+    set rev_file [open ${worksrcpath}/updateSVN r]
+    set r_rev [lindex [split [lsearch -inline [split [read $rev_file] "\n"] "SVNREV=*"] "="] 1]
     close $rev_file
     reinplace "s|%SVN%|${r_rev}|g" ${worksrcpath}/Info.plist
 }

@@ -5,6 +5,8 @@ PortGroup           github 1.0
 PortGroup           common_lisp 1.0
 
 github.setup        wlbr cl-marshal f169abd3c7b1b6a950897335f46215e15dbacdff
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 version             20231025
 revision            0
 
@@ -13,7 +15,7 @@ checksums           rmd160  c0ec311c69a2ce2af1aa9954172ea36b08e87b80 \
                     size    12314
 
 categories-append   devel
-maintainers         {@catap korins.ky:kirill} openmaintainer
+maintainers         nomaintainer
 license             MIT
 
 description         Simple and fast serialization of all kinds of Common Lisp data structures.

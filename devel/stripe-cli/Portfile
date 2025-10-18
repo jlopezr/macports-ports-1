@@ -3,9 +3,8 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/stripe/stripe-cli 1.18.0 v
+go.setup            github.com/stripe/stripe-cli 1.26.1 v
 go.offline_build    no
-github.tarball_from archive
 revision            0
 
 homepage            https://stripe.com/docs/stripe-cli
@@ -25,9 +24,9 @@ license             Apache-2
 maintainers         {gmail.com:herby.gillot @herbygillot} \
                     openmaintainer
 
-checksums           rmd160  d14123c1b73377465ac9648867e33667c44f3a7e \
-                    sha256  901477d7bd493250a53a80c02fe93b986ecf7124a8905ee0ffe8f014ac3f7fa7 \
-                    size    1539346
+checksums           rmd160  fcdaceb252c31d2dd396d88a58c94bcc7f8feb53 \
+                    sha256  a87bf4f2aae9f17576a1ec1b47b5c71307eb1b062de71aae97827d4d086d7375 \
+                    size    1871725
 
 # disable stripe telemetry which is otherwise enabled by default
 patchfiles          patch-disable-telemetry.diff

@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-xkcdpass
-version             1.19.8
+version             1.20.0
 revision            0
 
 description         A flexible and scriptable password generator which generates strong \
@@ -19,16 +19,13 @@ categories          python security
 license             BSD
 maintainers         {amake @amake} openmaintainer
 
-checksums           rmd160  8bcac614db60b9b9e5f9d3d1c72b468a013ad240 \
-                    sha256  30afff4399b83de362a11b26c4768c6cddb1edae12920572d31931baf9d4b9fa \
-                    size    2689908
+checksums           rmd160  73e6bfd0142e92c51cac8d6f08f1fb9b3448881a \
+                    sha256  b5abfd7d2b59cdda59f937fb22210ac4649ad0d2e09e1f87bfe74a54e23ad18a \
+                    size    2722027
 
-python.versions     37 38 39 310 311
+python.versions     39 310 311 312
 
 if {${name} ne ${subport}} {
-    depends_build-append \
-        port:py${python.version}-setuptools
-
     post-destroot {
         xinstall -m 0755 -d ${destroot}${python.prefix}/share/man/man1
         xinstall -m 0644 ${worksrcpath}/xkcdpass.1 ${destroot}${python.prefix}/share/man/man1

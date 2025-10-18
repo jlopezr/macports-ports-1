@@ -2,37 +2,52 @@
 
 PortSystem          1.0
 
-name                openjdk17
-# See https://github.com/openjdk/jdk17u/tags for the version and build number that matches the latest tag that ends with '-ga'
-version             17.0.9
+set feature 17
+name                openjdk${feature}
+# See https://openjdk-sources.osci.io/openjdk17/ for the version and build number that matches the latest '-ga' version
+version             ${feature}.0.16
 set build 8
 revision            0
 categories          java devel
 supported_archs     x86_64 arm64
 license             GPL-2+
-maintainers         {outlook.com:usersword123 @usersxx} openmaintainer
-description         OpenJDK 17
-long_description    JDK 17 builds of OpenJDK, the Open-Source implementation \
+maintainers         nomaintainer
+description         OpenJDK ${feature}
+long_description    JDK ${feature} builds of OpenJDK, the Open-Source implementation \
                     of the Java Platform, Standard Edition, and related projects.
-homepage            https://openjdk.java.net/
-master_sites        https://git.openjdk.java.net/jdk17u/archive/refs/tags
-distname            jdk-${version}-ga
-worksrcdir          jdk17u-${distname}
+homepage            https://openjdk.org/projects/jdk/${feature}/
+master_sites        https://openjdk-sources.osci.io/openjdk${feature}/
+distname            openjdk-${version}-ga
+use_xz              yes
+worksrcdir          jdk-${version}+${build}
 
-checksums           rmd160  63df3fe18f78d7d604abead60d44150c80ad318a \
-                    sha256  365c6b7d506f25e2249cac7658ada8b72b8652ceb15bbc8316de3e6fe8ea0976 \
-                    size    106427433
+checksums           rmd160  2476a325a78b3d25737a9a8237bceef2c64d62df \
+                    sha256  0e9b096352ca5e087cbb1447c914c55b60d8e17cc07bd90d8dcfbb271e8fed09 \
+                    size    66771860
 
-depends_lib         port:freetype
-depends_build       port:openjdk17-bootstrap \
+set port_jdk_build  openjdk${feature}-zulu
+
+depends_lib         port:freetype \
+                    port:libiconv
+depends_build       port:${port_jdk_build} \
                     port:autoconf \
                     port:gmake \
                     port:bash
+
+# Don't block binary distribution, due to build JDK
+# See: https://trac.macports.org/ticket/72359
+license_noconflict-append \
+                    ${port_jdk_build}
 
 pre-patch {
     reinplace "s|libffi.so.?|libffi.?.dylib|g" ${worksrcpath}/make/autoconf/lib-ffi.m4
     reinplace "s|xmacosx|xwindows|g" ${worksrcpath}/make/autoconf/lib-freetype.m4
 }
+
+# Workaround for clang 16.0-16.1: https://trac.macports.org/ticket/70819
+# Workaround for undeclared enum in < 11.00: https://trac.macports.org/ticket/71049
+patchfiles          JDK-8340341-clang-16-workaround.patch \
+                    JDK-8342071-undecl-ident-nsbun-arm64-workaround.patch
 
 set tpath ${prefix}/Library/Java
 use_xcode           yes
@@ -48,7 +63,7 @@ configure.args      --with-debug-level=release \
                     --with-extra-cflags="${configure.cflags}" \
                     --with-extra-cxxflags="${configure.cxxflags}" \
                     --with-extra-ldflags="${configure.ldflags}" \
-                    --with-boot-jdk=/Library/Java/JavaVirtualMachines/openjdk17-bootstrap/Contents/Home \
+                    --with-boot-jdk=/Library/Java/JavaVirtualMachines/openjdk${feature}-zulu/Contents/Home \
                     --with-freetype=system \
                     --with-freetype-include=${prefix}/include/freetype2 \
                     --with-freetype-lib=${prefix}/lib \
@@ -163,5 +178,5 @@ export JAVA_HOME=${jdk}/Contents/Home
 "
     
 livecheck.type      regex
-livecheck.url       https://github.com/openjdk/jdk17u/tags
-livecheck.regex     jdk-(17\.\[0-9.\]+)-ga
+livecheck.url       https://openjdk-sources.osci.io/openjdk${feature}/
+livecheck.regex     openjdk-(${feature}\.\[0-9.\]+)-ga

@@ -5,6 +5,8 @@ PortGroup           github 1.0
 PortGroup           common_lisp 1.0
 
 github.setup        pkhuong string-case 718c761e33749e297cd2809c7ba3ade1985c49f7
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 name                cl-string-case
 version             20180718
 revision            0
@@ -14,7 +16,7 @@ checksums           rmd160  2cd1dec367e736ca6d6c308e050ab631e19c83f4 \
                     size    9167
 
 categories-append   devel
-maintainers         {@catap korins.ky:kirill} openmaintainer
+maintainers         nomaintainer
 license             BSD
 
 description         string-case is a macro that generates specialised decision trees to dispatch on string equality

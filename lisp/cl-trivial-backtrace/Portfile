@@ -5,6 +5,8 @@ PortGroup           github 1.0
 PortGroup           common_lisp 1.0
 
 github.setup        hraban trivial-backtrace 7f90b4a4144775cca0728791e4b92ac2557b07a1
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 
 # NOTE: repository was moved from github user gwkkwg to hraban,
 # and github produces archive which contains user name inside
@@ -20,7 +22,7 @@ checksums           rmd160  24036f2493aa3a4bc2de7348f1bfcecc29b145ab \
                     size    9508
 
 categories-append   devel
-maintainers         {@catap korins.ky:kirill} openmaintainer
+maintainers         nomaintainer
 license             BSD
 
 description         Portable simple API to work with backtraces in Common Lisp

@@ -4,14 +4,12 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-fiona
-python.rootname     Fiona
-version             1.9.4.post1
-revision            4
+version             1.10.1
+revision            2
 categories-append   gis
 license             BSD
 
-python.versions     37 38 39 310 311
-python.pep517       yes
+python.versions     39 310 311 312 313
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -23,26 +21,26 @@ long_description    Fiona provides uncomplicated Python interfaces \
 
 homepage            https://github.com/Toblerity/Fiona
 
-checksums           rmd160  f1b9081836b611bb7d9337e8847a679a1c02f68c \
-                    sha256  5679d3f7e0d513035eb72e59527bb90486859af4405755dfc739138633106120 \
-                    size    924293
+checksums           rmd160  2bfb5995f240cb85c19eacdbff51881fb7dc3280 \
+                    sha256  b00ae357669460c6491caba29c2022ff0acfcbde86a95361ea8ff5cd14a86b68 \
+                    size    444606
 
 if {${name} ne ${subport}} {
+    compiler.cxx_standard 2011
+
+    patchfiles-append   patch-pyproject.toml.diff
 
     depends_build-append \
-                        port:py${python.version}-cython \
-                        port:py${python.version}-numpy
+                        port:py${python.version}-cython
 
     depends_lib-append  port:py${python.version}-attrs \
                         port:py${python.version}-certifi \
                         port:py${python.version}-click \
                         port:py${python.version}-click-plugins \
                         port:py${python.version}-cligj \
-                        port:py${python.version}-munch \
-                        port:py${python.version}-setuptools \
                         port:gdal
 
-    post-patch {
-        reinplace "s|oldest-supported-numpy|numpy|g" ${worksrcpath}/pyproject.toml
+    if {${python.version} < 310} {
+        depends_lib-append  port:py${python.version}-importlib-metadata
     }
 }

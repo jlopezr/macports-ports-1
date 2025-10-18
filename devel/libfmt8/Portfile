@@ -3,8 +3,6 @@
 PortSystem          1.0
 
 PortGroup           cmake 1.1
-PortGroup           compiler_blacklist_versions 1.0
-PortGroup           conflicts_build 1.0
 PortGroup           github 1.0
 
 github.setup        fmtlib fmt 8.1.1
@@ -25,8 +23,6 @@ long_description    fmt (formerly cppformat) is an open-source formatting librar
 homepage            https://fmt.dev
 
 github.tarball_from archive
-
-conflicts_build     gtest
 
 set port_ver_major  [lindex [split ${version} .] 0]
 
@@ -60,7 +56,7 @@ configure.args-append \
 
 # see https://github.com/macports/macports-ports/pull/13645
 patchfiles          fix-formatting-implicitly-convertible-types.patch
-patch.pre_args      -p1
+patch.pre_args-replace  -p0 -p1
 
 cmake.generator     Ninja
 
@@ -93,6 +89,12 @@ pre-activate {
 }
 
 variant tests description {Enable test support} {
+    PortGroup       conflicts_build 1.0
+
+    # If gtest is active, build failures occur; let port use the internal version
+    conflicts_build-append \
+                    gtest
+
     configure.pre_args-replace \
                     -DCMAKE_BUILD_WITH_INSTALL_RPATH:BOOL=ON \
                     -DCMAKE_BUILD_WITH_INSTALL_RPATH:BOOL=OFF
@@ -104,4 +106,7 @@ variant tests description {Enable test support} {
     test.run        yes
 }
 
-github.livecheck.regex "(${port_ver_major}\.\[0-9.\]+)"
+# TODO: Update pg 'github' to use this API
+livecheck.url       https://api.github.com/repos/${github.author}/${github.project}/tags?per_page=200
+livecheck.curloptions
+livecheck.regex     "\"name\": \"(${port_ver_major}\.\[0-9\.\]+)\","

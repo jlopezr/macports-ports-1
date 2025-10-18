@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-sphinxcontrib-svg2pdfconverter
-version             1.2.2
+version             1.3.0
 revision            0
 
 categories-append   textproc devel
@@ -18,11 +18,13 @@ long_description    ${name} is a {*}${description}.
 
 homepage            https://sphinx-doc.org/
 
-checksums           rmd160  5e09fc441c8745f524b3d39d10bf09de00062df6 \
-                    sha256  80a55ca61f70eae93efc65f3814f2f177c86ba55934a9f6c5022f1778b62146b \
-                    size    5516
+distname            sphinxcontrib_svg2pdfconverter-${version}
 
-python.versions     38 39 310 311 312
+checksums           rmd160  e01b3753b6332e2777b4d6d3daf8190a6cfd5b65 \
+                    sha256  6411a4cc2f57eed96a0d7bbfa139f68cbe7983018881e1e6d7c46053cd69911f \
+                    size    6209
+
+python.versions     39 310 311 312 313
 
 if {${name} ne ${subport}} {
     # can use inkscape, librsvg, or cairosvg to do the image conversion

@@ -1,12 +1,11 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem          1.0
-PortGroup           compiler_blacklist_versions 1.0
 PortGroup           openssl 1.0
 
 name                tor
 conflicts           tor-devel
-version             0.4.8.8
+version             0.4.8.17
 revision            0
 categories          security net
 platforms           darwin
@@ -25,9 +24,9 @@ long_description    Tor provides a distributed network of servers \
 homepage            https://www.torproject.org/
 master_sites        https://dist.torproject.org/
 
-checksums           rmd160  b7dab80b87600cb7af8f4082cd197243b65650b1 \
-                    sha256  21bbe908cafeabff04636d26293540aa9366eb1cf389bc65dc2476c93e688004 \
-                    size    8261891
+checksums           rmd160  75621b45b6117cfb28d394a268249b91c5cb1379 \
+                    sha256  79b4725e1d4b887b9e68fd09b0d2243777d5ce3cd471e538583bcf6f9d8cdb56 \
+                    size    10073355
 
 depends_lib-append  port:libevent \
                     port:zlib

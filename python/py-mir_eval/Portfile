@@ -5,6 +5,8 @@ PortGroup           github 1.0
 PortGroup           python 1.0
 
 github.setup        craffel mir_eval 576aad4e0b5931e7c697c078a1153c99b885c64f
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 # version is from setup.py _dot_ date of commit
 version             0.6.20201030
 revision            0
@@ -29,7 +31,7 @@ checksums           rmd160  df4c42b789bc66acdc76ad73aed3198db89ce088 \
                     sha256  014939ae2e2e8a9b63145bc50437695e5a7213a0af5263b7aa1754e42041e9d9 \
                     size    2605143
 
-python.versions     38 39
+python.versions     39
 
 if {${name} ne ${subport}} {
     depends_run-append \

@@ -2,10 +2,9 @@
 
 PortSystem      1.0
 PortGroup       muniversal 1.0
-PortGroup       compiler_blacklist_versions 1.0
 
 name            gdb
-version         13.2
+version         16.3
 revision        0
 categories      devel
 license         GPL-3+
@@ -32,13 +31,9 @@ supported_archs x86_64 i386
 
 master_sites    gnu
 
-checksums       rmd160  ef57e9d16e34b6820791edaf3b4ec9c992cfaa3a \
-                sha256  7ead13d9e19fa0c57bb19104e1a5f67eefa9fc79f2e6360de491e8fddeda1e30 \
-                size    40251050
-
-
-# fix test for makeinfo version in libctf
-patchfiles      patch-gdb-libctf-makeinfo-test.diff
+checksums       rmd160  8c259c736d846878e82efc69b168ec277f7b5801 \
+                sha256  86015081217dc82c5485db9ce864dcc0b703759d2bdbe4441b095c5f900a6a37 \
+                size    41599902
 
 # Ventura+ do not have makeinfo in the system
 depends_build   bin:makeinfo:texinfo
@@ -53,6 +48,7 @@ depends_lib     port:boehmgc \
                 port:gmp \
                 port:gettext-runtime \
                 port:libiconv \
+                port:mpfr \
                 port:ncurses \
                 port:zlib
 
@@ -69,6 +65,7 @@ configure.dir ${workpath}/build
 configure.cmd ${worksrcpath}/configure
 configure.args \
     --with-docdir=${prefix}/share/doc \
+    --with-system-zlib \
     --without-guile \
     --without-python \
     --program-prefix=g \
@@ -105,7 +102,7 @@ post-destroot {
     }
 }
 
-set pythons_suffixes {27 35 36 37 38 39 310 311}
+set pythons_suffixes {27 35 36 37 38 39 310 311 312}
 
 set pythons_ports {}
 foreach s ${pythons_suffixes} {

@@ -5,6 +5,8 @@ PortGroup           github 1.0
 PortGroup           common_lisp 1.0
 
 github.setup        fukamachi dexador 051cbb784ea3015cef9731eb5a624f3122de84b5
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 name                cl-dexador
 version             20231029
 revision            0
@@ -14,7 +16,7 @@ checksums           rmd160  6e699bb2b809ef1f05a81028f0e55b5a43e8acaf \
                     size    212737
 
 categories-append   devel
-maintainers         {@catap korins.ky:kirill} openmaintainer
+maintainers         nomaintainer
 license             MIT
 
 description         A fast HTTP client for Common Lisp

@@ -5,11 +5,10 @@ PortGroup       active_variants 1.1
 
 name            gimp-lqr-plugin
 version         0.7.2
-revision        3 
+revision        3
 license         GPL-2
 maintainers     {devans @dbevans} openmaintainer
 categories      graphics
-platforms       darwin
 homepage        http://liquidrescale.wikidot.com/en:start
 
 description     Liquid Rescale Gimp plug-in.
@@ -25,16 +24,18 @@ master_sites    http://liquidrescale.wikidot.com/local--files/en:download-page-s
 use_bzip2       yes
 
 checksums       rmd160  1e03d5f6eb8b2914bdfa2e05eb33db0850f47f24 \
-                sha256  169e11164e4fe4e93a0f06e545748bd77b206b7a471bdebf7dd3bc8a008e647a
+                sha256  169e11164e4fe4e93a0f06e545748bd77b206b7a471bdebf7dd3bc8a008e647a \
+                size    784455
 
-depends_build   port:pkgconfig \
-                port:intltool \
-                port:autoconf \
+depends_build   port:autoconf \
                 port:automake \
-                port:libtool
+                port:intltool \
+                port:libtool \
+                path:bin/pkg-config:pkgconfig
 
-depends_lib     port:liblqr \
-                path:lib/pkgconfig/gimp-2.0.pc:gimp2
+depends_lib     path:lib/pkgconfig/gimp-2.0.pc:gimp2 \
+                path:lib/pkgconfig/glib-2.0.pc:glib2 \
+                port:liblqr
 
 patchfiles      patch-autogen.sh.diff \
                 patch-invalid-parameter-name-fix.diff

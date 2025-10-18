@@ -3,8 +3,8 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/sethvargo/ratchet 0.4.0 v
-github.tarball_from archive
+go.setup            github.com/sethvargo/ratchet 0.11.4 v
+go.offline_build    no
 revision            0
 
 description         A tool for securing CI/CD workflows with version pinning.
@@ -21,15 +21,12 @@ license             Apache-2
 maintainers         {gmail.com:herby.gillot @herbygillot} \
                     openmaintainer
 
-# Allow Go to fetch dependencies at build time
-go.offline_build no
-
 build.pre_args-append \
-    -ldflags \"-X ${go.package}/internal/version.Version=${version}\"
+    -ldflags \"-X ${go.package}/internal/version.version=${version}\"
 
-checksums           rmd160  b13986a9c72e1256b3e6449dfe8b464ce13f9bb2 \
-                    sha256  288d25d91c54f5be2be0b74fce503c667e8370540e50de57bcd1dbbc865d9150 \
-                    size    47176
+checksums           rmd160  140830217d5d634190c24590b11ff548392c0c83 \
+                    sha256  0f1a540f388d2b8633b8203670d6ec8722d47af40055ce79cd1743a731823b2e \
+                    size    55718
 
 destroot {
     xinstall -m 0755 ${worksrcpath}/${name} ${destroot}${prefix}/bin/

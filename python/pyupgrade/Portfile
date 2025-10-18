@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                pyupgrade
-version             3.15.0
+version             3.21.0
 revision            0
 
 categories-append   devel
@@ -14,18 +14,15 @@ license             MIT
 maintainers         {reneeotten @reneeotten} openmaintainer
 
 description         A tool to automatically upgrade syntax for newer versions.
-long_description    ${description}
+long_description    {*}${description}
 
 homepage            https://github.com/asottile/pyupgrade
 
-checksums           rmd160  7ce76b2fb19e4e5d0d9e7a74789d974f2c0b0334 \
-                    sha256  a7fde381060d7c224f55aef7a30fae5ac93bbc428367d27e70a603bc2acd4f00 \
-                    size    44449
+checksums           rmd160  784ea98a09fd06a78f66bda17dc4d66ae1e23b61 \
+                    sha256  3e63a882ec1d16f5621736d938952df3cdc2446501fb049e711415cb8d273960 \
+                    size    45210
 
-python.default_version  311
-
-depends_build-append \
-                    port:py${python.version}-setuptools
+python.default_version  313
 
 depends_lib-append  port:py${python.version}-tokenize-rt
 

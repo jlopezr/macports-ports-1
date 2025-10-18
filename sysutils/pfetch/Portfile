@@ -3,7 +3,7 @@
 PortSystem          1.0
 PortGroup           github  1.0
 
-github.setup        dylanaraps pfetch 0.6.0
+github.setup        Un1q32 pfetch 1.9.4
 github.tarball_from archive
 revision            0
 
@@ -22,9 +22,9 @@ maintainers         {gmail.com:herby.gillot @herbygillot} \
 supported_archs     noarch
 platforms           any
 
-checksums           rmd160  22c28104e9ce9536e474e5b0b019c15d20642003 \
-                    sha256  d1f611e61c1f8ae55bd14f8f6054d06fcb9a2d973095367c1626842db66b3182 \
-                    size    17431
+checksums           rmd160  d70fb4fdeb908f6d5860f084cbd29f967600a2a1 \
+                    sha256  204e18105a138f9133e7d21c80dd079dcfe226237bc7c224711ae7b86b272c5a \
+                    size    26272
 
 use_configure       no
 
@@ -32,4 +32,5 @@ build {}
 
 destroot {
     xinstall -m 0755 ${worksrcpath}/${name} ${destroot}${prefix}/bin/
+    xinstall -m 0755 ${worksrcpath}/${name}.1 ${destroot}${prefix}/share/man/man1
 }

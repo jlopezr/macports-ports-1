@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           texlive 1.0
 
 name                texlive-common
-version             2023
+version             2025
 
 categories          tex
 maintainers         {dports @drkp}
@@ -18,16 +18,14 @@ platforms           any
 supported_archs     noarch
 license             Permissive
 
-master_sites        https://www.ambulatoryclam.net/texlive/ \
-                    https://alpaca.cs.washington.edu/texlive/ \
-                    https://giraffe.cs.washington.edu/texlive/
+master_sites        https://www.ambulatoryclam.net/texlive/
 
 worksrcdir          ${distname}
 use_xz              yes
 
-checksums           rmd160  94fc95fac313356b142781eff86bb5dc09708572 \
-                    sha256  a700a69714fd34dce384b5406bfb974c8a5d1e9ba5f9af579e0095e4afdee20a \
-                    size    19176
+checksums           rmd160  3acc7ca6bb38fb33cd8af079cb7c3ae2cd47d28a \
+                    sha256  cadee848d33da7a7fa9ca68c2802a98fa66864946d1a17301adafe8a5ac01c36 \
+                    size    19648
 
 livecheck.type  regex
 livecheck.url   [lindex ${master_sites} 0]

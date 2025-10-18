@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-rstcheck-core
-version             1.2.0
+version             1.2.2
 revision            0
 
 categories-append   devel
@@ -19,14 +19,16 @@ long_description    {*}${description}
 
 homepage            https://github.com/rstcheck/rstcheck-core
 
-checksums           rmd160  2c198600009aac705d021849d48941a3453d1fcb \
-                    sha256  991678a86b604636d2461a97fb9339366d143eb799d22d51f49f84ed272121a9 \
-                    size    52582
+distname            rstcheck_core-${version}
 
-python.versions     38 39 310 311
+checksums           rmd160  358a1f66f9a8a91af0c08a588a82c67d3d279a89 \
+                    sha256  9e4842efcc32fe6dbe1767bf1f96225495369c82a2b5e0ed2969082f1ed56c9e \
+                    size    53629
+
+python.versions     39 310 311 312 313
 
 if {${name} ne ${subport}} {
-    depends_lib-append \
+    depends_build-append \
                     port:py${python.version}-setuptools_scm
 
     depends_lib-append \

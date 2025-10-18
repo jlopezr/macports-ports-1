@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           texlive 1.0
 
 name                texlive-latex-extra
-version             66551
+version             74512
 revision            0
 
 categories          tex
@@ -13,18 +13,18 @@ license             Copyleft Permissive
 description         TeX Live: LaTeX additional packages
 long_description    A very large collection of add-on packages for LaTeX.
 
-checksums           texlive-latex-extra-66551-run.tar.xz \
-                    rmd160  3ee20c59d891575c383a8faaf5d189ca952b9027 \
-                    sha256  08861d8fd861a4ae7ad53309064c2fc91b5885e929525ad9fca146d5862d1520 \
-                    size    668490840 \
-                    texlive-latex-extra-66551-doc.tar.xz \
-                    rmd160  c7f2b55b42e30b2b8158c44d09479170dff56926 \
-                    sha256  68c5c5217e5b5fadd0a6cb7fff4554858140c950518742aff0facf70c207b703 \
-                    size    624732152 \
-                    texlive-latex-extra-66551-src.tar.xz \
-                    rmd160  825fd4b1ec43814284a295ce505aa9d063c12fc3 \
-                    sha256  ad1513d44e5aaa02b884ce15d76542e3979f3ad40080f08c013b7fda3c2b053b \
-                    size    19254432
+checksums           texlive-latex-extra-74512-run.tar.xz \
+                    rmd160  264b963e371d7d621c824b439b11e4bf6e477c10 \
+                    sha256  862fc42d04cccaadf72f8d1bdaf2633fa5d23146852fc85986d94baf91b8ff71 \
+                    size    30238964 \
+                    texlive-latex-extra-74512-doc.tar.xz \
+                    rmd160  6715ee3f3f9e85fe4bc5c18c064531b283067f8f \
+                    sha256  a07a30bfac2a112198c4c5cf4231a82c8dc1f477df428c38180269fee1a112b7 \
+                    size    767315100 \
+                    texlive-latex-extra-74512-src.tar.xz \
+                    rmd160  0d8998471044595e04c5f10c927f37e62e3eccda \
+                    sha256  e7cb0a59eb5659b5920cfe9dcdfe361bf62b63e141e8aa3b6978a51fefa07993 \
+                    size    20308036
 
 depends_lib         port:texlive-latex-recommended port:texlive-pictures
 
@@ -37,16 +37,10 @@ texlive.formats      \
 texlive.maps      \
     {Map epiolmec.map} \
     {MixedMap esint.map} \
+    {Map mathalpha.map} \
     {Map scanpages.map}
 
-texlive.binaries    authorindex dvilualatex-dev exceltex hyperxmp-add-bytecount l3build latex-dev lualatex-dev makedtx makeglossaries makeglossaries-lite pagelayoutapi pdfannotextractor pdflatex-dev perltex pygmentex splitindex svn-multi textestvis vpe webquiz wordcount yplan
+texlive.binaries    authorindex bookshelf-listallfonts bookshelf-mkfontsel dvilualatex-dev exceltex hyperxmp-add-bytecount l3build latex-dev latexminted lualatex-dev makedtx makeglossaries makeglossaries-lite markdown2tex pagelayoutapi pdfannotextractor pdflatex-dev perltex pygmentex splitindex svn-multi textestvis typog-grep vpe webquiz wordcount yplan
 
-pre-activate {
-    # Handle conflicts for TL2019 upgrade
-    if { ![catch {set vers [lindex [registry_active texlive-publishers] 0]}]
-         && ([vercmp [lindex $vers 1] 50870] < 0) } {
-        registry_deactivate_composite texlive-publishers "" [list ports_nodepcheck 1]
-    }
-}
 
 texlive.texmfport

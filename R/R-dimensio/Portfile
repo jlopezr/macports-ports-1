@@ -3,25 +3,25 @@
 PortSystem          1.0
 PortGroup           R 1.0
 
-# Revert to GitHub once updated there.
-R.setup             cran tesselle dimensio 0.5.0 v
+R.setup             github tesselle dimensio 0.10.1 v
 revision            0
 categories-append   math
+platforms           {darwin any}
 maintainers         nomaintainer
 license             GPL-3+
 description         Multivariate data analysis
 long_description    {*}${description}
 homepage            https://packages.tesselle.org/dimensio
-checksums           rmd160  382bfabc31b1b5a3fa0e2dd0f482e39053e89b1b \
-                    sha256  dedfaaec4b9071db17aee3310bec2a61d702014f3ec53d5f5509b6b6ff119dde \
-                    size    740435
+checksums           rmd160  5934b041b95a923f1f484783082673f43fbb6c34 \
+                    sha256  bcb57c1249675f322c57c5a80afd264c94e5084e720b88fd62a6b664932878df \
+                    size    460921
+github.tarball_from archive
 supported_archs     noarch
 
-depends_lib-append  port:R-arkhe
+depends_lib-append  port:R-arkhe \
+                    port:R-khroma
 
-depends_test-append port:R-ggplot2 \
-                    port:R-khroma \
-                    port:R-knitr \
+depends_test-append port:R-knitr \
                     port:R-rmarkdown \
                     port:R-rsvg \
                     port:R-svglite \

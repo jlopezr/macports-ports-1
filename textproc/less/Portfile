@@ -3,10 +3,9 @@
 PortSystem      1.0
 
 name            less
-version         643
+version         678
 revision        0
 categories      textproc
-platforms       darwin
 license         {GPL-3+ BSD}
 maintainers     {raimue @raimue} \
                 openmaintainer
@@ -22,9 +21,9 @@ long_description \
 homepage        https://www.greenwoodsoftware.com/less/
 master_sites    ${homepage}
 
-checksums       rmd160  d98f2761df3c9ac213e46e559f33ff19f9293677 \
-                sha256  2911b5432c836fa084c8a2e68f6cd6312372c026a58faaa98862731c8b6052e8 \
-                size    592291
+checksums       rmd160  8ae745ed7157f9f10a28748259a2f39b12b3d035 \
+                sha256  4c085364f3028290d34647df27f56018c365dc4c0092ab7de74ed8fe89014fe7 \
+                size    876971
 
 depends_lib     port:ncurses \
                 port:gettext

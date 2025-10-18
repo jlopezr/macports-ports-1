@@ -5,11 +5,14 @@ PortGroup           python 1.0
 PortGroup           github 1.0
 
 github.setup        otsaloma nfoview 1.23
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 revision            1
 categories          gnome
 license             GPL-3+
 maintainers         nomaintainer
 supported_archs     noarch
+platforms           {darwin any}
 
 description         Simple viewer for NFO files
 long_description    NFO Viewer is a simple viewer for NFO files, which are \

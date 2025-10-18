@@ -3,17 +3,19 @@
 PortSystem          1.0
 PortGroup           R 1.0
 
-R.setup             github r-lib here 1.0.1.9007 v
+R.setup             github r-lib here 1.0.1.9020 v
 revision            0
 categories-append   sysutils
+platforms           {darwin any}
 maintainers         nomaintainer
 license             MIT
 description         Simpler way to find your files
 long_description    {*}${description}
 homepage            https://here.r-lib.org
-checksums           rmd160  fbe3abd2697e70efb67f14b06995449a7c20d894 \
-                    sha256  77c614183e3dd8713bc059feb0f2a73bc16ef50f6d148906e1ba76f12ccf6b28 \
-                    size    33750
+checksums           rmd160  9d90cf81d2a25b0e2fbcf4336dd3d0d9e7381e8b \
+                    sha256  5879d967f6e98add276c78135c96646c00ecc308e62495c33d78eabd73b3d011 \
+                    size    37703
+github.tarball_from archive
 supported_archs     noarch
 
 depends_lib-append  port:R-rprojroot

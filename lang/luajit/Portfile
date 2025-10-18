@@ -1,19 +1,19 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim: fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem          1.0
-PortGroup           compiler_blacklist_versions 1.0
 PortGroup           xcode_workaround 1.0
 PortGroup           github 1.0
 PortGroup           legacysupport 1.1
 PortGroup           makefile 1.0
+PortGroup           muniversal 1.1
 
 set branch          2.1
-set version_date    2023-11-15T00:41:31Z
-github.setup        LuaJIT LuaJIT 43d0a19158ceabaa51b0462c1ebc97612b420a2e
+set version_date    2025-01-13T15:22:22Z
+github.setup        LuaJIT LuaJIT a4f56a459a588ae768801074b46ba0adcfb49eb1
 revision            0
-checksums           rmd160  ed8b213cdff2939efa0c1203a2b018d02abc84e2 \
-                    sha256  4fefa19bc5600928fb13c928bf5325eaa1c78f2c1738a8ac9552154ef178bb9a \
-                    size    1078803
+checksums           rmd160  a01e4fb5337b3dbb1e5eb544fc43dd8cfda9c610 \
+                    sha256  b4120332a4191db9c9da2d81f9f11f0d4504fc4cff2dea0f642d3d8f1fcebd0e \
+                    size    1082930
 
 set version_date_s  [clock scan "${version_date}" -format {%Y-%m-%dT%H:%M:%SZ} -timezone :UTC]
 version             ${branch}.${version_date_s}
@@ -33,7 +33,9 @@ conflicts           luajit-openresty
 patchfiles          powerpc.patch
 
 post-patch {
-    reinplace "s|/usr/local|${prefix}|" ${worksrcpath}/etc/luajit.pc
+    reinplace "s|/usr/local|${prefix}|" ${worksrcpath}/etc/luajit.pc \
+                                        ${worksrcpath}/src/luaconf.h \
+                                        ${worksrcpath}/src/Makefile
 
     # Remove -march=i686 from CCOPT_x86
     reinplace -E {s|-march=[a-z0-9_]+||g} ${worksrcpath}/src/Makefile
@@ -45,7 +47,23 @@ post-patch {
     close ${relver}
 }
 
-compiler.blacklist  {clang < 700} *gcc-4.2 macports-clang-3.3 macports-clang-3.4
+compiler.thread_local_storage yes
+
+# crashes at runtime with these compilers
+# https://trac.macports.org/ticket/45343
+compiler.blacklist  {clang < 700} macports-clang-3.3 macports-clang-3.4
+
+## Fix universal builds, see:
+# - https://www.freelists.org/post/luajit/Building-universal-libraries-x86-64-and-arm64-for-osx,4
+# - https://git.openembedded.org/meta-openembedded/plain/meta-oe/recipes-devtools/luajit/luajit_git.bb
+# Clean automatically set options that apply to both host and target architectures (which we do not want)
+build.post_args-append  CCOPT= CCOPT_x86= TARGET_STRIP='@:'
+foreach arch ${muniversal.architectures} {
+    build.args.${arch}-append  TARGET_FLAGS+="[muniversal::get_archflag cc ${arch}]"
+    build.post_args.${arch}-append \
+        CFLAGS="${configure.cflags} [configure.cflags.${arch}]" \
+        LDFLAGS="${configure.ldflags} [configure.ldflags.${arch}]"
+}
 
 # changes to compiler flags must be made before `CFLAGS=...`
 xcode_workaround.type append_to_compiler_flags

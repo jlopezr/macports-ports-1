@@ -4,11 +4,13 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-sip
-version             6.8.1
+version             6.13.1
 revision            1
 epoch               1
 
 categories-append   devel
+platforms           {darwin any}
+supported_archs     noarch
 license             {GPL-2 GPL-3 PSF}
 maintainers         {michaelld @michaelld} {reneeotten @reneeotten} openmaintainer
 
@@ -21,76 +23,38 @@ long_description    SIP is a tool that makes it very easy to create \
 
 homepage            https://www.riverbankcomputing.com/software/sip/
 
-checksums           rmd160  5e1e20ef61099dd772f1eee158947b0f54be469d \
-                    sha256  3002df415e168ac3ffe393942dbc7131cb82ade50000e1526f46a88ade26f598 \
-                    size    986219
+checksums           rmd160  bb45cb9f829905465fa0dc9102df1ea4402ceee7 \
+                    sha256  d065b74eca996f29f1f0831ad321efaecf9906759b09466edc45349df7be6cd0 \
+                    size    2349037
 
-python.versions     35 36 37 38 39 310 311 312
-
-foreach pver {37 38 39 310 311 312} {
-    subport py${pver}-sip-devel {
-        version         6.8.1.dev2311302116
-        master_sites    https://www.riverbankcomputing.com/pypi/packages/sip
-        epoch           0
-        revision        0
-        checksums       rmd160  295f07e60682763c78dc7823d0a57117e8e114c1 \
-                        sha256  64076f1a20fba16726ef3e69b5015aeb1c5526c6d7ec3e83c4516854493e0bc5 \
-                        size    1129175
-        conflicts       py${pver}-sip
-    }
-
-    subport py${pver}-sip {
-        conflicts       py${pver}-sip-devel
-    }
-}
+python.versions     39 310 311 312 313 314
 
 if {${name} ne ${subport}} {
-    if {${python.version} == 35} {
-        version     5.5.0
-        revision    1
-        checksums   rmd160  fe56e4f7617fcc8aad3c63e10b19996f58ba44dc \
-                    sha256  5d024c419b30fea8a6de8c71a560c7ab0bc3c221fbfb14d55a5b865bd58eaac5 \
-                    size    1108126
-    } elseif {${python.version} == 36} {
-        version     6.5.1
-        revision    1
-        checksums   rmd160  6dcf12ef1007812e9a2fff0483fbdaf423311282 \
-                    sha256  204f0240db8999a749d638a987b351861843e69239b811ec3d1881412c3706a6 \
-                    size    1197925
-    } else {
-        # Pure python as of 6.8.0
-        platforms       {darwin any}
-        supported_archs noarch
-
-        depends_lib-append \
-                    port:py${python.version}-ply
-        # 'ScopedName' object has no attribute 'replace'
-        patchfiles-append \
-                    patch-ScopedName-str-conversion.diff
-    }
+    depends_build-append \
+                    port:py${python.version}-setuptools_scm
 
     depends_lib-append \
                     port:py${python.version}-packaging \
-                    port:py${python.version}-setuptools
+                    port:py${python.version}-setuptools \
+                    port:py${python.version}-ply
 
-    if {${python.version} < 38} {
-        depends_lib-append \
-                    port:py${python.version}-importlib-metadata
-    }
+    # 'ScopedName' object has no attribute 'replace'
+    patchfiles-append \
+                patch-ScopedName-str-conversion.diff \
 
-    if {${python.version} <= 36} {
-        depends_lib-append \
-                    port:py${python.version}-toml
-    } elseif {${python.version} < 311} {
+    # AttributeError: 'ScopedName' object has no attribute 'types'
+    patchfiles-append \
+                patch-sipbuild_generator_resolver_resolver.py.diff
+
+    if {${python.version} < 311} {
         depends_lib-append \
                     port:py${python.version}-tomli
     }
 
     post-destroot {
         xinstall -d ${destroot}${prefix}/share/doc
-        file copy ${worksrcpath}/doc ${destroot}${prefix}/share/doc/${subport}
-        xinstall -m 0644 -W ${worksrcpath} LICENSE LICENSE-GPL2 LICENSE-GPL3 NEWS README ChangeLog \
-            ${destroot}${prefix}/share/doc/${subport}
+        xinstall -m 0644 -W ${worksrcpath} LICENSE README.md \
+              ${destroot}${prefix}/share/doc/${subport}
         system "${python.bin} ${python.libdir}/compileall.py ${destroot}${prefix}"
         system "${python.bin} -O ${python.libdir}/compileall.py ${destroot}${prefix}"
     }
@@ -100,6 +64,4 @@ if {${name} ne ${subport}} {
        C++ library for which bindings are already provided by Riverbank. \n
 GPL-2 or GPL-3 licenses are also available. For details see
 ${prefix}/share/doc/${subport}/LICENSE \[-GPL2 -GPL3\]\n\n"
-
-    livecheck.type  none
 }

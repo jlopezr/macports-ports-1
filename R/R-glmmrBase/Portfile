@@ -3,28 +3,29 @@
 PortSystem          1.0
 PortGroup           R 1.0
 
-R.setup             github samuel-watson glmmrBase 0.5.4 v
+# Revert to GitHub once updated there.
+R.setup             cran samuel-watson glmmrBase 0.11.2 v
 revision            0
 categories-append   math
-maintainers         nomaintainer
+maintainers         {@barracuda156 gmail.com:vital.had} openmaintainer
 license             GPL-2+
 description         Specification of generalised linear mixed models
 long_description    {*}${description}
-checksums           rmd160  8e8d54729d67919f9525b4a486cb93d66058511b \
-                    sha256  fd47dd98a4cf665da32af461f9fd42d6622548f65f530d6ea84830db63ce3f91 \
-                    size    118584
+homepage            https://github.com/samuel-watson/glmmrBase
+checksums           rmd160  8b0e1e116bae8b1c5761decf77e5477d0ab2e221 \
+                    sha256  049d00ad5a21072e308e760ae3ef7a981e4d7799bf8b2a2f1b06f7a788a661cc \
+                    size    279116
 
 depends_lib-append  port:R-BH \
-                    port:R-digest \
                     port:R-R6 \
                     port:R-Rcpp \
                     port:R-RcppEigen \
                     port:R-RcppParallel \
-                    port:R-rminqa \
-                    port:R-SparseChol
+                    port:R-rstan \
+                    port:R-rstantools \
+                    port:R-SparseChol \
+                    port:R-StanHeaders
 
 compilers.setup     require_fortran
-
-depends_test-append port:R-testthat
 
 test.run            yes

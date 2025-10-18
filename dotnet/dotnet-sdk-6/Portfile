@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                dotnet-sdk-6
-version             6.0.417
+version             6.0.424
 revision            0
 categories          dotnet devel
 license             MIT
@@ -20,23 +20,23 @@ long_description    .NET is a free, cross-platform, open source developer platfo
                     to build for web, mobile, desktop, games, and IoT.
 
 homepage            https://dotnet.microsoft.com/
-platforms           darwin
+platforms           {darwin any} {darwin >= 19}
 supported_archs     x86_64 arm64
 
 switch ${build_arch} {
     x86_64 {
         set dotnet_rid osx-x64
         distname            dotnet-sdk-${version}-osx-x64
-        checksums           rmd160  5a39bae0840699bb250edc911d639bc3aa0cdd26 \
-                            sha256  70354789a3e52146ed47a8b378afd3ccb2b50b2540ddcef1183512fd286a420a \
-                            size    184246873
+        checksums           rmd160  880ca6e38b2c0d9b60e1dc432c54e054c3a95956 \
+                            sha256  773c039073b02d89b150d84a5f20abafb1bcd8f7a1825ea32229f2422a5f3ee1 \
+                            size    184485652
     }
     arm64 {
         set dotnet_rid osx-arm64
         distname            dotnet-sdk-${version}-osx-arm64
-        checksums           rmd160  282cd206f8023cbfe4d595251a4dd7a92db5957a \
-                            sha256  e7cc57bf645c444661528bc56c893e8612224e1e8ed2124298d15eb93351c4be \
-                            size    178439602
+        checksums           rmd160  6d40dc628e582c51341ebcbcd75c0e6d6e6b6e9f \
+                            sha256  b7ab72530789d7b09dbd2cb5a7572ee7d3a287ae9ab0fed87d455bf269c328d2 \
+                            size    178669146
     }
     default {
         known_fail yes
@@ -47,7 +47,7 @@ switch ${build_arch} {
     }
 }
 
-master_sites        https://dotnetcli.azureedge.net/dotnet/Sdk/${version}/
+master_sites        https://builds.dotnet.microsoft.com/dotnet/Sdk/${version}/
 
 worksrcdir          ${name}-${version}
 extract.mkdir       yes
@@ -62,7 +62,7 @@ build {}
 
 destroot {
     set dotnet_home ${prefix}/share/dotnet
-    set dotnet_runtime_version 6.0.25
+    set dotnet_runtime_version 6.0.32
 
     # ASP.NET Core Targeting Pack
     set aspnet_target_dir /packs/Microsoft.AspNetCore.App.Ref
@@ -98,5 +98,5 @@ destroot {
 }
 
 livecheck.type      regex
-livecheck.url       https://dotnet.microsoft.com/en-us/download/dotnet/6.0
+livecheck.url       https://dotnet.microsoft.com/download/dotnet/6.0
 livecheck.regex     "SDK (\\d+(?:\\.\\d+)*)"

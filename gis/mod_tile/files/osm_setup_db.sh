@@ -37,9 +37,9 @@
 #      OSM2PGSQL_RAM=4096 OSM2PGSQL_CPUS=4 ./osm_setup_db.sh
 #
 # Before running this script, you need to ensure that PostgreSQL has been
-# configured for the 'nobody' to be able to access the 'gis' database without
+# configured for the 'nobody' user to be able to access the 'gis' database without
 # a password.  Refer to the Ident Authentication section in the PostgreSQL
-# Manual, https://www.postgresql.org/docs/12/auth-ident.html to understand any
+# Manual, https://www.postgresql.org/docs/16/auth-ident.html to understand any
 # security implications of this approach.
 #
 # The simplest way to configure this is to add an 'ident' method for 'gis' and
@@ -56,7 +56,7 @@
 #
 # Reload the PostgreSQL server configuration after making the change.  E.g
 #
-# sudo port reload  postgresql12-server
+# sudo port reload  postgresql16-server
 #
 # If the file specified by $PBF_FILENAME exists, it is imported as-is.  If it
 # does not exist, it is assumed to be a file hosted at $PBF_DOWNLOAD_BASE_URL,
@@ -71,6 +71,7 @@ set +e
 #set -x
 
 PREFIX="${PREFIX:-/usr/local}"
+PGSQLBINPATH="${PREFIX}/lib/postgresql/bin"
 
 if [ -r $PREFIX/etc/mod_tile/osm-tiles-update.conf ]; then
     source $PREFIX/etc/mod_tile/osm-tiles-update.conf
@@ -101,9 +102,9 @@ fi
 
 initializeDatabase()
 {
-    sudo -u "$PG_SUPER_USER" "$PREFIX/bin/createuser" "$GIS_DB_USER" -DRS >/dev/null 2>&1
-    sudo -u "$PG_SUPER_USER" "$PREFIX/bin/createdb" "$GIS_DB" --owner="$GIS_DB_USER" --encoding=UTF8 >/dev/null 2>&1
-    cat <<EOF | sudo -u "$PG_SUPER_USER" psql "$GIS_DB" >/dev/null 2>&1
+    sudo -u "$PG_SUPER_USER" "$PGSQLBINPATH/createuser" "$GIS_DB_USER" -DRS >/dev/null 2>&1
+    sudo -u "$PG_SUPER_USER" "$PGSQLBINPATH/createdb" "$GIS_DB" --owner="$GIS_DB_USER" --encoding=UTF8 >/dev/null 2>&1
+    cat <<EOF | sudo -u "$PG_SUPER_USER" "$PGSQLBINPATH/psql" "$GIS_DB" >/dev/null 2>&1
 CREATE EXTENSION postgis;
 CREATE EXTENSION hstore;
 ALTER TABLE geometry_columns OWNER TO $GIS_DB_USER;
@@ -187,12 +188,22 @@ createDatabase()
 	    exit 1
 	fi
 	>&2 echo "Creating indexes... (This can also take a very long time)"
-	sudo -u "$GIS_USER" psql -d "$GIS_DB" -U "$GIS_DB_USER" \
+	sudo -u "$GIS_USER" "$PGSQLBINPATH/psql" -d "$GIS_DB" -U "$GIS_DB_USER" \
 	     -f "$PREFIX/share/openstreetmap-carto/indexes.sql" >/dev/null
 	if [ $? -ne 0 ]; then
 	    >&2 echo "Error creating indexes in PostgreSQL"
 	    exit 1
 	fi
+	if [ -f "$PREFIX/share/openstreetmap-carto/functions.sql" ]; then
+	    >&2 echo "Creating functions..."
+	    sudo -u "$GIS_USER" "$PGSQLBINPATH/psql" -d "$GIS_DB" -U "$GIS_DB_USER" \
+		 -f "$PREFIX/share/openstreetmap-carto/functions.sql" >/dev/null
+	    if [ $? -ne 0 ]; then
+		>&2 echo "Error creating functions in PostgreSQL"
+		exit 1
+	    fi
+	fi
+
     fi
 }
 
@@ -243,6 +254,7 @@ initializeIncrementalUpdates()
     fi
 }
 
+cd /tmp
 if [ -z "$SKIP_IMPORT" ]; then
     initializeDatabase
     readPbf

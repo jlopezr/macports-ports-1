@@ -4,8 +4,8 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-xraydb
-version             4.5.2
-revision            0
+version             4.5.8
+revision            1
 
 categories-append   science
 platforms           {darwin any}
@@ -21,20 +21,21 @@ long_description \
 
 homepage            https://xraypy.github.io/XrayDB
 
-checksums           rmd160  fa4d0cc81a6394946a630c498e567d511e99e96c \
-                    sha256  f9800bff2706775955cbb0321bbe260f82011c7c53c256c2e5d355f7df0d0ab1 \
-                    size    3846728
+checksums           rmd160  45d502164e6cb963e29f9eb79719c76fdb9679f4 \
+                    sha256  4414474c10be6dd8f273062fe57c1342e7a9f4c8f8c2c86881acd2ce013182ff \
+                    size    3851174
 
-python.versions     38 39 310 311
+python.versions     39 310 311 312 313
 
 if {${name} ne ${subport}} {
-    patchfiles      patch-pyproject.toml.diff
-
     depends_build-append \
         port:py${python.version}-setuptools_scm
 
     depends_run-append \
         port:py${python.version}-numpy \
         port:py${python.version}-scipy \
+        port:py${python.version}-platformdirs \
         port:py${python.version}-sqlalchemy
+
+    test.run        yes
 }

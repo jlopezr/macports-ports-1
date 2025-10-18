@@ -4,9 +4,12 @@ PortSystem          1.0
 PortGroup           github 1.0
 
 github.setup        boyonwheels vmrun.wrapper 84c1473c5fb912adc2fec3f08fdf892b70278d3d
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 name                vmrun-wrapper
 version             20160915
 supported_archs     noarch
+platforms           {darwin any}
 license             unknown
 maintainers         {i0ntempest @i0ntempest} openmaintainer
 categories          sysutils

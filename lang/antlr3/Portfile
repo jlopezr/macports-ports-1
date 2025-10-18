@@ -5,10 +5,13 @@ PortGroup       github 1.0
 
 set real_name   antlr
 github.setup    antlr antlr3 3.5.3
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 revision        0
 categories      lang java
 maintainers     nomaintainer
 supported_archs noarch
+platforms       any
 
 description     antlr is ANother Tool for Language Recognition
 long_description    ANTLR, ANother Tool for Language Recognition, is a \

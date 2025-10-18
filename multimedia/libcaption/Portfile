@@ -9,6 +9,8 @@ PortGroup           legacysupport 1.1
 legacysupport.newest_darwin_requires_legacy 10
 
 github.setup        szatmary libcaption 0.7
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 revision            1
 
 categories          multimedia
@@ -46,7 +48,7 @@ variant examples description {Build examples} {
 
 variant docs description {Build documentation} {
     depends_build-append    path:bin/doxygen:doxygen \
-                            port:graphviz
+                            path:bin/dot:graphviz
 
     post-patch {
         reinplace {s/\(add_custom_target.doc\)/\1 ALL/} \

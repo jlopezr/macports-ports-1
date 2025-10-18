@@ -9,16 +9,16 @@ PortGroup           legacysupport 1.1
 legacysupport.newest_darwin_requires_legacy 19
 legacysupport.use_mp_libcxx                 yes
 
-github.setup        rizsotto Bear 3.1.3
+github.setup        rizsotto Bear 3.1.6
+github.tarball_from archive
 revision            0
 
-checksums           rmd160  909b90269b3528c4960a634c47b76a534e389a87 \
-                    sha256  389a5251a835cd156fad4f4e598d0bf8c66783a0d5835eba7f113ab5f26637f5 \
-                    size    127777
+checksums           rmd160  41ff322cdbc0c5f15adf17193b586c3dad441230 \
+                    sha256  99cd891eec6e89b734d7cafe0e623dd8c2f27d8cbf3ee9bc4807e69e5c8fb55c \
+                    size    170892
 
 maintainers         {cal @neverpanic} openmaintainer
 license             GPL-3+
-platforms           darwin
 
 categories          devel
 description         \
@@ -31,7 +31,7 @@ long_description    {*}${description} \
 
 patchfiles          patch-spdlog-header-only.diff
 
-set port_libfmt     libfmt9
+set port_libfmt     libfmt10
 cmake.module_path-append \
                     ${prefix}/lib/${port_libfmt}/cmake
 
@@ -40,14 +40,13 @@ compiler.cxx_standard 2017
 
 depends_build-append \
                     port:pkgconfig \
-                    port:spdlog \
                     port:nlohmann-json \
+                    port:spdlog
 
 depends_lib-append  port:abseil \
                     port:grpc \
                     port:${port_libfmt} \
-                    port:protobuf3-cpp \
-                    port:re2
+                    port:protobuf3-cpp
 
 configure.args-append \
                     -DENABLE_UNIT_TESTS=Off \

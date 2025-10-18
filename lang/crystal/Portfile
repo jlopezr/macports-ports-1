@@ -2,14 +2,15 @@
 
 PortSystem          1.0
 PortGroup           github 1.0
+PortGroup           makefile 1.0
 
-github.setup        crystal-lang crystal 1.9.2
+github.setup        crystal-lang crystal 1.17.1
 github.tarball_from archive
 revision            0
 categories          lang
 supported_archs     x86_64 arm64
 license             Apache-2
-maintainers         {outlook.com:mohd.akram @mohd-akram} openmaintainer
+maintainers         {makr @mohd-akram} openmaintainer
 
 description         Crystal programming language
 
@@ -18,20 +19,30 @@ long_description    Crystal is a fast, compiled programming language with a \
 
 homepage            https://crystal-lang.org
 
-set llvm_version    16
+set llvm_version    20
 
-# pkg-config is used when compiling user programs
+depends_build       path:bin/pkg-config:pkgconfig
+
 depends_lib         port:boehmgc \
-                    port:gmp \
-                    port:libevent \
+                    port:libffi \
                     port:libiconv \
+                    port:llvm-${llvm_version} \
+                    port:pcre2
+
+# libraries used by the standard library
+# pkg-config is used when compiling user programs
+depends_run         port:gmp \
+                    port:libevent \
                     port:libxml2 \
                     port:libyaml \
-                    port:llvm-${llvm_version} \
                     path:lib/libssl.dylib:openssl \
-                    port:pcre \
                     port:zlib \
-                    port:pkgconfig
+                    path:bin/pkg-config:pkgconfig
+
+# dyld: Symbol not found: ____chkstk_darwin
+# bootstrap binaries use the libpthread
+# functions that were added in macOS 10.15
+platforms           {darwin >= 19}
 
 # Use a prebuilt version of Crystal to build itself
 set cr_ver          ${version}
@@ -41,13 +52,13 @@ master_sites-append https://github.com/crystal-lang/${name}/releases/download/${
 distfiles-append    ${name}-${cr_full_ver}-${os.platform}-universal${extract.suffix}:bootstrap
 
 checksums           ${distname}${extract.suffix} \
-                    rmd160  aa8a326f49a9571d9a9479bb9a9192b79583d334 \
-                    sha256  1e2e6974b0e2e152e5fae5388415ddb7e192378c8ac215c6f386fdaf9018e54f \
-                    size    3245770 \
+                    rmd160  b9c37b4f3e49be14f6bfe708310d180ed782a9b0 \
+                    sha256  f673c09577a7749d06aa56639dcf5f79bdd61ee195ab1c9b445e6f3880bd2910 \
+                    size    3868937 \
                     ${name}-${cr_full_ver}-${os.platform}-universal${extract.suffix} \
-                    rmd160  ff0d4e591fd77d6954e3f88bad89192ec545a191 \
-                    sha256  acb602799bac700f1f9e9c3cddd1ba62e5ab1ae520e47d7339e4b255d51c4d89 \
-                    size    57025349
+                    rmd160  032eaf538bff0e14d6463617829d1abbb07e1347 \
+                    sha256  be1ddcc971e86a1dc978ee75bb731a0da50859e9db6841df5d27e00b2448eaae \
+                    size    59541160
 
 patchfiles          patch-static.diff
 
@@ -58,8 +69,7 @@ post-patch {
         ${worksrcpath}/src/lib_c/x86_64-darwin/c/iconv.cr
 }
 
-configure.cmd       env | grep -E '^(CC?|CPP|CXX|LD)(FLAGS)?='
-configure.pre_args  > Makefile.local
+configure.ldflags-append    -Wl,-rpath,${prefix}/libexec/llvm-${llvm_version}/lib
 
 set llvm_config     LLVM_CONFIG=llvm-config-mp-${llvm_version}
 
@@ -75,9 +85,10 @@ post-build {
     system -W ${worksrcpath} "${llvm_config} ${build.cmd} docs"
 }
 
+destroot.target-append  install_docs
+destroot.args       -o docs
+destroot.env        ${llvm_config}
+
 test.run            yes
 test.target         spec
 test.env            ${llvm_config}
-
-destroot.target-append  install_docs
-destroot.args       -o docs PREFIX=${prefix}

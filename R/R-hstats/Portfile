@@ -3,18 +3,19 @@
 PortSystem          1.0
 PortGroup           R 1.0
 
-# Revert to GitHub once updated there.
-R.setup             cran mayer79 hstats 1.1.1
+R.setup             github ModelOriented hstats 1.2.1
 revision            0
 categories-append   math
+platforms           {darwin any}
 maintainers         nomaintainer
 license             GPL-2+
 description         Interaction statistics
 long_description    {*}${description}
-homepage            https://mayer79.github.io/hstats
-checksums           rmd160  cddf7005c076b689edfd50eb1608b302f0441345 \
-                    sha256  2e1c0e4e7b26ef9d2bb969d50122a73ae43e01dfed670ee84b7cfcc05f7b2923 \
-                    size    206594
+homepage            https://modeloriented.github.io/hstats/
+checksums           rmd160  bca7a4d935954a91f13064b35e46afb7422e1304 \
+                    sha256  1992fd292493d73f0366eb94b6122b07988f4c7e264e1bf64e98f2953ea29550 \
+                    size    511300
+github.tarball_from archive
 supported_archs     noarch
 
 depends_lib-append  port:R-ggplot2

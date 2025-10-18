@@ -1,23 +1,24 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem          1.0
-PortGroup           github 1.0
 PortGroup           common_lisp 1.0
+PortGroup           github 1.0
 
-github.setup        Zulu-Inuoe jzon 1.1.2 v
+github.setup        Zulu-Inuoe jzon 1.1.4 v
 name                cl-com.inuoe.jzon
 revision            0
 
-checksums           rmd160  d765dc2efee8d5c62426e34bd54a1c4189d06fbf \
-                    sha256  1fc828048e5debb3cf79c2fbd0580e4ebe192b9d0f926320bc733c87ca0c3e08 \
-                    size    68392
+checksums           rmd160  e4ac3db573add144141f67bb090e339b7a050802 \
+                    sha256  7940102401edd39a7b38c25c724ebb42d071e470ebdeb113de29f665323c01e7 \
+                    size    68597
+github.tarball_from archive
 
 categories-append   devel
-maintainers         {@catap korins.ky:kirill} openmaintainer
+maintainers         nomaintainer
 license             MIT
 
-description         A correct and safe(er) JSON RFC 8259 parser with sane defaults
-
+description         A correct and safe(er) JSON RFC 8259 parser \
+                    with sane defaults
 long_description    {*}${description}
 
 depends_lib-append  port:cl-alexandria \
@@ -30,7 +31,10 @@ depends_lib-append  port:cl-alexandria \
 common_lisp.systems {src/*.asd} \
                     {test/*.asd}
 
-# See: https://github.com/Zulu-Inuoe/jzon/issues/53
-common_lisp.clisp   no
-
-# cl-com.inuoe.jzon: update to 1.1.2
+if {${os.arch} eq "powerpc"} {
+    # https://github.com/Zulu-Inuoe/jzon/issues/70
+    common_lisp.sbcl    no
+} else {
+    # https://github.com/Zulu-Inuoe/jzon/issues/53
+    common_lisp.clisp   no
+}

@@ -5,17 +5,19 @@ PortGroup               github 1.0
 PortGroup               python 1.0
 PortGroup               mpi 1.0
 
-github.setup            h5py h5py 3.10.0
+github.setup            h5py h5py 3.15.0
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from     tarball
 name                    py-h5py
 
 # h5py needs to be re-built after hdf5 upgrades; it has its own version
 # check included.
-revision                1
+revision                0
 
 checksums \
-    rmd160  d7d3820ce0a5f0a8d1e84d5fc9e29807d2eeb22b \
-    sha256  3a2cbcffab0bc40e391c62a93d5c6964aab308f82a0901e2b015432e4b5d830d \
-    size    421866
+    rmd160  88b0d84ace5b0faac344abc2a1f2dd3c048ecb89 \
+    sha256  0f6dcc31177c89b6ed13221bc1baa7039aa863378e6f8402167e0924ff2fcef9 \
+    size    445773
 
 license                 BSD
 maintainers             {eborisch @eborisch} openmaintainer
@@ -34,33 +36,20 @@ long_description  \
 
 homepage                https://www.h5py.org
 
-python.versions         38 39 310 311
+python.versions         310 311 312 313
 
 # Only check against releases.
 github.livecheck.regex      {([0-9.]+)}
 
 if {${name} ne ${subport}} {
-    depends_build-append    port:py${python.version}-pythran
+    depends_build-append    port:py${python.version}-cython \
+                            port:py${python.version}-pkgconfig
 
-    depends_lib-append      port:py${python.version}-cached-property \
-                            port:py${python.version}-numpy \
-                            port:py${python.version}-six \
-                            port:py${python.version}-pkgconfig \
+    depends_lib-append      port:py${python.version}-numpy \
                             port:hdf5
-
-    # Not compatible with Cython 3 as of 3.10.0
-    depends_build-append    port:py${python.version}-cython-compat
-    set compat_path [string replace ${python.pkgd} 0 [string length ${python.prefix}]-1 ${prefix}/lib/py${python.version}-cython-compat]
-    build.env-append        PYTHONPATH=${compat_path}
 
     build.env-append        HDF5_DIR=${prefix}
     destroot.env-append     HDF5_DIR=${prefix}
-
-    patchfiles-append       patch-oldest-supported-numpy.diff
-
-    post-patch {
-        reinplace "/=={np_min}/s/==/>=/" setup.py
-    }
 
     post-destroot {
         xinstall -d ${destroot}${prefix}/share/doc/${subport}
@@ -79,6 +68,4 @@ if {${name} ne ${subport}} {
         build.env-append        HDF5_MPI=ON
         destroot.env-append     HDF5_MPI=ON
     }
-
-    livecheck.type          none
 }

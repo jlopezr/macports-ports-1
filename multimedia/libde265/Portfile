@@ -4,21 +4,19 @@ PortSystem                  1.0
 PortGroup                   github 1.0
 PortGroup                   legacysupport 1.1
 
-github.setup                strukturag libde265 1.0.12 v
+github.setup                strukturag libde265 1.0.16 v
+github.tarball_from         releases
 revision                    0
 
-checksums                   rmd160  6434b14fd94c4c0374bf7a1d2713481b06d3a69e \
-                            sha256  62185ea2182e68cf68bba20cc6eb4c287407b509cf0a827d7ddb75614db77b5c \
-                            size    846345
+checksums                   rmd160  7778a7c2fa6b89e1262b5488de6687109a3bd664 \
+                            sha256  b92beb6b53c346db9a8fae968d686ab706240099cdd5aff87777362d668b0de7 \
+                            size    835657
 
 categories                  multimedia
 license                     LGPL-3+
 maintainers                 {mcalhoun @MarcusCalhoun-Lopez} openmaintainer
 description                 an open source implementation of the h.265 video codec
 long_description            ${name} is {*}${description}.
-platforms                   darwin
-
-github.tarball_from         releases
 
 compiler.cxx_standard       2011
 # see https://trac.macports.org/ticket/59866

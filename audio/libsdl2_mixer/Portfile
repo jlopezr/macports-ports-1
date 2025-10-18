@@ -2,7 +2,7 @@ PortSystem      1.0
 PortGroup       github 1.0
 
 name            libsdl2_mixer
-github.setup    libsdl-org SDL_mixer 2.6.3 release-
+github.setup    libsdl-org SDL_mixer 2.8.1 release-
 categories      audio devel
 license         zlib
 maintainers     {jmr @jmroot} openmaintainer
@@ -16,20 +16,23 @@ long_description \
 github.tarball_from releases
 distname        SDL2_mixer-${version}
 
-checksums       rmd160 936378f548b87b1521ce1a544e991b550c9141e6 \
-                sha256 7a6ba86a478648ce617e3a5e9277181bc67f7ce9876605eea6affd4a0d6eea8f
+checksums       rmd160 73d0e0e7d7fb5a9f6344d9b0377b5cf1f20a7b7b \
+                sha256 cb760211b056bfe44f4a1e180cc7cb201137e4d1572f2002cc1be728efd22660
 
-depends_build   port:pkgconfig
+depends_build   path:bin/pkg-config:pkgconfig
 depends_lib     port:libsdl2 \
-                port:libmodplug \
-                port:opusfile
+                port:libxmp \
+                port:opusfile \
+                port:wavpack
 
 configure.args  --disable-sdltest \
+                --disable-music-gme \
                 --disable-music-midi-fluidsynth \
-                --disable-music-mod-modplug-shared \
-                --disable-music-opus-shared
+                --disable-music-mod-xmp-shared \
+                --disable-music-opus-shared \
+                --disable-music-wavpack-shared
 
-compiler.blacklist *gcc* { clang < 211 }
+compiler.blacklist *gcc-4.* { clang < 211 }
 
 post-destroot {
     set docdir ${prefix}/share/doc/${name}

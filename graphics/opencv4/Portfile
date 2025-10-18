@@ -2,7 +2,6 @@
 
 PortSystem          1.0
 PortGroup           cmake 1.1
-PortGroup           compiler_blacklist_versions 1.0
 PortGroup           github 1.0
 
 #==============================================================================
@@ -26,10 +25,10 @@ name                opencv4
 conflicts           opencv4-devel
 set my_name         opencv4
 
-platforms           {darwin >= 11}
+platforms           {darwin >= 10}
 categories          graphics science
 license             BSD
-maintainers         {stromnov @stromnov} {mascguy @mascguy}
+maintainers         {mascguy @mascguy}
 
 description         Open Source Computer Vision Library
 long_description    OpenCV (Open Source Computer Vision Library) is an \
@@ -53,18 +52,22 @@ if {${os.major} > 12} {
 
 # NOTE: Separate revisions maintained for Python subports, later in portfile
 if {${opencv_latest}} {
-    github.setup    opencv opencv 4.8.0
-    revision        3
+    github.setup    opencv opencv 4.9.0
+    # Change github.tarball_from to 'releases' or 'archive' next update
+    github.tarball_from tarball
+    revision        5
     epoch           1
 
     checksums-append \
                     ${distname}${extract.suffix} \
-                    rmd160  afc8f7c1ba53cb2b787df24f53285bbbc96e9d1d \
-                    sha256  3d94c5fe77952a78ccc2dbaa5468955064994c9c58ca3caa5765e12a166e1eff \
-                    size    91992992 \
+                    rmd160  ea327fb3ee68c75e55ab54cc185dced79d149cf5 \
+                    sha256  6e7c0688d8dc9280e3fa84cd80c69825b3c4edceccc32fea924494300afc6370 \
+                    size    92790830 \
 } else {
     github.setup    opencv opencv 4.5.0
-    revision        30
+    # Change github.tarball_from to 'releases' or 'archive' next update
+    github.tarball_from tarball
+    revision        36
 
     checksums-append \
                     ${distname}${extract.suffix} \
@@ -84,7 +87,7 @@ dist_subdir         ${my_name}
 # Python build support
 #------------------------------------------------------------------------------
 set default_python_branch \
-                    3.11
+                    3.13
 set default_python_version \
                     [join [lrange [split ${default_python_branch} .] 0 1] ""]
 set default_python_path \
@@ -105,6 +108,14 @@ set parent_subport_name \
 # recognize dylib as a valid library suffix
 patchfiles-append   patch-dylib_suffix.diff
 
+# use correct assembler syntax on ppc.
+# this only adds a macro, no effect on other platforms.
+patchfiles-append   patch-parallel_impl.cpp-cv_pause.diff
+
+# Fixes builds against ffmpeg 8.0. This is currently upstreamed in
+# opencv git, but not as part of the current upstream 4.12.0 release.
+patchfiles-append   patch-ffmpeg8.diff
+
 platform darwin {
     if {${opencv_latest}} {
         # Drop scrollwheel code, for 10.11 and earlier
@@ -119,21 +130,20 @@ platform darwin {
 
 # Claims to only need c++11 but actually uses c++14 features
 # core/cvstd_wrapper.hpp:45:40: warning: variable templates are a C++14 extension [-Wc++14-extensions]
-set cxx_standard 2014
+set cxx_standard    2014
 compiler.cxx_standard \
                     ${cxx_standard}
 cmake.set_cxx_standard \
                     yes
 
 compiler.blacklist-append \
-                    *gcc* \
                     {clang < 900} \
                     {macports-clang-3.[0-9]} \
                     {macports-clang-[4-6].0}
 
 depends_build-append \
                     port:cctools \
-                    port:pkgconfig \
+                    path:bin/pkg-config:pkgconfig \
                     port:python${default_python_version}
 
 depends_lib-append  \
@@ -335,6 +345,21 @@ platform darwin {
                     -DLAPACK_CBLAS_H=Accelerate/Accelerate.h \
                     -DLAPACK_LAPACKE_H=Accelerate/Accelerate.h
 
+    # Do not prohibit GTK:
+    patchfiles-append patch-expose-gtk-choice.diff
+
+    if { ${configure.build_arch} in [list i386 ppc] || (${universal_possible} && [variant_isset universal] &&
+        ("i386" in ${configure.universal_archs} || "ppc" in ${configure.universal_archs}))} {
+        # The Accelerate ABI requires 32-bit signed integers.
+        # In clapack.h, __CLPK_integer is a typedef for either
+        #   int (64-bit) or long int (32-bit).
+        # opencv only uses ints.
+        # Casting between pointers is never recommended, but
+        #   int and long int should have the same representations
+        #   on 32-bit systems.
+        patchfiles-append patch-32bit_accelerate.diff
+    }
+
     # the AVFoundation backend is failing to build up to 10.8
     # it might be possible to work around or repair this on 10.7 and 10.8
     # there as a qtkit video implementation prior to the AVFoundation version
@@ -346,24 +371,58 @@ platform darwin {
                     -DWITH_AVFOUNDATION:BOOL=ON \
                     -DWITH_AVFOUNDATION:BOOL=OFF
     }
+
+    # Isolate PowerPC-specific fixes.
+    platform darwin powerpc {
+        # For now just disable, it is broken.
+        # window_cocoa.mm: error: expected ';' before 'in'
+        # window_cocoa.mm: error: no matching function for call to 'max(CGFloat&, double)'
+        # window_cocoa.mm: error: ivar 'image' used by '@synthesize' declaration must be an existing ivar
+        # TODO: forward-port working code from opencv3.
+        patchfiles-append \
+            patch-disable-cocoa.diff
+
+        # The code uses libdispatch unconditionally.
+        depends_lib-append \
+            port:libdispatch-legacy
+        configure.cppflags-prepend \
+            -I${prefix}/libexec/dispatch/usr/include
+        configure.ldflags-append \
+            ${prefix}/libexec/dispatch/usr/lib/libdispatch.a
+
+        # There are invalid conversion errors in non-Eigen fallbacks which require -fpermissive:
+        # essential_solver.cpp: error: invalid conversion from 'int*' to '__CLPK_integer*' {aka 'long int*'} [-fpermissive]
+        # Unfortunately, enabling Eigen variant introduces another error:
+        # /System/Library/Frameworks/vecLib.framework/Headers/vecLibTypes.h:69:26:
+        # error: two or more data types in declaration of 'vBool32'
+        configure.cxxflags-append \
+            -fpermissive
+
+        # Cocoa is broken, enable at least GTK:
+        default_variants-append \
+            +gtk3
+    }
 }
 
 # Python Bindings
-set python_branches {3.7 3.8 3.9 3.10 3.11}
+set python_branches {3.9 3.10 3.11 3.12 3.13}
 foreach python_branch ${python_branches} {
-    set python_version [join [lrange [split ${python_branch} .] 0 1] ""]
+    set python_version   [join [lrange [split ${python_branch} .] 0 1] ""]
+    set python_path      ${prefix}/bin/python${python_branch}
+    set python_framework ${frameworks_dir}/Python.framework/Versions/${python_branch}
+
     subport py${python_version}-${name} {
         # NOTE: Only rev-bump subports, for major changes/additions
         if {${opencv_latest}} {
-            revision 0
+            revision 2
         } else {
-            revision 17
+            revision 19
         }
 
         conflicts-append \
                     py${python_version}-opencv3 \
                     py${python_version}-opencv3-devel \
-                    py${python_version}-opencv4
+                    py${python_version}-opencv4-devel
 
         depends_build-delete \
                     port:python${default_python_version}
@@ -371,6 +430,7 @@ foreach python_branch ${python_branches} {
                     port:${name} \
                     port:py${python_version}-numpy \
                     port:python${python_version}
+
         configure.args-replace \
                     -DBUILD_opencv_python3:BOOL=OFF \
                     -DBUILD_opencv_python3:BOOL=ON
@@ -380,16 +440,23 @@ foreach python_branch ${python_branches} {
         configure.args-replace \
                     -DBUILD_opencv_aruco:BOOL=ON \
                     -DBUILD_opencv_aruco:BOOL=OFF
+
+        configure.args-replace \
+                    -DPYTHON_EXECUTABLE:FILEPATH=${default_python_path} \
+                    -DPYTHON_EXECUTABLE:FILEPATH=${python_path}
+        configure.args-replace \
+                    -DPYTHON_DEFAULT_EXECUTABLE:FILEPATH=${default_python_path} \
+                    -DPYTHON_DEFAULT_EXECUTABLE:FILEPATH=${python_path}
         configure.args-append \
-                    -DPYTHON3_EXECUTABLE=${prefix}/bin/python${python_branch} \
-                    -DPYTHON3_LIBRARY=${frameworks_dir}/Python.framework/Versions/${python_branch}/lib/libpython${python_branch}.dylib \
-                    -DPYTHON3_INCLUDE_DIR=${frameworks_dir}/Python.framework/Versions/${python_branch}/Headers \
-                    -DPYTHON3_PACKAGES_PATH=${frameworks_dir}/Python.framework/Versions/${python_branch}/lib/python${python_branch}/site-packages
+                    -DPYTHON3_EXECUTABLE=${python_path} \
+                    -DPYTHON3_LIBRARY=${python_framework}/lib/libpython${python_branch}.dylib \
+                    -DPYTHON3_INCLUDE_DIR=${python_framework}/Headers \
+                    -DPYTHON3_PACKAGES_PATH=${python_framework}/lib/python${python_branch}/site-packages
 
         # Deconflict with parent port contents
         post-destroot {
             ui_debug "${subport}: python subport: removing files unrelated to Python bindings"
-            foreach f [exec port contents ${name}] {
+            foreach f [exec port -q contents ${name}] {
                 delete ${destroot}${f}
             }
         }
@@ -467,9 +534,9 @@ if {${name} eq ${subport}} {
         if {${opencv_latest}} {
             checksums-append \
                     ${github.project}_contrib-${version}${extract.suffix} \
-                    rmd160  c26e000779b6834b7960c82210cc8446d7081bcd \
-                    sha256  9f7545cb417af05174f97e84c0449d68a75de90ef6c4fbc2b5b3e5a3f7856030 \
-                    size    59198140 \
+                    rmd160  96e6498f333df0de8b0c43a5778ef2341fa32129 \
+                    sha256  492c11ac8245d0d0daa5d616d595e34c1db762af004ed3f90ef9d4acde434ec8 \
+                    size    59804362 \
         } else {
             checksums-append \
                     ${github.project}_contrib-${version}${extract.suffix} \
@@ -654,6 +721,15 @@ if {${name} eq ${subport}} {
         configure.args-replace \
                     -DWITH_QT:BOOL=OFF \
                     -DWITH_QT=5
+    }
+
+    variant gtk3 description {Build with GTK-3 Backend support} {
+        depends_lib-append \
+                    path:lib/pkgconfig/gtk+-3.0.pc:gtk3
+
+        configure.args-replace \
+                    -DWITH_GTK:BOOL=OFF \
+                    -DWITH_GTK:BOOL=ON
     }
 
     variant java description {Add Java bindings} {

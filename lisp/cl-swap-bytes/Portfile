@@ -5,6 +5,8 @@ PortGroup           github 1.0
 PortGroup           common_lisp 1.0
 
 github.setup        sionescu swap-bytes 1.2 v
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 name                cl-swap-bytes
 revision            0
 
@@ -13,7 +15,7 @@ checksums           rmd160  afa4f97dec0c113e1186f3a90d90fe50c85954f2 \
                     size    4495
 
 categories-append   devel
-maintainers         {@catap korins.ky:kirill} openmaintainer
+maintainers         nomaintainer
 license             MIT
 
 description         Optimized byte-swapping primitives.

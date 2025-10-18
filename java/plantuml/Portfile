@@ -4,30 +4,30 @@ PortSystem              1.0
 PortGroup               github 1.0
 PortGroup               java 1.0
 
-github.setup            plantuml plantuml 1.2023.11 v
+github.setup            plantuml plantuml 1.2025.7 v
 github.tarball_from     releases
 revision                0
 
 categories              java editors
 supported_archs         noarch
+platforms               any
 license                 GPL-3+
 maintainers             {judaew @judaew} openmaintainer
 description             PlantUML is a tool for generating UML diagrams from \
                         textual description.
-long_description        ${description}
+long_description        {*}${description}
 homepage                https://plantuml.com/
 
 distfiles               ${name}-${version}.jar
 
 checksums               ${name}-${version}.jar \
-                        rmd160  784878f669f4ad90d0eb09a07af3ffe9d5faa8d5 \
-                        sha256  65c511b1fa896c3619d8b261c5f0392a786692a51388fadeb9f98cac2825f56a \
-                        size    11770823
-
+                        rmd160  e03c8330f7db247b1224376054a519c951271375 \
+                        sha256  4edcdda164a4be2f8f954f82868795500ebd49f42306236bf88eac41f7e217a8 \
+                        size    25422877
 extract.only
 
 java.version            1.7+
-java.fallback           openjdk17
+java.fallback           openjdk23
 
 use_configure           no
 build {}
@@ -45,9 +45,9 @@ destroot {
 variant pdf description {Include PDF Support} {
     distfiles-append        ${name}-pdf-${version}.jar
     checksums-append        ${name}-pdf-${version}.jar \
-                            rmd160  af344d672a5fe40c9cf4c1b3a1ad89db3d9bfa4d \
-                            sha256  ffe075e8c4397f36914bf4a3c8c82252c0bef18ecc732b92dc810c460b58ee34 \
-                            size    23436000
+                            rmd160  f41f6227e1ecabc63357bed8f96cdbb028228dfb \
+                            sha256  8a29b34fa83f5be13857a031890b510ee3c985f9972d1eaac7d824077d4de87f \
+                            size    37657664
 
     post-destroot {
         xinstall -m 0644 ${distpath}/${name}-pdf-${version}.jar \

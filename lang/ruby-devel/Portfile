@@ -1,7 +1,6 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:et:sw=4:ts=4:sts=4
 
 PortSystem          1.0
-PortGroup           compiler_blacklist_versions 1.0
 PortGroup           conflicts_build 1.0
 PortGroup           github 1.0
 PortGroup           legacysupport 1.1
@@ -15,13 +14,13 @@ legacysupport.newest_darwin_requires_legacy 14
 # ruby/openssl since ruby-3.2 supports openssl-3
 openssl.branch      3
 
-github.setup        ruby ruby 88d9a4d58af5c41a3258761dd6d0ea405fe47c07
+github.setup        ruby ruby bc409f3fe3fab2e540f8630aced0655be68dfac3
 
-set ruby_ver        3.3
+set ruby_ver        3.4
 set ruby_patch      0
 set ruby_ver_nodot  [string map {. {}} ${ruby_ver}]
 name                ruby-devel
-version             2023.12.09
+version             2024.11.16
 revision            0
 
 categories          lang ruby
@@ -37,9 +36,9 @@ long_description    Ruby is the interpreted scripting language \
 homepage            https://www.ruby-lang.org
 license             {Ruby BSD}
 
-checksums           rmd160  0b78c4f9925682c30722f6c41fa537bfcbe0ebd5 \
-                    sha256  34311f93f4584ab0109cd21f51d4e9e3c9d107e0e2a06fa4eab56e28842b5e8b \
-                    size    16383004
+checksums           rmd160  be783086ae20f0567841acc35256c79e7b85e6e6 \
+                    sha256  160d55522d17f8170aea9e4da42ef2b0f7d5367260e127e6e3269a0ffffdf568 \
+                    size    16234334
 github.tarball_from archive
 
 universal_variant   no
@@ -48,7 +47,7 @@ universal_variant   no
 # Minimum required version is 2.7. However ruby27 is broken on PPC: https://trac.macports.org/ticket/64906
 # Since this is a devel port, let it depend on recent a Ruby version.
 # Darwin PPC support was re-introduced from 3.1.
-set baseruby_ver    3.2
+set baseruby_ver    3.3
 set baseruby_ver_nodot \
                     [string map {. {}} ${baseruby_ver}]
 
@@ -68,16 +67,18 @@ depends_build-append \
                     port:cctools \
                     port:gperf \
                     port:libtool \
+                    path:bin/pkg-config:pkgconfig \
                     port:ruby${baseruby_ver_nodot}
 
 depends_run-append  port:ruby_select
 
-depends_skip_archcheck pkgconfig
+depends_skip_archcheck \
+                    path:bin/pkg-config:pkgconfig
 
 select.group        ruby
 select.file         ${filespath}/ruby${ruby_ver_nodot}
 
-patch.pre_args      -p1
+patch.pre_args-replace  -p0 -p1
 patchfiles-append   0001-Use-numerical-macOS-versions.patch
 
 post-patch {
@@ -86,6 +87,8 @@ post-patch {
     #  ENV["GEM_COMMAND"]&.shellsplit || ["gem"]
     # end
     reinplace -E "s/(shellsplit .. .)(\"gem\")/\\1\"gem${ruby_ver}\"/g" ${worksrcpath}/lib/bundler/gem_helper.rb
+    # get meaningful output during the build:
+    reinplace "s/\$(Q) \$(CC)/\$(CC)/g" ${worksrcpath}/template/Makefile.in
 }
 
 compiler.blacklist-append {clang < 901}
@@ -125,7 +128,6 @@ platform darwin {
         depends_build-append    port:gmake
         build.cmd               ${prefix}/bin/gmake
         configure.args-append   --disable-dtrace
-        configure.cflags-append -std=c99
     }
 
     if {${os.major} < 9} {
@@ -165,7 +167,7 @@ variant gmp description "use gmp" {
 
 variant jemalloc description "use jemalloc" {
         configure.args-delete   --without-jemalloc
-        depends_lib-append      port:jemalloc
+        depends_lib-append      path:lib/pkgconfig/jemalloc.pc:jemalloc
 }
 
 variant yjit description "use YJIT" {

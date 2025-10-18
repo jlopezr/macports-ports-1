@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           texlive 1.0
 
 name                texlive-lang-european
-version             66513
+version             74115
 revision            0
 
 categories          tex
@@ -13,22 +13,23 @@ license             Copyleft Permissive
 description         TeX Live: Other European languages
 long_description    Support for a number of European languages\; others (Greek, German, French, ...) have their own collections, depending simply on the size of the support.
 
-checksums           texlive-lang-european-66513-run.tar.xz \
-                    rmd160  3898ebcfd5daee1a35eb24e16b70146e3086e8cb \
-                    sha256  288d1a177bd34827af86923ea40c5011382ebbe14cab04d26eeb2b568595b1a4 \
-                    size    16167904 \
-                    texlive-lang-european-66513-doc.tar.xz \
-                    rmd160  dd04d79445eb4a543982ae933cdfd539f09b15e1 \
-                    sha256  8e932ca6090d237890cdf992beca5ccf54ce62f941dfd96cdbfb9064cc825be2 \
-                    size    14319972 \
-                    texlive-lang-european-66513-src.tar.xz \
-                    rmd160  ee7f5fbb1279360a02f97171c69284d165adac32 \
-                    sha256  eb1a9b35d253dae27127fdf5bad41bd946f90deee96ad764039bfd3f5ead6c07 \
-                    size    153776
+checksums           texlive-lang-european-74115-run.tar.xz \
+                    rmd160  f1024efc199c3157093d6cbcb98eb56fab2d1144 \
+                    sha256  c39183e46b0d1e21272b71d262c6bb4b6c66fc2e6e18c8d68a4e726838ed2cfc \
+                    size    1782320 \
+                    texlive-lang-european-74115-doc.tar.xz \
+                    rmd160  08fe64e0f567a84346890ff034e3cec7bd1aa89f \
+                    sha256  865cb2b36290f806df4352f3a93529b035b1560dfaef240dedfbc9d2a056ad19 \
+                    size    14333232 \
+                    texlive-lang-european-74115-src.tar.xz \
+                    rmd160  b41c1b413d3aaf3c9eaea6e80af8d32a4ee2e5b4 \
+                    sha256  f41c5cfc410e7c55c5fb0637d081e79e92b302b0d77c0cb9af1e91b5663dd5d8 \
+                    size    154876
 
 depends_lib         port:texlive-basic
 
 texlive.languages      \
+    {albanian loadhyph-sq.tex 2 2 {} {hyph-sq.pat.txt} {} {} } \
     {croatian loadhyph-hr.tex 2 2 {} {hyph-hr.pat.txt} {} {} } \
     {danish loadhyph-da.tex 2 2 {} {hyph-da.pat.txt} {} {} } \
     {dutch loadhyph-nl.tex 2 2 {} {hyph-nl.pat.txt} {hyph-nl.hyp.txt} {} } \

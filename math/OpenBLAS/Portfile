@@ -10,7 +10,7 @@ PortGroup           xcode_workaround 1.0
 name                OpenBLAS
 categories          math science
 license             BSD
-maintainers         {nicos @NicosPavlov} {michaelld @michaelld} {@catap korins.ky:kirill} openmaintainer
+maintainers         {nicos @NicosPavlov} {michaelld @michaelld} openmaintainer
 description         OpenBLAS is an optimized BLAS library based on GotoBLAS2
 long_description    {*}${description}
 
@@ -27,19 +27,17 @@ if {${os.major} < 9} {
 subport OpenBLAS-devel {}
 if {[string first "-devel" $subport] > 0} {
 
-    github.setup    OpenMathLib OpenBLAS 563daadc9277a9ddb84d2c5b52df759485c8a727
+    github.setup    OpenMathLib OpenBLAS 39eb43d4410d0745ca2c78d1162d973abf3aa35b
     github.tarball_from archive
-    version         20231215-[string range ${github.version} 0 7]
-    checksums       rmd160  311158261a064e456474d2444dbbf178431fe121 \
-                    sha256  b2896c3c11f44f46a68c3f75cd1299185886de69ce90a43b123e9c01080c0256 \
-                    size    24383307
+    version         20250308-[string range ${github.version} 0 7]
+    checksums       rmd160  9389ee804bda28105b48481fed91f12763fecf49 \
+                    sha256  55d71bd8a8e2776d724c9789fd7a309eda3a455d915a3c8cf4b3a0014b564089 \
+                    size    24724793
     revision        0
 
     conflicts       OpenBLAS
 
-    patchfiles      patch-openblas.pc-fixed-version-and-url.diff \
-                    patch-ar-options-old-macos.diff \
-                    patch-OpenBLAS-i386-Apple.diff
+    patchfiles      patch-OpenBLAS-i386-Apple.diff
 
     github.livecheck.branch develop
 
@@ -48,28 +46,26 @@ if {[string first "-devel" $subport] > 0} {
 
 } else {
 
-    github.setup    OpenMathLib OpenBLAS 0.3.25 v
+    github.setup    OpenMathLib OpenBLAS 0.3.30 v
     github.tarball_from releases
-    checksums       rmd160  eea6fe2c33762df4c47c7241808dabbdb085eed3 \
-                    sha256  4c25cb30c4bb23eddca05d7d0a85997b8db6144f5464ba7f8c09ce91e2f35543 \
-                    size    24073168
-    revision        6
+    checksums       rmd160  c78138e5539d78fd9e3bbdd78be192b1f516063b \
+                    sha256  27342cff518646afb4c2b976d809102e368957974c250a25ccc965e53063c95d \
+                    size    24699801
+    revision        0
 
     conflicts       OpenBLAS-devel
 
     patchfiles      patch-libnoarch.release.diff \
-                    patch-xcode15-fix.diff \
-                    patch-openblas.pc-fixed-version-and-url.diff \
-                    patch-enable-overstep-of-too-long-args-without-DYNAMIC_ARCH.diff \
-                    patch-ar-options-old-macos.diff \
-                    patch-OpenBLAS-old-macos.diff \
                     patch-OpenBLAS-i386-Apple.diff \
-                    patch-system_check.cmake-fix-arch-detection-for-Darwin-Pow.diff \
-                    patch-cpuid_power.c-add-CPU_SUBTYPE_POWERPC_7400-case.diff \
-                    patch-KERNEL.PPC970-KERNEL.PPCG4-unbreak-CMake-parsing.diff \
                     patch-cc.cmake-add-optflags-for-G5-and-G4-kernels.diff \
                     patch-cc.cmake-use-force_cpusubtype_ALL-for-Darwin-PPC.diff \
                     patch-PPC970-drop-mcpu-970-which-seems-to-produce-faulty-c.diff
+
+    # https://trac.macports.org/ticket/72638
+    # Fixes "Argument list too long" on earlier macOS versions.
+    # Remove after next release > 0.3.30.  Should be fixed upstream.
+    patchfiles-append \
+                    patch-CMakeLists.txt.diff
 
     if {![variant_isset native]} {
         notes "

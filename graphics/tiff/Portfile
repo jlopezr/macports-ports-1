@@ -5,11 +5,12 @@ PortGroup           xcodeversion 1.0
 PortGroup           muniversal 1.0
 
 name                tiff
-version             4.6.0
+version             4.7.1
 revision            0
-checksums           rmd160  9b116d5959bc9784862df819aa0a45c8e3d10177 \
-                    sha256  88b3979e6d5c7e32b50d7ec72fb15af724f6ab2cbf7e10880c360a77e4b5d99a \
-                    size    3584534
+
+checksums           rmd160  36c031017d1ebbc0b314f875e1df38e918367870 \
+                    sha256  f698d94f3103da8ca7438d84e0344e453fe0ba3b7486e04c5bf7a9a3fabe9b69 \
+                    size    4000609
 
 categories          graphics
 maintainers         {ryandesign @ryandesign} openmaintainer

@@ -4,15 +4,23 @@ PortSystem          1.0
 PortGroup           java 1.0
 
 name                jruby
-version             9.4.3.0
+version             9.4.9.0
 revision            0
 
 java.version        1.8+
-java.fallback       openjdk17
+
+if {${os.platform} eq "darwin" && ${os.arch} eq "powerpc"} {
+    # If minimum required Java version is raised above 1.8,
+    # macOS powerpc should be pegged to the latest supported version.
+    java.fallback   openjdk8
+} else {
+    java.fallback   openjdk21
+}
 
 categories          lang ruby java
 license             {EPL-2 GPL-2 LGPL-2.1}
 supported_archs     noarch
+platforms           {darwin any}
 maintainers         {judaew @judaew} \
                     openmaintainer
 
@@ -29,9 +37,9 @@ master_sites        https://repo1.maven.org/maven2/org/jruby/jruby-dist/${versio
 distname            ${name}-dist-${version}-bin
 worksrcdir          ${name}-${version}
 
-checksums           rmd160  230b9be8e9500e69125518950d5c9cf55265a236 \
-                    sha256  b097e08c5669e8a188288e113911d12b4ad2bd67a2c209d6dfa8445d63a4d8c9 \
-                    size    29462176
+checksums           rmd160  415ad56cd8243398080fe35b8f3747144c9a1520 \
+                    sha256  8d64736e66a3c0e1e1ea813b6317219c5d43769e5d06a4417311e2baa8b40ef7 \
+                    size    31802194
 
 use_configure       no
 build {}

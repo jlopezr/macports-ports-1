@@ -5,6 +5,8 @@ PortGroup           github 1.0
 PortGroup           common_lisp 1.0
 
 github.setup        fukamachi cl-cookie e6babbf57c9c6e0b6998a5b5ecaea8fa59f88296
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 version             20220620
 revision            0
 
@@ -13,7 +15,7 @@ checksums           rmd160  48a4a1fd0a83f2546989927fc12004180b9866c3 \
                     size    5404
 
 categories-append   devel
-maintainers         {@catap korins.ky:kirill} openmaintainer
+maintainers         nomaintainer
 license             BSD
 
 description         HTTP cookie manager for Common Lisp

@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-iminuit
-version             2.17.0
+version             2.31.1
 revision            0
 
 categories-append   science
@@ -12,20 +12,26 @@ license             LGPL
 maintainers         nomaintainer
 
 description         MINUIT from Python - Fitting like a boss
-long_description    ${description}
+long_description    {*}${description}
 
 homepage            https://iminuit.readthedocs.io/en/latest/
 
-checksums           rmd160  951ae70bfd77a092048d493d704aa4a453b8df1e \
-                    sha256  75f4a8a2bad21fda7b6bd42df7ca04120fb24636ebf9b566d259b26f2044b1d0 \
-                    size    431704
+checksums           rmd160  3a580a2ca726878387b8cff090715d970c40bcda \
+                    sha256  d5e004f1ffd83d2a076409fbf4a79691e7a17c9d73950bb63465af32e104de18 \
+                    size    1840604
 
-python.versions     37 38 39 310
+python.versions     39 310 311 312
 
 compiler.cxx_standard   2014
+compiler.thread_local_storage yes
 
 if {${name} ne ${subport}} {
     depends_build-append \
+                    port:py${python.version}-scikit-build-core \
+                    port:py${python.version}-pybind11 \
+                    port:py${python.version}-pathspec \
+                    port:py${python.version}-pyproject_metadata \
+                    port:ninja \
                     path:bin/cmake:cmake
 
     depends_lib-append \

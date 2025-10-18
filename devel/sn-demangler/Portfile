@@ -4,7 +4,6 @@ PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           java 1.0
 PortGroup           legacysupport 1.1
-PortGroup           compiler_blacklist_versions 1.0
 
 github.setup        indoorvivants sn-demangler 0.0.7 v
 revision            0
@@ -16,7 +15,7 @@ checksums           rmd160  266c559b6e1089cc34d94e21cec44a5cdf6f2013 \
 
 categories          devel
 license             Apache-2
-maintainers         {@catap korins.ky:kirill} openmaintainer
+maintainers         nomaintainer
 
 description         Scala Native name demangler
 long_description    ${description}

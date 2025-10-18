@@ -3,10 +3,9 @@
 PortSystem          1.0
 
 name                lazarus
-version             2.2.6-0
+version             4.2-0
 revision            0
 categories          devel
-platforms           darwin
 license             GPL-2 LGPL-2
 maintainers         {@kamischi web.de:karl-michael.schindler} openmaintainer
 description         Free Pascal IDE.
@@ -22,15 +21,15 @@ long_description    Lazarus is an open-source development system that builds \
                     to create applications with a graphical user interface \
                     (GUI).
 
-homepage            https://wiki.freepascal.org/Main_Page
+homepage            https://www.lazarus-ide.org
 master_sites        sourceforge:lazarus
 
-checksums           rmd160  d3c226a2ef7d9caaf0215c21af5f1e729edfca7a \
-                    sha256  39f4cf98c0a94b39a058e733baa62f1c1d5dcfa6599dc57bc5efc4c0d08c485c \
-                    size    78351752
+checksums           rmd160  0f511128b7081eb70959dca51896232ebdb6acd2 \
+                    sha256  46c746d765d61f4e2ab270fc7407b844f039e96f1cc65eee7e01e9d3abfc327a \
+                    size    92347735
 
 depends_lib         port:fpc port:fpc-sources
-supported_archs     x86_64 arm64
+supported_archs     x86_64 arm64 ppc
 
 use_configure       no
 worksrcdir          lazarus
@@ -40,9 +39,9 @@ patchfiles          noGUI-Printer.patch
 post-patch {
 # add the MacPorts directory tree. This might need a check in a new version
 
-    set patchtarget ${worksrcpath}/ide/include/unix/lazbaseconf.inc
+    set patchtarget ${worksrcpath}/ide/packages/ideconfig/include/unix/lazbaseconf.inc
 
-    reinplace "s|1\.\.15|1\.\.16|g" ${patchtarget}
+    reinplace "s|1\.\.16|1\.\.17|g" ${patchtarget}
     reinplace "s|'/usr/share/fpcsrc'|'/usr/share/fpcsrc',\\
     '${prefix}/share/fpcsrc'|g"      ${patchtarget}
     reinplace "s|1\.\.8|1\.\.9|g" ${patchtarget}
@@ -52,9 +51,6 @@ post-patch {
 # change the preferences directory (actually, not yet)
 #   reinplace "s|'\.lazarus'|'Library/Preferences/lazarus'|g" ${patchtarget}
     reinplace "s|'/etc/lazarus'|'${prefix}/etc/lazarus'|g"    ${patchtarget}
-
-    reinplace "s|'/usr/local/bin/'+GetDefaultCompilerFilename);|'${prefix}/bin/'+GetDefaultCompilerFilename);\\
-  AddFilenameToList(List,'/usr/local/bin/'+GetDefaultCompilerFilename);|g" ${patchtarget}
 
 # adjust the default paths to MacPorts paths
 
@@ -66,6 +62,9 @@ post-patch {
         }
         arm64 {
             set defaultCompiler ppca64
+        }
+        ppc {
+            set defaultCompiler ppcppc
         }
         default {
             set defaultCompiler unsupported
@@ -92,11 +91,61 @@ post-patch {
     copy ${worksrcpath}/components/virtualtreeview/units/cocoa         ${worksrcpath}/components/virtualtreeview/units/nogui
     copy ${worksrcpath}/components/virtualtreeview/include/intf/cocoa/ ${worksrcpath}/components/virtualtreeview/include/intf/nogui
 
+    if {[variant_isset gtk2]} {
+        reinplace "s|/sw/lib;/sw/lib/pango-ft219|${prefix}|g" ${worksrcpath}/lcl/interfaces/lcl.lpk
+        reinplace "s|/sw/lib|${prefix}/lib|g"                 ${worksrcpath}/lcl/interfaces/lcl.lpk
+    }
+
+# macOS 10.13 (High Sierra) and lower has no separate framework UserNotifications
+    if {${os.major} <= 17} {
+        reinplace "s| -k-weak_framework -kUserNotifications||g" ide/Makefile
+        reinplace "s| -k-weak_framework -kUserNotifications||g" ide/Makefile.fpc
+        reinplace "s| -k-weak_framework -kUserNotifications||g" components/chmhelp/lhelp/Makefile
+        reinplace "s| -k-weak_framework -kUserNotifications||g" components/chmhelp/lhelp/Makefile.fpc
+        reinplace "s| -weak_framework UserNotifications||g" lcl/interfaces/lcl.lpk
+    }
+
+# ld segfaults on macOS 15.4 and later, fall back to classic linker
+# See https://gitlab.com/freepascal.org/lazarus/lazarus/-/issues/41570
+    if {${os.major} >= 24} {
+        reinplace "s|_OPT+=-k-|_OPT+=-k-ld_classic -k-|" \
+            ide/Makefile ide/Makefile.fpc components/chmhelp/lhelp/Makefile
+    }
 }
 
 build.target       bigide
-build.post_args    OPT=-gl LCL_PLATFORM=cocoa
+
 use_parallel_build no
+
+variant cocoa conflicts gtk2 qt4 description "Build with Cocoa backend" {
+    build.post_args    OPT=-gl LCL_PLATFORM=cocoa
+}
+
+variant gtk2 conflicts cocoa qt4 description "Build with GTK backend" {
+    depends_lib-append path:lib/pkgconfig/gtk+-2.0.pc:gtk2
+    build.post_args    OPT="-gl -Fl${prefix}/lib" LCL_PLATFORM=gtk2
+}
+
+variant qt4 conflicts cocoa gtk2 description "Build with Qt4 backend" {
+    PortGroup          qt4 1.0
+
+    depends_lib-append port:qt4pas
+    build.post_args    OPT=-gl LCL_PLATFORM=qt
+}
+
+# It obviously makes no sense to use cocoa outside of macOS.
+# On powerpc it is broken, as well as carbon:
+# https://trac.macports.org/ticket/70815
+# FIXME: gtk and qt backends build, but on old MacOS seem to work
+# only in command-line: https://trac.macports.org/ticket/70817
+# https://gitlab.com/freepascal.org/lazarus/lazarus/-/issues/41153
+if {![variant_isset cocoa] && ![variant_isset gtk2] && ![variant_isset qt4]} {
+    if {${os.platform} eq "darwin" && ${os.arch} ne "powerpc"} {
+        default_variants-append +cocoa
+    } else {
+        default_variants-append +qt4
+    }
+}
 
 destroot.post_args INSTALL_PREFIX=${destroot}${prefix}
 
@@ -115,7 +164,7 @@ post-destroot {
 
 notes "
 Release Notes:
-  https://wiki.freepascal.org/Lazarus_2.2.0_release_notes
+  https://wiki.freepascal.org/Lazarus_4.0_release_notes
 "
 
 livecheck.regex "lazarus-(\\d+(?:\\.\\d+)*-\\d)"

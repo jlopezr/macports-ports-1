@@ -2,13 +2,14 @@
 
 PortSystem          1.0
 PortGroup           makefile 1.0
+PortGroup           muniversal 1.1
 
 name                dos2unix
-version             7.5.1
+version             7.5.3
 revision            0
 categories          textproc
 license             BSD
-maintainers         {@therealketo gmail.com:therealketo} openmaintainer
+maintainers         {@TheRealKeto gmail.com:therealketo} openmaintainer
 
 description         Convert text files with DOS or Mac line breaks to \
                     Unix line breaks and vice versa
@@ -27,12 +28,19 @@ homepage            https://waterlan.home.xs4all.nl/dos2unix.html
 master_sites        sourceforge:project/dos2unix/dos2unix/${version} \
                     https://waterlan.home.xs4all.nl/dos2unix
 
-checksums           rmd160  7952d1dcd768109fd41b4fe88ee99e58677443ba \
-                    sha256  da07788bb2e029b0d63f6471d166f68528acd8da2cf14823a188e8a9d5c1fc15 \
-                    size    959228
+checksums           rmd160  f0a18ed95c4c169ed30c76e8631175f2f9b0478f \
+                    sha256  28a4b0d9f9179da4e44c567b9c01f818b070a20827115fffd96f760dcfa0f3b2 \
+                    size    955879
 
-depends_lib         port:gettext
-universal_variant   no
+depends_build-append \
+                    port:gettext
+depends_lib-append  port:gettext-runtime
 
-destroot.args       prefix=${prefix} \
-                    DOCDIR=${destroot}${prefix}/share/doc/${name}
+makefile.prefix_name \
+                    prefix
+
+makefile.override-append \
+                    PREFIX
+
+destroot.args-append \
+                    docsubdir=${name}

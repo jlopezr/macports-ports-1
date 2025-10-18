@@ -2,10 +2,16 @@
 
 PortSystem       1.0
 
-name             openjdk21-temurin
+set feature 21
+name             openjdk${feature}-temurin
 categories       java devel
-maintainers      {breun.nl:nils @breun} openmaintainer
-platforms        {darwin any}
+maintainers      {breun @breun} openmaintainer
+
+# JVMMinimumSystemVersion in Contents/Info.plist is set to macOS 10.12.0 for x86_64:
+# /usr/libexec/PlistBuddy -c "Print :JavaVM:JVMMinimumSystemVersion" Contents/Info.plist
+# Mapping to Darwin version: https://trac.macports.org/wiki/PortfileRecipes#compare-osx-darwin-version
+platforms        {darwin any >= 16 }
+
 # This port uses prebuilt binaries; 'NoMirror' makes sure MacPorts doesn't mirror/distribute these third-party binaries
 license          GPL-2 NoMirror
 # This port uses prebuilt binaries for a particular architecture; they are not universal binaries
@@ -14,34 +20,38 @@ universal_variant no
 # https://adoptium.net/temurin/releases/
 supported_archs  x86_64 arm64
 
-version      21.0.1
-set build    12
+version      ${feature}.0.8
+set build    9
 revision     0
 
-description  Eclipse Temurin, based on OpenJDK 21
+description  Eclipse Temurin, based on OpenJDK ${feature} (Long Term Support until at least December 2029)
 long_description Eclipse Temurin provides secure, TCK-tested and compliant, production-ready Java runtimes.
 
-master_sites https://github.com/adoptium/temurin21-binaries/releases/download/jdk-${version}%2B${build}/
+master_sites https://github.com/adoptium/temurin${feature}-binaries/releases/download/jdk-${version}%2B${build}/
 
 if {${configure.build_arch} eq "x86_64"} {
-    distname     OpenJDK21U-jdk_x64_mac_hotspot_${version}_${build}
-    checksums    rmd160  4a820fe6cfd7077e32c3d8224f0ca6a00d3c0d85 \
-                 sha256  35f3cbc86d7ff0a01facefd741d5cfb675867e0a5ec137f62ba071d2511a45c9 \
-                 size    194340703
+    set arch_classifier x64
+    checksums    rmd160  ba4ac60e56aead21598359cd13eeb0e5c9769501 \
+                 sha256  0ceaf7060b2c9dbbe8ecc4fb9351c6b4cf24e4350d58772c9656589933a4fdeb \
+                 size    194046408
 } elseif {${configure.build_arch} eq "arm64"} {
-    distname     OpenJDK21U-jdk_aarch64_mac_hotspot_${version}_${build}
-    checksums    rmd160  41fa00ef620467e55ce56d06b942845c5ea7b8ff \
-                 sha256  0d29257c9bcb5f20f5c4643ef9437f36b10376863eddaf6248d09093796c6b30 \
-                 size    191704753
+    set arch_classifier aarch64
+    checksums    rmd160  2c1a6dddf52e99a0ec5a242ba40a43091342b5c4 \
+                 sha256  59422c2292ae4e76b87e00d8808dbe49cffa39af731e08bb0292ddb0af4e0261 \
+                 size    199817579
+} else {
+    set arch_classifier unsupported_arch
 }
+
+distname     OpenJDK${feature}U-jdk_${arch_classifier}_mac_hotspot_${version}_${build}
 
 worksrcdir   jdk-${version}+${build}
 
 homepage     https://adoptium.net
 
 livecheck.type      regex
-livecheck.url       https://github.com/adoptium/temurin21-binaries/releases
-livecheck.regex     OpenJDK21U-jdk_.*_mac_hotspot_(\[0-9\.\]+)_\[0-9\]+.tar.gz
+livecheck.url       https://github.com/adoptium/temurin${feature}-binaries
+livecheck.regex     jdk-(${feature}\[\.0-9\]+)\+
 
 use_configure    no
 build {}
@@ -69,7 +79,7 @@ test.args   -version
 destroot.violate_mtree yes
 
 set jvms /Library/Java/JavaVirtualMachines
-set jdk ${jvms}/jdk-21-eclipse-temurin.jdk
+set jdk ${jvms}/jdk-${feature}-eclipse-temurin.jdk
 
 destroot {
     xinstall -m 755 -d ${destroot}${prefix}${jdk}

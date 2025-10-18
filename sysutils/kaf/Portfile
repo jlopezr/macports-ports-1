@@ -3,8 +3,8 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/birdayz/kaf 0.2.6 v
-github.tarball_from archive
+go.setup            github.com/birdayz/kaf 0.2.11 v
+go.offline_build    no
 revision            0
 
 description         Modern CLI for Apache Kafka, written in Go
@@ -17,9 +17,6 @@ license             Apache-2
 maintainers         {gmail.com:herby.gillot @herbygillot} \
                     openmaintainer
 
-# Allow Go to download deps at build time
-go.offline_build no
-
 build.cmd           make
 build.target        build
 
@@ -27,9 +24,9 @@ destroot {
     xinstall -m 0755 ${worksrcpath}/${name} ${destroot}${prefix}/bin/
 }
 
-checksums          rmd160  40b1aaf799f0b6ce1ddaeab17c5c79f0e0cc584d \
-                   sha256  f66df1159facba147685e09a6c72e92d999d52a599a9a44783ddfc90590fc4d3 \
-                   size    846157
+checksums          rmd160  b97c29d2c077ab4139bbe308f936beddae1b9fa8 \
+                   sha256  e534ce7004023c646bc552a084318017db35ccd8106a362d48229cae11889c78 \
+                   size    846112
 
 notes "
 

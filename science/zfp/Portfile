@@ -2,22 +2,22 @@
 
 PortSystem          1.0
 PortGroup           cmake 1.1
-PortGroup           compiler_blacklist_versions 1.0
 PortGroup           github 1.0
 
-github.setup        LLNL zfp bcc5a254823224c5010b51dc28d5c6c47b20ef39
-version             2023.10.18
+github.setup        LLNL zfp 01506c8136bce467ee2b768c73b782b075ad25a8
+version             2024.11.26
 revision            0
 categories          science devel
 license             BSD
 maintainers         {@barracuda156 gmail.com:vital.had} openmaintainer
-description         zfp is a compressed format for representing multi-dimensional floating-point and integer arrays
+description         ${name} is a compressed format for representing \
+                    multi-dimensional floating-point and integer arrays
 long_description    {*}${description}
 homepage            https://zfp.llnl.gov
 
-checksums           rmd160  9cb1655d20531abe2e10f2ddd2063937ea75816b \
-                    sha256  074b7bc22758e58f05c3c9f11d988e76494fc712d5a149fdc0ed4fbd06e44556 \
-                    size    504854
+checksums           rmd160  74c36b318294d79c5b619f1c0c409377a79301f3 \
+                    sha256  c19d58c9235aaee88456ba00a25610e8c19a3acb50a24c1af2941b36776a319a \
+                    size    516506
 github.tarball_from archive
 
 # index.hpp: error: integer constant is too large for ‘unsigned long’ type

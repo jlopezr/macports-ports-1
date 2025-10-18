@@ -4,7 +4,8 @@ PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           tree_sitter 1.0
 
-github.setup        tree-sitter tree-sitter-javascript 0.20.0 rust-
+github.setup        tree-sitter tree-sitter-javascript 0.25.0 v
+github.tarball_from archive
 revision            0
 
 description         A tree-sitter parser for JavaScript
@@ -15,8 +16,11 @@ categories          devel
 license             MIT
 maintainers         {amake @amake} openmaintainer
 
-checksums           rmd160  a2a4bedc2a373d2df33e1b485573430ca9554b3e \
-                    sha256  f470c51730a7cd8810d8c6508b2b0630f0cd3803187063b8e5084d7f91ff67f8 \
-                    size    278819
+checksums           rmd160  4b2fae7de68d17a4f04d41ec3b3bbf0d69127572 \
+                    sha256  9712fc283d3dc01d996d20b6392143445d05867a7aad76fdd723824468428b86 \
+                    size    309805
 
 worksrcdir          ${worksrcdir}/src
+
+# scanner.h: error: ‘for’ loop initial declaration used outside C99 mode
+configure.cflags-append -std=c99

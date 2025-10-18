@@ -5,7 +5,8 @@ PortGroup           github 1.0
 PortGroup           cmake 1.1
 PortGroup           legacysupport 1.1
 
-github.setup        KhronosGroup SPIRV-Tools 1.3.261.1 sdk-
+github.setup        KhronosGroup SPIRV-Tools 1.4.321.0 vulkan-sdk-
+github.tarball_from archive
 name                spirv-tools
 revision            0
 
@@ -18,39 +19,44 @@ long_description    SPIR-V assembler, binary module parser, \
                     disassembler, validator, and optimizer
 homepage            https://vulkan.lunarg.com
 
-# FIXME: Failed to extract spirv-tools: no files matched glob pattern...
+# FIXME : main module not extracted in worksrcpath when using multiple sources.
+# move extracted main module to worksrcpath
+# Move submodules to cmakes expected location in worksrcpath
 post-extract {
-    move ${workpath}/KhronosGroup-SPIRV-Tools-e553b88 ${workpath}/SPIRV-Tools-e553b88
+    move ${workpath}/SPIRV-Tools-${github.tag_prefix}${version} ${worksrcpath}
+    foreach {sub_author sub_project sub_commit sub_dest} ${submodules} {
+        move ${workpath}/${sub_project}-${sub_commit} ${worksrcpath}/${sub_dest}
+    }
 }
 
-checksums           SPIRV-Tools-1.3.261.1.tar.gz \
-                    rmd160  1d62bad1437cecb347909c47feac4c47015748e6 \
-                    sha256  e059756fad9decfd1400c00f8682d54fc32b06c234107564226d43dca0b4d433 \
-                    size    3141140 \
-                    abseil-cpp-79ca5d7aad63973c83a4962a66ab07cd623131ea.tar.gz \
-                    rmd160  0f233213825e23c55820390a3d4e52c97e9e8c10 \
-                    sha256  fb1dc4bf076892aca18d7fd0c228967a451f880df65da53c3af33776ca31f465 \
-                    size    2145278 \
-                    effcee-19b4aa87af25cb4ee779a071409732f34bfc305c.tar.gz \
-                    rmd160  e8c0de0bc279f84317cab175c6d7090fa4095b8c \
-                    sha256  02f98be1426ad1cd7479a1fc4ebfc8495f4fd291cbe6cf1cdb99cb0f401d92b0 \
-                    size    40734 \
-                    googletest-6f6ab4212aa02cfe02e480711246da4fc17b0761.tar.gz \
-                    rmd160  c801ed4a40885f80c178e1321d8e2dffb1099c16 \
-                    sha256  873fa72facd4b5261bc8e53974337778037c88c97dde114b546d5ec821fac1df \
-                    size    868419 \
+checksums           SPIRV-Tools-${version}.tar.gz \
+                    rmd160  b5541a39f2dbeff47dd5e1386193d4885b3628c9 \
+                    sha256  8327fb8f3e9472346a004c91dbb83a6e5f3b36c3846c142cf8c0dc8fac8710f3 \
+                    size    3336926 \
+                    abseil-cpp-20250512.1.tar.gz \
+                    rmd160  8b0a057d2cb9a6f60e93a5c526beb328906cce52 \
+                    sha256  9b7a064305e9fd94d124ffa6cc358592eb42b5da588fb4e07d09254aa40086db \
+                    size    2221441 \
+                    effcee-8ce15c424e61a94ee27b5be0ec0ed036b158e6e3.tar.gz \
+                    rmd160  205ff8af4a660060f78f24abecb91f34a5a7a498 \
+                    sha256  ca22a22e794b5f2ab164f43085a1cf864d8839e3fc30733c5aaa7c6d56ad0f41 \
+                    size    41350 \
+                    googletest-35b75a2cba6ef72b7ce2b6b94b05c54ca07df866.tar.gz \
+                    rmd160  f64f209de2447b01aca55335588c35998a0be02e \
+                    sha256  b46a96e802481ce29418a018daeebcabd77e94c91fd0bec2b3ea900baa9f6df0 \
+                    size    888219 \
                     protobuf-f0dc78d7e6e331b8c6bb2d5283e06aa26883ca7c.tar.gz \
                     rmd160  a397c44d602407d85eb6ac6b985f9feb792f76e1 \
                     sha256  d594b561fb41bf243233d8f411c7f2b7d913e5c9c1be4ca439baf7e48384c893 \
                     size    5146983 \
-                    re2-960c861764ff54c9a12ff683ba55ccaad1a8f73b.tar.gz \
-                    rmd160  87d10045bf49003faa15ae2fcb633a82cc89818c \
-                    sha256  8315f22198c25e9f7f1a3754566824710c08ddbb39d93e9920f4a131e871fc15 \
-                    size    396962 \
-                    SPIRV-Headers-124a9665e464ef98b8b718d572d5f329311061eb.tar.gz \
-                    rmd160  c3b513b019e0e415b644fc7f98b6ba3f97685322 \
-                    sha256  a039140fa01380be8cbe19bbb4f1bb475a620bac7eb80b290fd407c5ff1118e0 \
-                    size    456630
+                    re2-c84a140c93352cdabbfb547c531be34515b12228.tar.gz \
+                    rmd160  88a8a9edc11672acc990a6502464b54eb3caadc3 \
+                    sha256  94ad73bd2b32177874239bbb0a59625901212252751518c27f87f78d191c36ad \
+                    size    391028 \
+                    SPIRV-Headers-2a611a970fdbc41ac2e3e328802aed9985352dca.tar.gz \
+                    rmd160  39f4f3dab756478d7567ed7185efedde13803703 \
+                    sha256  c2225a49c3d7efa5c4f4ce4a6b42081e6ea3daca376f3353d9d7c2722d77a28a \
+                    size    538726
 
 compiler.cxx_standard 2017
 # Need to use MacPorts libc++ on macOS 10.14 Mojave and older, because
@@ -63,7 +69,7 @@ compiler.cxx_standard 2017
 legacysupport.newest_darwin_requires_legacy 18
 legacysupport.use_mp_libcxx yes
 
-set py_ver          3.11
+set py_ver          3.13
 set py_ver_nodot    [string map {. {}} ${py_ver}]
 foreach stage {configure build destroot test} {
     ${stage}.env-append PATH=${frameworks_dir}/Python.framework/Versions/${py_ver}/bin:$env(PATH)
@@ -71,13 +77,14 @@ foreach stage {configure build destroot test} {
 depends_build-append port:python${py_ver_nodot}
 
 # See DEPS file in repo
+# Exept abseil changed to lts version.
 set submodules {
-    abseil abseil-cpp 79ca5d7aad63973c83a4962a66ab07cd623131ea external/abseil_cpp
-    google effcee 19b4aa87af25cb4ee779a071409732f34bfc305c external/effcee
-    google googletest 6f6ab4212aa02cfe02e480711246da4fc17b0761 external/googletest
+    abseil abseil-cpp 20250512.1 external/abseil_cpp
+    google effcee 8ce15c424e61a94ee27b5be0ec0ed036b158e6e3 external/effcee
+    google googletest 35b75a2cba6ef72b7ce2b6b94b05c54ca07df866 external/googletest
     protocolbuffers protobuf f0dc78d7e6e331b8c6bb2d5283e06aa26883ca7c external/protobuf
-    google re2 960c861764ff54c9a12ff683ba55ccaad1a8f73b external/re2
-    KhronosGroup SPIRV-Headers 124a9665e464ef98b8b718d572d5f329311061eb external/spirv-headers
+    google re2 c84a140c93352cdabbfb547c531be34515b12228 external/re2
+    KhronosGroup SPIRV-Headers 2a611a970fdbc41ac2e3e328802aed9985352dca external/spirv-headers
 }
 
 foreach {sub_author sub_project sub_commit sub_dest} ${submodules} {
@@ -85,14 +92,8 @@ foreach {sub_author sub_project sub_commit sub_dest} ${submodules} {
     distfiles-append    ${sub_project}-${sub_commit}.tar.gz:${sub_project}
 }
 
-post-extract {
-    ln -s {*}[glob -directory ${workpath} -tails ${github.project}-*] ${worksrcpath}
-    foreach {sub_author sub_project sub_commit sub_dest} ${submodules} {
-        ln -s {*}[glob ${workpath}/${sub_project}-*] ${worksrcpath}/${sub_dest}
-    }
-}
-
 configure.args-append \
                     -DSPIRV_WERROR=OFF \
                     -DBUILD_SHARED_LIBS=ON \
-                    -DSPIRV_TOOLS_BUILD_STATIC=OFF
+                    -DSPIRV_TOOLS_BUILD_STATIC=OFF \
+                    -DCMAKE_INSTALL_PREFIX=${prefix}

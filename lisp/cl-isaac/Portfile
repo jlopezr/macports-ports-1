@@ -5,6 +5,8 @@ PortGroup           github 1.0
 PortGroup           common_lisp 1.0
 
 github.setup        thephoeron cl-isaac 51ee06091fb67ba48693108999cf1197726852f4
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 version             20230627
 revision            0
 
@@ -13,7 +15,7 @@ checksums           rmd160  31e8e8abbfa6eddc5cca36d0395e13c708b853ee \
                     size    15250
 
 categories-append   devel
-maintainers         {@catap korins.ky:kirill} openmaintainer
+maintainers         nomaintainer
 license             BSD
 
 description         Optimized Common Lisp version of Bob Jenkins' ISAAC-32 and ISAAC-64 algorithms, fast cryptographic random number generators.

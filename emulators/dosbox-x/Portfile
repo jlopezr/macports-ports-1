@@ -4,18 +4,16 @@ PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           legacysupport 1.0
 PortGroup           app 1.0
-PortGroup           compiler_blacklist_versions 1.0
 PortGroup           muniversal 1.0
 
-github.setup        joncampbell123 dosbox-x 2023.10.06 dosbox-x-v
+github.setup        joncampbell123 dosbox-x 2025.05.03 dosbox-x-v
 revision            0
 
-checksums           rmd160  00491693be103592f5478f9ef745e6aa6ff124b7 \
-                    sha256  65f756e29f9c9b898fdbd22b0cb9b3b24c6e3becb5dcda588aa20a3fde9539a5 \
-                    size    119420489
+checksums           rmd160  7893013884afdeeb0b41bfaf7fab6e2bce25c5e3 \
+                    sha256  b29a2c9c38bfe1d1c1f2420d546b8c2456ae2ddce4c1f6b4d19f258841ce1581 \
+                    size    122834930
 
 categories          emulators
-platforms           darwin
 license             GPL-2+
 maintainers         nomaintainer
 
@@ -36,12 +34,14 @@ patchfiles          patch-futimens.diff \
 
 supported_archs     i386 x86_64 arm64
 
+set ffmpeg_ver      7
+
 # build also looks for nasm, but doesn't use it even if it is found
 depends_build-append \
                     port:pkgconfig
 
 # also looks for GL/gl.h, but doesn't use mesa even if installed
-depends_lib         path:lib/libavcodec.dylib:ffmpeg \
+depends_lib         port:ffmpeg${ffmpeg_ver} \
                     port:fluidsynth \
                     port:freetype \
                     port:libpcap \
@@ -52,6 +52,8 @@ depends_lib         path:lib/libavcodec.dylib:ffmpeg \
 
 use_autoreconf      yes
 autoreconf.args     -fvi
+
+configure.pkg_config_path   ${prefix}/libexec/ffmpeg${ffmpeg_ver}/lib/pkgconfig
 
 # by default build the SDLv2 version of dosbox-x without
 # slirp (TCP/IP # emulation) support by default

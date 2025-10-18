@@ -4,10 +4,9 @@ PortSystem              1.0
 PortGroup               conflicts_build 1.0
 
 name                    ncview
-version                 2.1.9
-revision                0
+version                 2.1.11
+revision                1
 maintainers             {@thiagoveloso gmail.com:thiagoveloso} openmaintainer
-platforms               darwin
 categories              science
 license                 GPL-3
 
@@ -24,9 +23,9 @@ homepage                https://cirrus.ucsd.edu/ncview/
 
 master_sites            https://cirrus.ucsd.edu/~pierce/ncview/
 
-checksums               rmd160  6a415df36255c3026e1e60b67ee7d9a0cd7d3c8b \
-                        sha256  e2317ac094af62f0adcf68421d70658209436aae344640959ec8975a645891af \
-                        size 1264439
+checksums               rmd160  1187ae9dec5718b8041cb44bb85638a8369e3489 \
+                        sha256  597cfddf9c2d7993e9b0b86bca1b73839567ee9116ee33f6d750a449b5033d91 \
+                        size 1248628
 
 patchfiles              patch-configure.diff
 

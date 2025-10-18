@@ -4,19 +4,19 @@ PortSystem          1.0
 PortGroup           perl5 1.0
 
 perl5.branches      5.28 5.30 5.32 5.34
-perl5.setup         Dist-Zilla-Plugin-Git-Contributors 0.036
+perl5.setup         Dist-Zilla-Plugin-Git-Contributors 0.038 ../../authors/id/E/ET/ETHER
 revision            0
 license             {Artistic-1 GPL}
 maintainers         {devans @dbevans} openmaintainer
 description         Dist::Zilla::Plugin::Git::Contributors - Add contributor names from git to your distribution
-long_description    ${description}
+long_description    {*}${description}
 
 platforms           {darwin any}
 supported_archs     noarch
 
-checksums           rmd160  fed874076481411e414c91de156538a67fe26c73 \
-                    sha256  352f3d45e4891fe28693106681d0e9ad5bada27e68d8066dd175bbd8afbe759c \
-                    size    45551
+checksums           rmd160  9683eac442946b478e42011f73e4fbab3adfdf48 \
+                    sha256  d36b827600964bb7b636da4a9f3417f52c323b3e680a0190492628416e460532 \
+                    size    42819
 
 if {${perl5.major} != ""} {
     depends_build-append \

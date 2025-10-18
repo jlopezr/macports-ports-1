@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-dill
-version             0.3.7
+version             0.4.0
 revision            0
 
 platforms           {darwin any}
@@ -24,12 +24,11 @@ long_description    \
 
 homepage            https://github.com/uqfoundation/dill
 
-checksums           rmd160  3aecd09a0cf8ebdaa02fff88467523124bad3e60 \
-                    sha256  cc1c8b182eb3013e24bd475ff2e9295af86c1a38eb1aff128dac8962a9ce3c03 \
-                    size    183355
+checksums           rmd160  7149839f9290182bb49a1f36b5f14778e95f8e5b \
+                    sha256  0633f1d2df477324f53a895b02c901fb961bdbf65a17122586ea7019292cbcf0 \
+                    size    186976
 
-python.versions     37 38 39 310 311 312
-python.pep517       yes
+python.versions     39 310 311 312 313
 
 if {${name} ne ${subport}} {
     # make sure the tests are run with the correct Python version
@@ -39,6 +38,8 @@ if {${name} ne ${subport}} {
     }
 
     test.run        yes
+    depends_test    port:py${python.version}-numpy
+
     python.test_framework
     test.dir        ${build.dir}/dill/tests
     test.cmd        ${python.bin} __main__.py

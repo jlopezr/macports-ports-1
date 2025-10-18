@@ -1,15 +1,14 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem  1.0
-PortGroup   compiler_blacklist_versions 1.0
 
 name        xorg-libX11
-version     1.8.7
+version     1.8.12
 revision    0
 
-checksums   rmd160  0dcecfc8cbe853344c47e0f7e5217fbcdd3eb82d \
-            sha256  05f267468e3c851ae2b5c830bcf74251a90f63f04dd7c709ca94dc155b7e99ee \
-            size    1859256
+checksums   rmd160  f429a12d67eca397b40afd3c0df2619a4d4d8e41 \
+            sha256  fa026f9bb0124f4d6c808f9aef4057aad65e7b35d8ff43951cef0abe06bb9a9a \
+            size    1895256
 
 categories  x11 devel
 license     X11
@@ -26,9 +25,8 @@ distname    libX11-${version}
 patchfiles  patch-xorg-libX11-pragmas-inside-functions.diff
 
 use_xz                  yes
-use_parallel_build      yes
 
-depends_build   port:pkgconfig \
+depends_build   path:bin/pkg-config:pkgconfig \
                 port:xorg-xtrans \
                 port:xorg-xorgproto \
                 port:xorg-util-macros

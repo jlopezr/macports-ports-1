@@ -3,8 +3,10 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        nothings stb 5736b15f7ea0ffb08dd38af21067c314d6a3aae9
-version             20230131
+github.setup        nothings stb 2e2bef463a5b53ddf8bb788e25da6b8506314c08
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
+version             20241029
 revision            0
 
 categories          devel
@@ -17,9 +19,9 @@ description         \
     Single-file public domain (or MIT licensed) libraries for C/C++.
 long_description    {*}${description}
 
-checksums           rmd160 d199ca834fbd1079d1dff81ee8e34d7e0bc121fc \
-                    sha256 0106b7acfefb3d43429e37512a39a95dd218b386408b7f36a928ac92e60e93bf \
-                    size 1392665
+checksums           rmd160 fffe65c806f1b622123e11c5285692d089aae897 \
+                    sha256 d5c5887f1bf57427a828f1f410bd0d26f648ef9f8e5b492ef602b3e48631d05a \
+                    size 1510577
 
 use_configure       no
 build {}

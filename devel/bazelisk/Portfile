@@ -3,8 +3,7 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/bazelbuild/bazelisk 1.19.0 v
-github.tarball_from archive
+go.setup            github.com/bazelbuild/bazelisk 1.25.0 v
 revision            0
 
 categories          devel
@@ -22,9 +21,9 @@ long_description    Bazelisk is a wrapper for Bazel written in Go. \
                     all command-line arguments to the real Bazel binary. You \
                     can call it just like you would call Bazel.
 
-checksums           rmd160  5dc725922d3e7b2bc1e936a92bd162674394ae9c \
-                    sha256  4c291875707cdd98da87ad34e287c06384436f60cb76e2ac03c32d51f48c96ce \
-                    size    166002
+checksums           rmd160  9220308ba960a7dd708876c37b695bf6b59be662 \
+                    sha256  8ff4c6b9ab6a00fbef351d52fde39afc2b9f047865f219a89ed0b23ad6f8cf06 \
+                    size    153421
 
 conflicts           bazel
 

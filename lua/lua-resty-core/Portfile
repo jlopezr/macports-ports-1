@@ -4,11 +4,11 @@ PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           makefile 1.0
 
-github.setup        openresty lua-resty-core 0.1.27 v
+github.setup        openresty lua-resty-core 0.1.31 v
 revision            0
-checksums           rmd160  8ba8e887dfe409df14e6cf168e53f1506377b654 \
-                    sha256  39baab9e2b31cc48cecf896cea40ef6e80559054fd8a6e440cc804a858ea84d4 \
-                    size    187745
+checksums           rmd160  30817eb96a9d09e5bdd74990b6fc75aa7c132d77 \
+                    sha256  a8af7beadd43dd4758b7dc3c00e027dd3908e73f5bf0e08155a2c8954c5937c0 \
+                    size    225505
 
 categories          lua
 maintainers         {ryandesign @ryandesign} openmaintainer

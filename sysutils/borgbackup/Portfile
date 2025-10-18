@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                borgbackup
-version             1.2.6
+version             1.4.1
 revision            0
 
 categories          sysutils
@@ -23,13 +23,17 @@ long_description    BorgBackup (short: Borg) is a deduplicating backup \
 
 homepage            https://www.borgbackup.org/
 
-checksums           rmd160  a7784882a7ebe3346b6c862096ec8a023debe098 \
-                    sha256  b7a6f8f086039eeec79070b914f3c651ed7f3612c965374af910d277c7a2139d \
-                    size    4355451
+checksums           rmd160  51bf968d6242ccb37042809df59dc7fce1937d49 \
+                    sha256  b8fbf8f1c19d900b6b32a5a1dc131c5d8665a7c7eea409e9095209100b903839 \
+                    size    3817197
 
-python.default_version  310
+patchfiles          patch-accept-newer-msgpack.diff \
+                    patch-docs-use-sphinx_rtd_theme.diff
+
+python.default_version  313
 
 depends_build-append \
+                    port:py${python.version}-cython \
                     port:py${python.version}-pkgconfig \
                     port:py${python.version}-setuptools_scm \
                     port:py${python.version}-sphinx \
@@ -44,14 +48,19 @@ depends_lib-append  path:lib/libssl.dylib:openssl \
 depends_run-append  port:py${python.version}-msgpack \
                     port:py${python.version}-packaging
 
+# Run tests, but skip test_unix_socket, since it will fail because the path is
+# longer than the maximum length of a unix socket name when run in a MacPorts
+# build.
+depends_test-append port:py${python.version}-pytest-xdist \
+                    port:py${python.version}-pytest-benchmark
+
+test.run            yes
+test.args-append    -k 'not test_unix_socket' \
+                    -n ${build.jobs} \
+                    --pyargs borg.testsuite
+
 post-build {
-    reinplace "s|sphinx-build|sphinx-build-${python.branch}|g" \
-        ${worksrcpath}/docs/Makefile
-    reinplace "s|guzzle_sphinx_theme|sphinx_rtd_theme|g" \
-        ${worksrcpath}/docs/conf.py
-    reinplace "s|sphinx_rtd_theme.html_theme_path()|sphinx_rtd_theme.get_html_theme_path()|g" \
-        ${worksrcpath}/docs/conf.py
-    system "make -C ${worksrcpath}/docs man singlehtml"
+    system "make -C [shellescape ${worksrcpath}/docs] man singlehtml SPHINXBUILD=[shellescape sphinx-build-${python.branch}]"
 }
 
 post-destroot {

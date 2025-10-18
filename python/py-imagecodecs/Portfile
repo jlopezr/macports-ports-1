@@ -5,8 +5,8 @@ PortGroup           python 1.0
 
 name                py-imagecodecs
 epoch               1
-version             2023.9.18
-revision            0
+version             2025.8.2
+revision            1
 
 categories-append   graphics
 license             BSD
@@ -15,22 +15,21 @@ maintainers         {mps @Schamschula} openmaintainer
 description         Image transformation, compression, and decompression codecs
 long_description    {*}${description}
 
-homepage            https://www.lfd.uci.edu/~gohlke/
+homepage            https://github.com/cgohlke/imagecodecs/
 
-checksums           rmd160  099b215d8055512f216d8288e6d5c2bd42099805 \
-                    sha256  bf4b4be4759fc3b27b5022228aada83e735744e4b7c204bcdccaa961c3f79d4d \
-                    size    9444699
+checksums           rmd160  c9c438b28ee7de87d1b09979e9f8976422d421c4 \
+                    sha256  2af272aac90c370326a7e2fffcbbbd32d42de07576959a2a98d60110267dfe6c \
+                    size    9490135
 
-python.versions     37 38 39 310 311
-
-platforms {darwin >= 17}
+python.versions     310 311 312 313
 
 if {${name} ne ${subport}} {
-    depends_build-append \
-                    path:bin/cython-${python.branch}:py${python.version}-cython \
-                    port:py${python.version}-setuptools
+    platforms {darwin >= 17}
 
-     depends_lib-append \
+    depends_build-append \
+                    path:bin/cython-${python.branch}:py${python.version}-cython
+
+    depends_lib-append \
                     port:blosc \
                     port:brotli \
                     port:brunsli \
@@ -51,7 +50,6 @@ if {${name} ne ${subport}} {
                     port:zstd
 
     post-patch {
-        reinplace "s|%PREFIX%|${prefix}|g" \
-            ${worksrcpath}/setup.py
+        reinplace "s|%PREFIX%|${prefix}|g" ${worksrcpath}/setup.py
     }
 }

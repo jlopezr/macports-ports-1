@@ -1,0 +1,33 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           golang 1.0
+
+go.setup            github.com/sqlc-dev/sqlc 1.29.0 v
+go.offline_build    no
+revision            0
+
+homepage            https://sqlc.dev/
+
+description         Generate type-safe Golang code from SQL
+long_description    {*}${description}
+
+categories          devel databases
+installs_libs       no
+license             MIT
+maintainers         {gmail.com:herby.gillot @herbygillot} \
+                    openmaintainer
+
+checksums           rmd160  19ff4e897dfa74da5d5feb59a218251e8d498c01 \
+                    sha256  7f26a9539d25df18d3cd2f02785b5a08e30adf568a08b50c5504556f16c1fb5d \
+                    size    1026973
+
+build.args-append   -o bin ./cmd/...
+
+pre-build {
+    file mkdir ${worksrcpath}/bin
+}
+
+destroot {
+    xinstall -m 0755 {*}[glob ${worksrcpath}/bin/*] ${destroot}${prefix}/bin/
+}

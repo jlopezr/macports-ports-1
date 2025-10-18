@@ -12,7 +12,7 @@ PortGroup           mpi 1.0
 legacysupport.use_mp_libcxx                 yes
 legacysupport.newest_darwin_requires_legacy 18
 
-github.setup        pika-org pika 0.21.0
+github.setup        pika-org pika 0.30.1
 revision            0
 categories          devel parallel
 license             Boost-1
@@ -20,20 +20,25 @@ maintainers         {@barracuda156 gmail.com:vital.had} openmaintainer
 description         C++ library for concurrency and parallelism
 long_description    pika is a C++ library for concurrency and parallelism. \
                     It implements senders/receivers for CPU thread pools, MPI and CUDA.
-checksums           rmd160  5d7deaad09cd1ab705bea10e77b56e024262e0c2 \
-                    sha256  0ab24966e6ae026b355147f02354af4bd2117c342915fe844addf8e493735a33 \
-                    size    1054361
+checksums           rmd160  56dd621b8cded126322d8fbff94ef5878acf8914 \
+                    sha256  b0f3689a3edd30f8d674e19b5134fc5013813f843c45797c1015163e51989ac0 \
+                    size    1179489
 github.tarball_from archive
 
 # Prefer a version with libcontext working across all archs (ppc64 is still not fixed):
 boost.version       1.81
 
+# https://github.com/pika-org/pika/issues/1236
+patchfiles-append   patch-fix-finding-boost.diff
+
+# Keep in sync with spdlog port:
 set port_libfmt     libfmt10
 cmake.module_path-append \
                     ${prefix}/lib/${port_libfmt}/cmake
 
 depends_lib-append  port:hwloc \
-                    port:${port_libfmt}
+                    port:${port_libfmt} \
+                    port:spdlog
 
 if {${os.platform} eq "darwin" && ${os.arch} eq "powerpc"} {
     mpi.setup       require -gcc6 -gcc7 -gcc8 -clang -fortran
@@ -78,7 +83,15 @@ platform powerpc {
     if {${build_arch} eq "ppc64"} {
         # Remove this once Boost libcontext is fixed for ppc64:
         configure.args-append \
-                    -DPIKA_WITH_GENERIC_CONTEXT_COROUTINES=OFF
+                    -DPIKA_WITH_BOOST_CONTEXT=OFF
+    }
+}
+
+if {${os.platform} eq "darwin" && ${os.major} < 19} {
+    if {[string match macports-clang* ${configure.compiler}]} {
+        configure.cxxflags-append \
+                    -fno-aligned-allocation \
+                    -Wno-error=unused-command-line-argument
     }
 }
 
@@ -96,7 +109,7 @@ if {${cxx_stdlib} eq "libstdc++" && [string match macports-gcc* ${configure.comp
 
 variant jemalloc conflicts tbb description "Use jemalloc instead of system malloc" {
     depends_lib-append \
-                    port:jemalloc
+                    path:lib/pkgconfig/jemalloc.pc:jemalloc
     configure.args-append \
                     -DPIKA_WITH_MALLOC=jemalloc
 }

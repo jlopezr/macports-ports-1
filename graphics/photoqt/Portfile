@@ -5,8 +5,11 @@ PortGroup           cmake 1.1
 PortGroup           github 1.0
 
 name                photoqt
+# 4.x requires Qt6, poppler-qt6 and fails with our exiv2:
+# https://trac.macports.org/ticket/69366
+# https://github.com/luspi/photoqt/issues/22
 github.setup        luspi photoqt 3.4 v
-revision            0
+revision            3
 categories          graphics
 license             GPL-2
 maintainers         {@barracuda156 gmail.com:vital.had} openmaintainer
@@ -61,17 +64,8 @@ if {${subport} eq "${name}"} {
                     -DVIDEO_MPV=OFF \
                     -DVIDEO_QT=OFF
 
-    if {${configure.build_arch} eq "arm64"} {
-        # qtlocation broken on aarch64: https://trac.macports.org/ticket/68508
-        qt5.depends_component \
-                    qtmultimedia qtsvg qttools qttranslations sqlite-plugin
-
-        configure.args-append \
-                    -DLOCATION=OFF
-    } else {
-        qt5.depends_component \
+    qt5.depends_component \
                     qtlocation qtmultimedia qtsvg qttools qttranslations sqlite-plugin
-    }
 
     # Without this the build cannot find QtPlatformHeaders:
     configure.cxxflags-append \
@@ -84,7 +78,7 @@ subport photoqt-qt4 {
     # This is the last version to support Qt4.
     # TODO: restore Qt4 support into 1.x.
     github.setup    luspi photoqt-legacy 1.0 v
-    revision        1
+    revision        2
     conflicts       photoqt
     platforms       {darwin < 11}
     checksums       rmd160  e43351a7d1c1bc5fa96c1b4e759134d594c68c4f \
@@ -124,5 +118,5 @@ compiler.cxx_standard   2011
 post-activate {
     system "${prefix}/bin/update-desktop-database ${prefix}/share/applications"
     system "${prefix}/bin/update-mime-database ${prefix}/share/mime"
-    system "${prefix}/bin/gtk-update-icon-cache-3.0 -f -t ${prefix}/share/icons/hicolor"
+    system "${prefix}/bin/gtk-update-icon-cache -f -t ${prefix}/share/icons/hicolor"
 }

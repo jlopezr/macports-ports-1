@@ -3,25 +3,25 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/gopasspw/gopass-jsonapi 1.15.11 v
+go.setup            github.com/gopasspw/gopass-jsonapi 1.15.18 v
 go.offline_build    no
-github.tarball_from archive
 revision            0
 categories          security
 maintainers         {@sikmir disroot.org:sikmir} \
                     {gmail.com:herby.gillot @herbygillot} \
                     openmaintainer
-
+platforms           {darwin >= 23}
 license             MIT
 
 description         Gopass Browser Bindings
 long_description    ${name} enables communication with gopass via JSON messages
 homepage            https://www.gopass.pw
 
-checksums           rmd160  144a60373125f648ac2d7dde08c4e46d69800f2a \
-                    sha256  f72b1c691fa41d7e9a3008d2536255bc7677d4f869f98487be00b82e5f76f3c0 \
-                    size    36121
+checksums           rmd160  95f42c240da1960c633de47cf4cd48c5126dfdc8 \
+                    sha256  ab752180583069e05dd2862b6469a515e9df54186085c341ae2255205ab78e76 \
+                    size    33257
 
+build.cmd           ${go.bin} mod tidy && ${go.bin} build
 build.args          -ldflags '-X main.version=${version}'
 
 destroot {

@@ -3,15 +3,18 @@
 PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           cmake 1.1
-PortGroup           compiler_blacklist_versions 1.0
 PortGroup           boost 1.0
 PortGroup           active_variants   1.1
 
-github.setup        remotesensinginfo rsgislib 5.0.17
+# Fails to build with gcc and old Boost.
+# Same std::__and_ error as in: https://trac.macports.org/ticket/68014
+boost.version       1.81
+
+github.setup        remotesensinginfo rsgislib 5.1.8
 revision            1
 categories          gis
 license             GPL-3
-maintainers         {vince @Veence}
+maintainers         {yahoo.com:n_larsson @nilason} {vince @Veence} openmaintainer
 description         RSGISlib - Remote Sensing and GIS Library
 long_description    The {*}${description} provides a lot of advanced tools \
                     to perform image analysis and feature detection in \
@@ -20,9 +23,9 @@ homepage            http://www.rsgislib.org
 
 github.tarball_from archive
 
-checksums           rmd160  eb2171c79bd6adf86446da13b85592d5d85ad2cf \
-                    sha256  bd13c3c7389d2a9ea93c3bb3d96ea263817755ee282efdd402423abaf2327875 \
-                    size    126074118
+checksums           rmd160  826a45b4a01cbb871f36f8fc7175f0ec1032a0c3 \
+                    sha256  f99cd4773ab617545fbff5fb7ab177659b2f9258cdd926602004831ed1112f07 \
+                    size    126238244
 
 depends_lib-append  port:gdal
 depends_lib-append  port:gsl
@@ -84,7 +87,7 @@ if {${name} eq ${subport}} {
 }
 
 # create Python subports
-set python_versions {38 39 310 311}
+set python_versions {39 310 311 312 313}
 foreach v ${python_versions} {
     subport py${v}-${github.project} {
         PortGroup           python 1.0
@@ -148,6 +151,8 @@ if {[string match "py*" ${subport}]} {
         reinplace -q "s|__PYVER__|${python.branch}|" ${destroot_sel_dir}/py-rsgislib
         move ${destroot_sel_dir}/py-rsgislib ${destroot_sel_dir}/py${python.version}-rsgislib
     }
+
+    livecheck.type      none
 
     select.group        ${github.project}
     select.file         ${filespath}/py-rsgislib

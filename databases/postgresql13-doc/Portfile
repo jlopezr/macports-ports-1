@@ -4,8 +4,8 @@ PortSystem 1.0
 
 name                postgresql13-doc
 conflicts           postgresql96-doc postgresql10-doc postgresql11-doc \
-    postgresql12-doc postgresql14-doc
-version             13.13
+                    postgresql12-doc postgresql14-doc postgresql15-doc
+version             13.22
 revision            0
 categories          databases
 platforms           any
@@ -14,19 +14,19 @@ maintainers         {jwa @jyrkiwahlstedt}
 license             Permissive
 description         Documentation for the PostgreSQL database version 13
 long_description    PostgreSQL is Object-Relational Database Management System.\
-                It supports almost all SQL constructs, including transactions, \
-                subselects, and user-defined types and functions. Write-ahead \
-                logging means increased performance while retaining data \
-                integrity. This is the documentation.
+                    It supports almost all SQL constructs, including transactions, \
+                    subselects, and user-defined types and functions. Write-ahead \
+                    logging means increased performance while retaining data \
+                    integrity. This is the documentation.
 
 homepage            https://www.postgresql.org/
 master_sites        postgresql:source/v${version}
 distname            postgresql-${version}
 set rname           postgresql13
 
-checksums           rmd160  23e88ae4d558fefd3b5a43777965fdce6f23a273 \
-                    sha256  8af69c2599047a2ad246567d68ec4131aef116954d8c3e469e9789080b37a474 \
-                    size    21563452
+checksums           rmd160  7d0937197117b706b669f46daa4e024c9304c294 \
+                    sha256  d36d83dc89e625502cf6fb1d0529642ba1266bd614b4e4a41cefd1dddcf09080 \
+                    size    21783034
 
 use_bzip2           yes
 dist_subdir         ${rname}

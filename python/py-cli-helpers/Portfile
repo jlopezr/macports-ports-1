@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-cli-helpers
-version             2.3.0
+version             2.4.0
 revision            0
 
 license             BSD
@@ -16,22 +16,21 @@ long_description    CLI Helpers is a Python package that makes it easy \
                     to perform common tasks when building command-line apps. \
                     It’s a helper library for command-line interfaces.
 
-python.versions     37 38 39 310 311
+python.versions     39 310 311 312 313
 
 homepage            https://pypi.python.org/pypi/${python.rootname}/
 distname            cli_helpers-${version}
 
-checksums           rmd160  ddbfa9668c69db506dc9401d56c671d6f26c0c04 \
-                    sha256  e7174d003a2b58fd3e31a73fbbc45d5aa513de62cbd42d437f78b9658bd5f967 \
-                    size    36274
+checksums           rmd160  b4f697f1f8c2db128312aae208038d00c3983b72 \
+                    sha256  55903b705a212a473731db20fa26f58655e354078b99cb13c99ec06940287a4d \
+                    size    36991
 
 if {${name} ne ${subport}} {
-    depends_build-append    port:py${python.version}-setuptools
-
-                            # wcwidth required to enable wide mode
-                            # in python-tabulate
+    # wcwidth required to enable wide mode in python-tabulate
     depends_lib-append      port:py${python.version}-pygments \
                             port:py${python.version}-tabulate \
                             port:py${python.version}-configobj \
                             port:py${python.version}-wcwidth
+
+    test.run        yes
 }

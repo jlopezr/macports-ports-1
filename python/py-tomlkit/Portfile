@@ -4,28 +4,27 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-tomlkit
-version             0.12.2
+version             0.13.3
 revision            0
 categories-append   devel
 platforms           {darwin any}
 license             MIT
 supported_archs     noarch
 
-python.versions     37 38 39 310 311 312
+python.versions     39 310 311 312 313 314
 
 maintainers         {gmail.com:davidgilman1 @dgilman} {judaew @judaew} \
                     openmaintainer
 
 description         Style preserving TOML library
 long_description    {*}${description}
-homepage            https://github.com/sdispater/tomlkit
+homepage            https://github.com/python-poetry/tomlkit
 
-checksums           rmd160  2acc91ffed4d13e96e1064eecdc2c7047e1fceb1 \
-                    sha256  df32fab589a81f0d7dc525a4267b6d7a64ee99619cbd1eeb0fae32c1dd426977 \
-                    size    190725
+checksums           rmd160  fdbcd285d85b88466b859fed45ad4da610e3cf3b \
+                    sha256  430cf247ee57df2b94ee3fbe588e71d362a941ebb545dec29b53961d61add2a1 \
+                    size    185207
 
 if {${name} ne ${subport}} {
-    python.pep517   yes
     python.pep517_backend \
                     poetry
 

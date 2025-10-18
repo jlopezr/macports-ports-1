@@ -1,0 +1,42 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           github 1.0
+
+github.setup        Legcord Legcord 1.1.5 v
+github.tarball_from archive
+
+categories          net
+maintainers         {@akierig fastmail.de:akierig} openmaintainer
+revision            0
+
+checksums           rmd160  29e2e3897d29bf41364919c7f213b97373197f23 \
+                    sha256  3ffa56c43c6018a5cb8ba4df8fd0205b037251a38be393f989cc7a856390efe3 \
+                    size    3284506
+
+description         lightweight alternative to the regular Discord application
+long_description    ${name} is a {*}${description}. It wraps the Discord web \
+                    client in a version of Chromium fully optimized for use \
+                    with Discord's web interface, blocks trackers by default,\
+                    and supports a variety of client plugin frameworks.
+
+supported_archs     arm64
+platforms           {darwin any}
+license             OSL-3.0
+
+depends_build       port:npm10 \
+                    port:pnpm
+
+use_configure       no
+
+patchfiles          package-version-bump.diff
+
+build {
+    system -W ${worksrcpath} "pnpm install"
+    system -W ${worksrcpath} "pnpm run build"
+    system -W ${worksrcpath} "node_modules/.bin/electron-builder --dir"
+}
+
+destroot {
+    file copy ${worksrcpath}/dist/mac-${build_arch}/Legcord.app ${destroot}${applications_dir}
+}

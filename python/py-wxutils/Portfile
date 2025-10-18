@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-wxutils
-version             0.2.6
+version             0.3.6
 revision            0
 
 platforms           {darwin any}
@@ -21,11 +21,11 @@ long_description    \
 
 homepage            https://github.com/newville/wxutils
 
-checksums           rmd160  f50bf0d2262562dc8121147e78c21f8ce4c80e57 \
-                    sha256  8edcd33e9740b64f1d002749a3a5584e23fabb50a0b1e24b6aa628ae38a6c40f \
-                    size    39630
+checksums           rmd160  ae31380a517cc35e82e3c1cd24616a13f0639773 \
+                    sha256  d365e7c95feb0327ea65339ec4ff90d1502f4ea8cc8e9350c87fc6598f2b4af5 \
+                    size    75533
 
-python.versions     37 38 39 310
+python.versions     39 310 311 312 313
 
 if {${name} ne ${subport}} {
     depends_build-append \
@@ -33,6 +33,4 @@ if {${name} ne ${subport}} {
 
     depends_run-append \
                     port:py${python.version}-wxpython-4.0
-        
-    livecheck.type  none
 }

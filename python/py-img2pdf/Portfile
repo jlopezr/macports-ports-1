@@ -1,0 +1,29 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           python 1.0
+
+name                py-img2pdf
+# keep in sync with graphics/img2pdf
+version             0.6.1
+revision            0
+categories-prepend  graphics
+license             LGPL-3
+maintainers         {mps @Schamschula} openmaintainer
+description         Lossless conversion of raster images to PDF.
+long_description    {*}${description}
+supported_archs     noarch
+platforms           {darwin any}
+homepage            https://gitlab.mister-muffin.de/josch/img2pdf
+
+python.versions     39 310 311 312 313
+
+checksums           rmd160  7a93ca4e891144ec92d71aa156a805b9c650a0ba \
+                    sha256  306e279eb832bc159d7d6294b697a9fbd11b4be1f799b14b3b2174fb506af289 \
+                    size    106513
+
+if {${name} ne ${subport}} {
+    depends_lib-append \
+                    port:py${python.version}-Pillow \
+                    port:py${python.version}-pikepdf
+}

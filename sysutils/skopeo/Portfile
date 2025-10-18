@@ -3,9 +3,8 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/containers/skopeo 1.12.0 v
-github.tarball_from archive
-revision            1
+go.setup            github.com/containers/skopeo 1.20.0 v
+revision            0
 
 description         Work with remote container image registries
 
@@ -20,9 +19,9 @@ license             Apache-2
 maintainers         {gmail.com:herby.gillot @herbygillot} \
                     openmaintainer
 
-checksums           rmd160  dc1c05e5f1e18f3f05e71b56db831ac3589d031e \
-                    sha256  f7bbb3748eeb0c29abf5bfe9b1c1a149464c4ea65705e25686df3b9bcbd7bb89 \
-                    size    8216468
+checksums           rmd160  839afdc8b5c1140f88cb5fcb3bdeac4356853dd3 \
+                    sha256  0c19fe51b2cd8d1bd5e38c03b97421e318fc08153bdf5ef2f816a29889eacdef \
+                    size    10449131
 
 depends_build-append \
                     port:go-md2man

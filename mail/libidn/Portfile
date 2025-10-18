@@ -3,8 +3,13 @@
 PortSystem          1.0
 
 name                libidn
-version             1.41
+version             1.43
 revision            0
+
+checksums           rmd160  7ce67739af0d6db8a7de82f8e25ba8528cd0ab21 \
+                    sha256  bdc662c12d041b2539d0e638f3a6e741130cdb33a644ef3496963a443482d164 \
+                    size    2535228
+
 categories          mail
 license             {LGPL-2.1+ GPL-3+}
 description         GNU International Domain Name Library (legacy version 1).
@@ -15,10 +20,6 @@ long_description    {*}${description} \
 homepage            https://www.gnu.org/software/libidn/
 maintainers         nomaintainer
 master_sites        gnu
-
-checksums           rmd160  0517762c55b39b03a1c71eda30e3e15fb9c7ec2a \
-                    sha256  884d706364b81abdd17bee9686d8ff2ae7431c5a14651047c68adf8b31fd8945 \
-                    size    2664011
 
 depends_build       port:gettext
 depends_lib         port:libiconv port:gettext-runtime

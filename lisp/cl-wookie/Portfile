@@ -5,6 +5,8 @@ PortGroup           github 1.0
 PortGroup           common_lisp 1.0
 
 github.setup        orthecreedence wookie 1f74b6c24b463c1e6fff35377e477934f72bac20
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 name                cl-wookie
 version             20230131
 revision            0
@@ -14,7 +16,7 @@ checksums           rmd160  fe263bc7b892cbd71a0220cc42d18d56d64ecb6a \
                     size    29904
 
 categories-append   devel
-maintainers         {@catap korins.ky:kirill} openmaintainer
+maintainers         nomaintainer
 license             MIT
 
 description         Asynchronous HTTP server in common lisp

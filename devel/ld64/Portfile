@@ -1,7 +1,6 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem              1.0
-PortGroup               compiler_blacklist_versions 1.0
 
 name                    ld64
 epoch                   2
@@ -182,9 +181,6 @@ subport ld64-274 {
 
     # Avoid `error: unknown type name 'uuid_string_t'`
     legacysupport.newest_darwin_requires_legacy 9
-
-    # see https://trac.macports.org/ticket/65575
-    configure.cppflags-append -DTARGET_OS_WATCH=0 -DTARGET_OS_BRIDGE=0
 
     if { ${os.platform} eq "darwin" && ${os.major} <= 9 } {
         depends_lib-append          port:libblocksruntime
@@ -495,6 +491,9 @@ if {${subport} eq ${name}} {
 
         # what is in this patch might be done as reinplaces, as above.
         system "cd ${workpath}/dyld-${dyld_version} && patch -p0 < ${filespath}/dyld-655-availability.diff"
+
+        # add in some missing target conditionals that error out on newer compilers
+        system "cd ${workpath}/dyld-${dyld_version} && patch -p0 < ${filespath}/dyld-targetconditionals.diff"
     }
 
     configure {

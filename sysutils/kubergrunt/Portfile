@@ -3,8 +3,8 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/gruntwork-io/kubergrunt 0.13.1 v
-github.tarball_from archive
+go.setup            github.com/gruntwork-io/kubergrunt 0.18.4 v
+go.offline_build    no
 revision            0
 
 description         Kubergrunt is a standalone go binary with a collection of \
@@ -27,11 +27,9 @@ license             Apache-2
 maintainers         {gmail.com:herby.gillot @herbygillot} \
                     openmaintainer
 
-checksums           rmd160  64decc6eb1208084b8e7d90dd56693b75ab1cf32 \
-                    sha256  88e8162f86d5bfd7548a84bdb80db7490b8176c4aed776da087078e5e78e6d6a \
-                    size    144530
-
-go.offline_build no
+checksums           rmd160  35b8dbfe0b08a431c77db6571bdbb8b8ee015169 \
+                    sha256  e2acf5728d71042218555e47db11cc2d8390e1678c4599ac2a6996e7dd629a5c \
+                    size    187339
 
 build.pre_args      -o ${worksrcpath}/${name}
 build.args          ./cmd

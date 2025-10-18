@@ -2,7 +2,7 @@
 
 PortSystem          1.0
 
-version             5.7.6
+version             5.15.1
 revision            0
 
 if {${os.major} >= 17} {
@@ -38,25 +38,23 @@ maintainers         {@antalaron antalaron.hu:antalaron} \
 
 if ${source_build} {
     # Allow Go to fetch dependencies at build time
-    go.offline_build no
+    go.offline_build    no
     build.env           CGO_ENABLED=0
     build.args          -o ${workpath}/symfony -trimpath -ldflags="-s -w -X 'main.version=${version}' -X 'main.channel=stable'"
 
     use_parallel_build  no
 
-    checksums           rmd160  e4f63698393e817dd2198ac183a83b0af77f8c56 \
-                        sha256  351971c0a9dce67c27bf5469a1662a54d4e2a533197c69e7599dbe964c0101e5 \
-                        size    259468
-
-    github.tarball_from archive
+    checksums           rmd160  cec999b985fec6964ce61da253d58f6fb86813ae \
+                        sha256  101ef843524db069d54a2b8653a4757c856c6f89e3a40f40c6be8ccd8176aef4 \
+                        size    290450
 } else {
     build {}
 
     distname            symfony-cli_darwin_all
 
-    checksums           rmd160  7cae4bd72749ca965d96cbfeef71dad27c793bf0 \
-                        sha256  c228c3b19290a919afee7540aa32706819a5c37914d0278eb55b08219fd93d53 \
-                        size    11150160
+    checksums           rmd160  ab01394ed1f8e5867a4b36e93891b0187727fb33 \
+                        sha256  b526b806fedb071511268e3e8fd00211f6d44f04f2fa0490cec3f52121530a40 \
+                        size    12218116
 
     github.tarball_from releases
 

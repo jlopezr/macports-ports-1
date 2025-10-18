@@ -3,8 +3,7 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/ankitpokhrel/jira-cli 1.4.0 v
-github.tarball_from archive
+go.setup            github.com/ankitpokhrel/jira-cli 1.7.0 v
 revision            0
 
 description         Feature-rich interactive Jira command line
@@ -21,9 +20,9 @@ license             MIT
 maintainers         {gmail.com:herby.gillot @herbygillot} \
                     openmaintainer
 
-checksums           rmd160  d039806436279dc7a81be9056fac7af5950c360f \
-                    sha256  84e3a45332c66052965deb2d90aee3930f61c93e4f23c951ac39526a419d81cd \
-                    size    53266703
+checksums           rmd160  863cd601ca71528e36cdcde3a787f0df72742ce4 \
+                    sha256  6b1ecbd2228626cdc987548d8d83faae074c7a167cef737a9ac9180a03767154 \
+                    size    53299162
 
 # Allow Go to fetch dependencies at build-time
 go.offline_build no

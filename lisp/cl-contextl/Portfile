@@ -5,6 +5,8 @@ PortGroup           github 1.0
 PortGroup           common_lisp 1.0
 
 github.setup        pcostanza contextl 3d5fbff50c686f0b89b9ca7fdebfe056343dc366
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 name                cl-contextl
 version             20211216
 revision            0
@@ -14,7 +16,7 @@ checksums           rmd160  14eb3eacf20aabb989cab8358a5e95be5188397a \
                     size    26663
 
 categories-append   devel
-maintainers         {@catap korins.ky:kirill} openmaintainer
+maintainers         nomaintainer
 license             MIT
 
 description         ContextL is a CLOS extension for Context-oriented Programming (COP)

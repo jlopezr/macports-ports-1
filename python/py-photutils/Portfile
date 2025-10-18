@@ -5,11 +5,12 @@ PortGroup           python 1.0
 PortGroup           github 1.0
 
 github.setup        astropy photutils 0.7.2 v
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 revision            0
 name                py-photutils
 
 categories-append   science
-platforms           darwin
 license             BSD
 maintainers         nomaintainer
 
@@ -21,16 +22,13 @@ checksums           rmd160  f2ce1e1d29841353713b197a96868e08b46b1357 \
                     sha256  bd8322a86843f79ac324290ff8e9eb5982a59ed8a3b937b7ff6a46dc3d0de056 \
                     size    954465
 
-python.versions     37 38 39
+python.versions     39
 
 if {${name} ne ${subport}} {
     depends_build-append \
-                    port:py${python.version}-astropy-helpers \
-                    port:py${python.version}-setuptools
+                    port:py${python.version}-astropy-helpers
 
     depends_lib-append \
                     port:py${python.version}-astropy \
                     port:py${python.version}-numpy
-
-    livecheck.type  none
 }

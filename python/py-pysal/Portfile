@@ -4,7 +4,7 @@ PortSystem              1.0
 PortGroup               python 1.0
 
 name                    py-pysal
-version                 23.7
+version                 25.1
 revision                0
 
 categories-append       gis
@@ -20,15 +20,15 @@ long_description        {*}${description} is an open source cross-platform \
 
 homepage                http://pysal.org/pysal/
 
-checksums               rmd160  4b0e80c33e05d0571953de2aed16cb9eca7a5d9e \
-                        sha256  0749fcaf4024e5bf49ee65df27eece86080836b75d7c2b12f2d4c611a41cbb1b \
-                        size    36984
+checksums               rmd160  65cd1575a2479bcfbeb045f384ad8ab1b70c105b \
+                        sha256  da101ba8cc1a67aa204157ab975ed048894f423dd14eef38850e5cd698cc56a0 \
+                        size    2076036
 
-python.versions         39 310 311
+python.versions         39 310 311 312 313
 
 if {${name} ne ${subport}} {
     depends_build-append \
-                        port:py${python.version}-setuptools
+                    port:py${python.version}-setuptools_scm
 
     depends_lib-append  \
                         port:py${python.version}-libpysal \
@@ -49,4 +49,12 @@ if {${name} ne ${subport}} {
                         port:py${python.version}-mapclassify \
                         port:py${python.version}-splot \
                         port:py${python.version}-spopt
+
+    if {${python.version} == 39} {
+        version         24.1
+        revision        0
+        checksums       rmd160  9eeae2abf42bbf0e9bbed02fe2f2622fb97b9f4a \
+                        sha256  ed84c663c8daf73f5d83daa1ce01f14915fde3cf21b5d46259905cc733336dfb \
+                        size    37876
+    }
 }

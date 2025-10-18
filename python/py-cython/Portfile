@@ -3,18 +3,15 @@
 PortSystem          1.0
 PortGroup           python 1.0
 PortGroup           select 1.0
-PortGroup           compiler_blacklist_versions 1.0
 
 name                py-cython
 python.rootname     Cython
-version             0.29.36
+version             3.1.4
 revision            0
 categories-append   devel
 license             Apache-2
 
-conflicts           ${name}-devel
-
-python.versions     27 35 36 37 38 39 310 311 312
+python.versions     27 35 36 37 38 39 310 311 312 313 314
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -25,24 +22,30 @@ long_description    Cython is a language that makes writing C extensions for \
                     based on the well-known Pyrex, but supports more cutting \
                     edge functionality and optimizations
 
-homepage            http://www.cython.org/
+homepage            https://cython.org/
 
-checksums           rmd160  746062161d57d0bc93bc8988ed5b36d038a64352 \
-                    sha256  41c0cfd2d754e383c9eeb95effc9aa4ab847d0c9747077ddd7c0dcb68c3bc01f \
-                    size    2097760
+distname            cython-${version}
+
+checksums           rmd160  612b9452716623cf945b5827958546ab0799f3c6 \
+                    sha256  9aefefe831331e2d66ab31799814eae4d0f8a2d246cbaaaa14d1be29ef777683 \
+                    size    3190778
 
 if {${name} ne ${subport}} {
     depends_lib-append \
                         port:py${python.version}-setuptools
 
-    if {${python.version} >= 37} {
-        conflicts   py${python.version}-cython-devel
-    } else {
-        conflicts
-    }
-
     # https://github.com/macports/macports-ports/commit/760996927a0a2b5c0d9871670155d64f840dff8e#commitcomment-74373855
-    compiler.blacklist-append *gcc-3.* *gcc-4.*
+    # https://trac.macports.org/ticket/67380
+    compiler.blacklist-append *gcc-3.* *gcc-4.* {clang < 421}
+
+    if {${python.version} < 39} {
+        version             3.0.12
+        revision            0
+        distname            cython-${version}
+        checksums           rmd160  6dedbcaf80887291bca81fb558d44e2cb74c7868 \
+                            sha256  b988bb297ce76c671e28c97d017b95411010f7c77fa6623dd0bb47eed1aee1bc \
+                            size    2757617
+    }
 
     depends_run         port:cython_select
     test.run            no

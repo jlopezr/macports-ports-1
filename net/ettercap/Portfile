@@ -5,6 +5,8 @@ PortGroup           cmake 1.0
 PortGroup           github 1.0
 
 github.setup        Ettercap ettercap 0.8.3.1 v
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 revision            1
 categories          net security
 platforms           darwin freebsd
@@ -143,4 +145,11 @@ platform darwin 11 {
 IP forwarding (port forwarding) does not work on OS X 10.7 Lion unless you\
 take special steps. Read ${docdir}/README.OSXLION for more information.
 "
+}
+
+# https://trac.macports.org/ticket/70015
+platform darwin powerpc {
+    PortGroup               conflicts_build 1.0
+
+    conflicts_build         libtapi
 }

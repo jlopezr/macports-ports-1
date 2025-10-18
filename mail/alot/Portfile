@@ -5,9 +5,11 @@ PortGroup github 1.0
 PortGroup python 1.0
 
 github.setup        pazz alot 0.3.4
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 name                alot
 categories          mail python
-platforms           darwin
+platforms           {darwin any}
 maintainers         nomaintainer
 license             GPL-3
 description         experimental terminal MUA based on notmuch mail
@@ -28,4 +30,3 @@ depends_build   port:py${python.version}-pygpgme \
                 port:py${python.version}-configobj \
                 port:py${python.version}-magic \
                 port:notmuch
-

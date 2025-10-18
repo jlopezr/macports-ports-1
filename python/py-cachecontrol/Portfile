@@ -4,16 +4,15 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-cachecontrol
-version             0.13.1
+version             0.14.3
 revision            0
 categories-append   devel
 platforms           {darwin any}
 license             Apache-2
 supported_archs     noarch
 
-python.versions     38 39 310 311
+python.versions     39 310 311 312 313
 
-python.pep517       yes
 python.pep517_backend \
                     flit
 
@@ -26,14 +25,11 @@ long_description    \
 
 homepage            https://github.com/psf/cachecontrol
 
-checksums           rmd160  bf4659f482b388370b980094231cb4465f915eb3 \
-                    sha256  f012366b79d2243a6118309ce73151bf52a38d4a5dac8ea57f09bd29087e506b \
-                    size    29069
+checksums           rmd160  f1fc578808771f1854eae978b274d1ea91eb9bd8 \
+                    sha256  73e7efec4b06b20d9267b441c1f733664f989fb8688391b670ca812d70795d11 \
+                    size    28985
 
 if {${name} ne ${subport}} {
-    depends_build-append \
-        port:py${python.version}-setuptools
-
     depends_lib-append \
         port:py${python.version}-requests \
         port:py${python.version}-msgpack

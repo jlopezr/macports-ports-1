@@ -5,6 +5,8 @@ PortGroup           github 1.0
 PortGroup           common_lisp 1.0
 
 github.setup        mmontone hunchentoot-errors 69eb3bcea59ed1ccf3dd1960e6d48fb21f1dadab
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 name                cl-hunchentoot-errors
 version             20231013
 revision            0
@@ -14,7 +16,7 @@ checksums           rmd160  58e1d054c95878965b442eb611997677ca568f98 \
                     size    4141
 
 categories-append   devel
-maintainers         {@catap korins.ky:kirill} openmaintainer
+maintainers         nomaintainer
 license             MIT
 
 description         Augments Hunchentoot error pages and logs with request and session information

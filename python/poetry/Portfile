@@ -4,7 +4,7 @@ PortSystem              1.0
 PortGroup               python 1.0
 
 name                    poetry
-version                 1.7.1
+version                 2.1.4
 revision                0
 categories-append       devel
 platforms               {darwin any}
@@ -23,20 +23,20 @@ long_description        Poetry: Dependency Management for Python. \
 
 homepage                https://python-poetry.org/
 
-checksums               rmd160  6d56dc5325dfd2dc9dbb0191763b0785e616124a \
-                        sha256  b348a70e7d67ad9c0bd3d0ea255bc6df84c24cf4b16f8d104adb30b425d6ff32 \
-                        size    1483927
+checksums               rmd160  91364465c2cdb9965a3661f745df77116568a297 \
+                        sha256  bed4af5fc87fb145258ac5b1dae77de2cd7082ec494e3b2f66bca0f477cbfc5c \
+                        size    3435981
 
-variant python38 conflicts python39 python310 python311 description {Use Python 3.8} {}
-variant python39 conflicts python38 python310 python311 description {Use Python 3.9} {}
-variant python310 conflicts python38 python39 python311 description {Use Python 3.10} {}
-variant python311 conflicts python38 python39 python310 description {Use Python 3.11} {}
+variant python310 conflicts python311 python312 python313 description {Use Python 3.10} {}
+variant python311 conflicts python310 python312 python313 description {Use Python 3.11} {}
+variant python312 conflicts python310 python311 python313 description {Use Python 3.12} {}
+variant python313 conflicts python310 python311 python312 description {Use Python 3.13} {}
 
-if {![variant_isset python38] && ![variant_isset python39] && ![variant_isset python310]} {
-    default_variants +python311
+if {![variant_isset python310] && ![variant_isset python311] && ![variant_isset python312] } {
+    default_variants +python313
 }
 
-foreach pv {311 310 39 38} {
+foreach pv {313 312 311 310} {
     if {[variant_isset python${pv}]} {
         python.default_version  ${pv}
         break
@@ -50,17 +50,16 @@ python.pep517_backend poetry
 depends_lib-append \
     port:py${python.version}-poetry-core \
     port:py${python.version}-poetry-plugin-export \
+    port:py${python.version}-poetry-plugin-shell \
     port:py${python.version}-build \
     port:py${python.version}-cachecontrol \
     port:py${python.version}-filelock \
     port:py${python.version}-cleo \
-    port:py${python.version}-crashtest \
     port:py${python.version}-dulwich \
     port:py${python.version}-fastjsonschema \
     port:py${python.version}-installer \
     port:py${python.version}-keyring \
     port:py${python.version}-packaging \
-    port:py${python.version}-pexpect \
     port:py${python.version}-pkginfo \
     port:py${python.version}-platformdirs \
     port:py${python.version}-pyproject_hooks \
@@ -70,16 +69,14 @@ depends_lib-append \
     port:py${python.version}-tomlkit \
     port:py${python.version}-trove-classifiers \
     port:py${python.version}-virtualenv \
-    port:py${python.version}-xattr
+    port:py${python.version}-xattr \
+    port:py${python.version}-findpython \
+    port:py${python.version}-pbs_installer
+
 
 if {${python.version} < 311} {
     depends_lib-append \
         port:py${python.version}-tomli
-}
-
-if {${python.version} < 310} {
-    depends_lib-append \
-        port:py${python.version}-importlib-metadata
 }
 
 # Shell completion

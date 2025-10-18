@@ -4,7 +4,6 @@ PortSystem                  1.0
 
 PortGroup                   github 1.0
 PortGroup                   cmake 1.1
-PortGroup                   compiler_blacklist_versions 1.0
 PortGroup                   boost 1.0
 
 github.setup                Stiffstream restinio 0.6.14 v.
@@ -15,6 +14,8 @@ checksums                   rmd160  3459b19aa7ee177a8a2eaf77f7104913af47f609 \
 
 categories                  www devel
 license                     BSD
+platforms                   any
+supported_archs             noarch
 maintainers                 {gmail.com:g.litenstein @Lord-Kamina} openmaintainer
 homepage                    https://stiffstream.com/en/products/restinio.html
 description                 Header-only C++14 library that gives you an embedded HTTP/Websocket server.

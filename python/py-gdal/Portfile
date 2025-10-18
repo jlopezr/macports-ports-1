@@ -5,10 +5,9 @@ PortGroup           python 1.0
 PortGroup           select 1.0
 
 name                py-gdal
-python.rootname     GDAL
 # keep version in sync with gdal; rebuilt after gdal update
-version             3.8.2
-revision            0
+version             3.11.4
+revision            1
 
 categories-append   gis
 license             MIT
@@ -20,11 +19,11 @@ long_description    This Python package and extensions are a number of tools for
 
 homepage            https://www.gdal.org
 
-checksums           rmd160  fbd1ac411d8f3896b56ea45d74c9dc7cec7fe003 \
-                    sha256  4e0e8b5e7decb23b37e02de14c0b1abae471c5b447ef49f06dad69f65edd44bb \
-                    size    802511
+checksums           rmd160  38b0ac301cf59dd6c045d87d49d1130d10728515 \
+                    sha256  c28cd5ffda3df98555e21083d922762b0a095d8f10292e2ec60ee0d55651d74a \
+                    size    878351
 
-python.versions     38 39 310 311
+python.versions     39 310 311 312 313
 
 if {${name} ne ${subport}} {
     compiler.cxx_standard   2011
@@ -41,8 +40,12 @@ if {${name} ne ${subport}} {
         set docdir ${prefix}/share/doc/${subport}
         xinstall -d ${destroot}${docdir}
         xinstall -m 0644 -W ${worksrcpath} README.rst ${destroot}${docdir}
+
+        set destroot_sel_dir ${destroot}${prefix}/etc/select/
+        reinplace -q "s|@PYVER@|${python.branch}|" ${destroot_sel_dir}/gdal/py-gdal
+        move ${destroot_sel_dir}/gdal/py-gdal ${destroot_sel_dir}/gdal/py${python.version}-gdal
     }
 
     select.group    gdal
-    select.file     ${filespath}/py${python.version}-gdal
+    select.file     ${filespath}/py-gdal
 }

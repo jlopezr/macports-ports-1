@@ -4,10 +4,8 @@ PortSystem          1.0
 PortGroup           python 1.0
 PortGroup           github 1.0
 
-# py-xdis 6.0.5 does not support python 3.11
-# Note if you update this, make sure it supports the newest versions
-# of pythonXY in magics.py
-github.setup        rocky python-xdis 6.0.5
+github.setup        rocky python-xdis 6.1.6
+github.tarball_from archive
 name                py-xdis
 revision            0
 
@@ -20,22 +18,21 @@ description         Python cross-version byte-code disassembler and marshal rout
 long_description \
     The Python `dis` module allows you to disassemble bytecode from the same \
     version of Python that you are running on. \
-    This package can "marshal load" Python bytecodes \
-    from different versions of Python. The command-line routine \
-    *pydisasm* will show disassembly output using Python 3.5 disassembly \
-    conventions.  This is a direct port of a C++ routine by Jonathan Goodman \
-    (NYU) called ACOR that estimates the autocorrelation time \
-    of time series data very quickly.
+    This package can "marshal load" Python \
+    bytecodes from different versions of Python. The command-line routine \
+    *pydisasm* will show disassembly output using the most modern Python \
+    disassembly conventions in a variety of user-specified formats.  Some \
+    of these formats like ``extended`` and ``extended-format`` are the most \
+    advanced of any Python disassembler.
 
-checksums           rmd160  3e7777a9b3bcd5497da6a3040ec76c3989828d2d \
-                    sha256  be573650450d736a426534985673104349a0bacc3944864822c60de24a81935a \
-                    size    260472
+checksums           rmd160  12cb1d1abca92310771cb07edb13798c9bb5b0ac \
+                    sha256  5831ff6245c32d54b2b27f80c4524d4aa460a4f95fa0018bd669134347e2f333 \
+                    size    391370
 
-python.versions     37 38 39 310
+python.versions     39 310 311 312 313
 
 if {${name} ne ${subport}} {
     depends_lib-append  port:py${python.version}-click \
-                        port:py${python.version}-setuptools \
                         port:py${python.version}-six
 
     post-patch {

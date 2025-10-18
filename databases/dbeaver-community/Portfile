@@ -3,7 +3,7 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        dbeaver dbeaver 23.2.1
+github.setup        dbeaver dbeaver 25.1.0
 github.tarball_from releases
 revision            0
 name                dbeaver-community
@@ -12,7 +12,7 @@ categories          databases
 supported_archs     x86_64 arm64
 license             Apache-2
 
-maintainers         {judaew @judaew} openmaintainer
+maintainers         {judaew @judaew} {mascguy @mascguy} openmaintainer
 
 description         Free multi-platform database tool for developers, SQL \
                     programmers, database administrators and analysts.
@@ -29,18 +29,31 @@ homepage            https://dbeaver.io/
 
 use_dmg             yes
 
-switch ${build_arch} {
+set dist_x86_64     dbeaver-ce-${version}-macos-x86_64${extract.suffix}
+set dist_arm64      dbeaver-ce-${version}-macos-aarch64${extract.suffix}
+
+variant all_arches description {Download files for all arches} {
+    distfiles       ${dist_x86_64} \
+                    ${dist_arm64}
+}
+
+checksums-append \
+                    ${dist_x86_64} \
+                        rmd160  37a3939faba816aeb5dfa66d18b824b739ca4b85 \
+                        sha256  dd1a091af39a7ee291a3d767fa6f09dbbe0ed3a17c6145b1d5801c44c41bfd0b \
+                        size    130390095
+checksums-append \
+                    ${dist_arm64} \
+                        rmd160  3fe4e1931449aabc2ee56daf4d99c059b0081883 \
+                        sha256  d7555b1a7673d9f0ed1b92d14195a741d5c24fbaab2226b6d9a3bee6703f2d01 \
+                        size    129177550
+
+switch ${configure.build_arch} {
     x86_64 {
-        distfiles           dbeaver-ce-${version}-macos-x86_64${extract.suffix}
-        checksums           rmd160  8a92ddae98cbc788b76753e4b43d1b2dfa9d569b \
-                            sha256  2df9597376a4aa4ed038116487fd2b6443d6928451c4c8d2f44d0e1538c40790 \
-                            size    123328138
+        distfiles   ${dist_x86_64}
     }
     arm64 {
-        distfiles           dbeaver-ce-${version}-macos-aarch64${extract.suffix}
-        checksums           rmd160  b86abd8976e5cb2f1ca38871362a8303e1c9a679 \
-                            sha256  08444d66281326a05c99b7ebd542d447a9e8ba592f0bb6e4e9b84dc290aaf45a \
-                            size    122141920
+        distfiles   ${dist_arm64}
     }
     default {
         known_fail  yes

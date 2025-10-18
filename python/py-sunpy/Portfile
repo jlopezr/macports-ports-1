@@ -4,25 +4,22 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-sunpy
-version             5.1.0
-revision            0
-categories          python
+version             7.0.2
+revision            1
+
+categories-append   science
 license             BSD
 maintainers         {mps @Schamschula} openmaintainer
 description         SunPy is an open-source Python library for Solar Physics data \
                     analysis and visualization.
 long_description    {*}${description}
-supported_archs     noarch
-platforms           {darwin any}
 homepage            https://sunpy.org
 
-python.versions     38 39 310 311
+python.versions     310 311 312 313
 
-checksums           rmd160  c7faa39b9c9b035cc8849812cf1a7bcfb88361c0 \
-                    sha256  0b95272a9d04ab3c521d3a247522667c838c048eb25e95926b34f17122ce22f2 \
-                    size    3654497
-
-platforms {darwin >= 11}
+checksums           rmd160  bc7ea843a070e0c74dd3f52fcaffcedcf1a0d876 \
+                    sha256  d878be90b5666e696ca385e06489b12daede2d518dcf4f5d9eb53314383b2dbb \
+                    size    4253058
 
 if {${name} ne ${subport}} {
     depends_build-append \
@@ -31,27 +28,29 @@ if {${name} ne ${subport}} {
 
     depends_lib-append \
                     port:py${python.version}-astropy \
+                    port:py${python.version}-fsspec \
                     port:py${python.version}-numpy \
                     port:py${python.version}-packaging \
                     port:py${python.version}-parfive
 
-    if {${python.version} == 38} {
-        version     4.1.7
-        revision    0
-
-        checksums   rmd160  88ef7c6b361e37f86e18b89c7cb70aaf55c2c87b \
-                    sha256  51e5a312c69f21b4f05eeb15749cddfa843144b27d773ebee7ce1c748ef29230 \
-                    size    3612301
-    } else {
-        python.pep517   yes
-    }
-
-    # Note:
-    # the asdf variant requires py311-obspy which is missing dependencies.
     if {${python.version} < 311} {
+        version     6.0.5
+        revision    1
+
+        checksums   rmd160  30c0cab6ee6a1413ec9a2af507997c2cfb0f1c74 \
+                    sha256  050c2af6f2ace906471a552f6c2094406b695aa140d9b25e8cfcac718c30e92e \
+                    size    3755333
+
+        # Note:
+        # the asdf variant requires py311-obspy which is missing dependencies.
         variant asdf {
             depends_lib-append \
                         port:py${python.version}-pyasdf
+        }
+    } else {
+        variant asdf {
+            depends_lib-append \
+                        port:py${python.version}-asdf-astropy
         }
     }
 
@@ -70,7 +69,11 @@ if {${name} ne ${subport}} {
                     port:py${python.version}-scikit-image
     }
 
-    variant map {}
+    variant map {
+        depends_lib-append \
+                    port:py${python.version}-contourpy \
+                    port:py${python.version}-reproject
+    }
 
     variant net {
         depends_lib-append \
@@ -79,6 +82,18 @@ if {${name} ne ${subport}} {
                     port:py${python.version}-drms \
                     port:py${python.version}-tqdm \
                     port:py${python.version}-zeep
+    }
+
+    variant opencv {
+        depends_lib-append \
+                    port:py${python.version}-opencv4
+    }
+
+    # Note:
+    # the spice variant is only available for the x86_64 platform
+    variant spice {
+        depends_lib-append \
+                    port:py${python.version}-spiceypy
     }
 
     variant timeseries {
@@ -94,6 +109,11 @@ if {${name} ne ${subport}} {
                     port:py${python.version}-matplotlib
     }
 
+    if {[variant_isset map] || [variant_isset visualization]} {
+        depends_lib-append \
+                    port:py${python.version}-mpl-animators
+    }
+
     if {[variant_isset net] || [variant_isset timeseries]} {
         depends_lib-append \
                     port:py${python.version}-pandas
@@ -105,8 +125,4 @@ if {${name} ne ${subport}} {
     }
 
     default_variants +database +image +map +net +timeseries +visualization
-
-    post-patch {
-        reinplace "s|oldest-supported-numpy|numpy|g" ${worksrcpath}/pyproject.toml
-    }
 }

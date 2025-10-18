@@ -5,6 +5,8 @@ PortGroup           qmake5 1.0
 PortGroup           github 1.0
 
 github.setup        KDE kcachegrind 21.08.1 v
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 name                qcachegrind
 categories          devel
 platforms           darwin
@@ -25,7 +27,7 @@ checksums \
 depends_run         path:bin/dot:graphviz
 
 patchfiles          0001-Fix-shell-invocations-for-MacPorts.patch
-patch.args          -p1
+patch.pre_args-replace  -p0 -p1
 
 post-patch {
     reinplace -W ${worksrcpath} "s|@@PREFIX@@|${prefix}|g" \

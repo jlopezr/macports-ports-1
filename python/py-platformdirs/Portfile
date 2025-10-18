@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-platformdirs
-version             4.1.0
+version             4.5.0
 revision            0
 
 categories-append   devel
@@ -18,20 +18,20 @@ long_description    {*}${description}, e.g. a \"user data dir\".
 
 homepage            https://github.com/platformdirs/platformdirs
 
-checksums           rmd160  0fa99477bd810d60e9a2e7d0c090897a972e469f \
-                    sha256  906d548203468492d432bcb294d4bc2fff751bf84971fbb2c10918cc206ee420 \
-                    size    19760
+checksums           rmd160  23fcd0068979bea556c689c9ab09ac612a5ebef5 \
+                    sha256  70ddccdd7c99fc5942e9fc25636a8b34d04c24b335100223152c2803e4063312 \
+                    size    21632
 
-# keep all these Python versions, port is a dependency of py-virtualenv
+# keep the Python 2.7 subport as it is a dependency of py-virtualenv
 # See <https://trac.macports.org/wiki/Python#VersionPolicy>
-python.versions     27 37 38 39 310 311 312
+python.versions     27 39 310 311 312 313 314
 
 if {${name} ne ${subport}} {
     depends_build-append \
                     port:py${python.version}-setuptools \
                     port:py${python.version}-setuptools_scm
 
-    if {${python.version} <= 35} {
+    if {${python.version} == 27} {
         version     2.0.2
         epoch       1
         revision    0
@@ -43,20 +43,14 @@ if {${name} ne ${subport}} {
                     port:py${python.version}-toml
     } else {
         depends_build   port:py${python.version}-hatch-vcs
-        python.pep517   yes
         python.pep517_backend hatch
-
-        if {${python.version} < 38} {
-            depends_lib-append \
-                        port:py${python.version}-typing_extensions
-        }
     }
 
     post-destroot {
         set docdir ${prefix}/share/doc/${subport}
         xinstall -d ${destroot}${docdir}
         xinstall -m 0644 -W ${worksrcpath} README.rst ${destroot}${docdir}
-        if {${python.version} <= 36} {
+        if {${python.version} == 27} {
             xinstall -m 0644 -W ${worksrcpath} CHANGES.rst ${destroot}${docdir}
             xinstall -m 0644 -W ${worksrcpath} LICENSE.txt ${destroot}${docdir}
         } else {

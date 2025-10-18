@@ -5,6 +5,8 @@ PortGroup           github 1.0
 PortGroup           common_lisp 1.0
 
 github.setup        gigamonkey monkeylib-binary-data 22e908976d7f3e2318b7168909f911b4a00963ee
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 name                cl-com.gigamonkeys.binary-data
 version             20111201
 revision            0
@@ -14,7 +16,7 @@ checksums           rmd160  36fc878603d5ce2c2cafbd662000ebe53b7fc1db \
                     size    4969
 
 categories-append   devel
-maintainers         {@catap korins.ky:kirill} openmaintainer
+maintainers         nomaintainer
 license             BSD
 
 description         Binary data library based on code from chapter 24 of Practical Common Lisp

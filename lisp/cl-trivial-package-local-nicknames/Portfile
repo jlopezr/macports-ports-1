@@ -5,6 +5,8 @@ PortGroup           github 1.0
 PortGroup           common_lisp 1.0
 
 github.setup        phoe trivial-package-local-nicknames 8a4d09c1c5cb2b5349aecbd796164433df7a6cc5
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 name                cl-trivial-package-local-nicknames
 version             20200130
 revision            0
@@ -14,7 +16,7 @@ checksums           rmd160  b48d1bc63ee321fd836b729446ee3ed7e3eadce7 \
                     size    3922
 
 categories-append   devel
-maintainers         {@catap korins.ky:kirill} openmaintainer
+maintainers         nomaintainer
 license             public-domain
 
 description         Portability library for package-local nicknames

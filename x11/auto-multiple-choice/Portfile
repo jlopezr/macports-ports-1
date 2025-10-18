@@ -2,13 +2,11 @@
 
 PortSystem              1.0
 PortGroup               makefile 1.0
-PortGroup               compiler_blacklist_versions 1.0
 PortGroup               perl5 1.0
 PortGroup               texlive 1.0
 
 name                    auto-multiple-choice
 categories              x11 tex education
-platforms               darwin
 license                 GPL-2+
 maintainers             nomaintainer
 
@@ -27,26 +25,25 @@ subport auto-multiple-choice-devel {}
 
 if {${subport} eq ${name}} {
     # release
-    set amc.version.main        1.6.0
-    set amc.version.secondary   20230206142200
+    set amc.version.main        1.7.0
+    set amc.version.secondary   20250417073838
     set amc.version         ${amc.version.main}
     version                 ${amc.version.main}
-    revision                1
-    checksums               rmd160  00788859b8619b45ee1c19f702ea1295d7d3e445 \
-                            sha256  acd9d266ebb8104543702fae52f383ed6170e7e7e1c90bc9c6abc4e83e3734ba \
-                            size    13419428
+    checksums               rmd160  8886151969ace9a3693b840cd9fcb3aa3678ba28 \
+                            sha256  95c08477ae41f1b2a98881b677b0dce03f70c4a7ab5ac440311091175d9c98f6 \
+                            size    15449580
 
     conflicts               auto-multiple-choice-devel
 
 } else {
     # devel
-    set amc.version.main        1.6.0
-    set amc.version.secondary   20231107111512
+    set amc.version.main        1.7.0
+    set amc.version.secondary   20250704122834
     set amc.version         ${amc.version.main}+git${amc.version.secondary}
     version                 ${amc.version.main}-git${amc.version.secondary}
-    checksums               rmd160  a0d5c18e30307321261bb63b9da97f104cd999d0 \
-                            sha256  ef3e7101457bbd4e0b600fd72c839be65ac80bc1e75b921fb16dc48d642dcf3f \
-                            size    14660991
+    checksums               rmd160  0a1888c9d6af8f5053406f3d4ee2565cd66a873a \
+                            sha256  ced16989fe2246d0bbc092792c3e09f5f2a38e72e4eab91e207503c3e0092370 \
+                            size    15530591
 
     conflicts               auto-multiple-choice
 }
@@ -89,6 +86,7 @@ depends_run             \
                         port:p${perl5.major}-clone \
                         port:p${perl5.major}-dbd-sqlite \
                         port:p${perl5.major}-digest-md5 \
+                        port:p${perl5.major}-email-address \
                         port:p${perl5.major}-email-mime \
                         port:p${perl5.major}-email-sender \
                         port:p${perl5.major}-file-basedir \

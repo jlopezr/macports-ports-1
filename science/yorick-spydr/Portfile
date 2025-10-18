@@ -5,9 +5,11 @@ PortGroup           github 1.0
 
 set uname           spydr
 github.setup        frigaut yorick-${uname} 0.8.7 v
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 license             GPL-3+
 categories          science yorick
-platforms           darwin
+platforms           any
 maintainers         {thibaut @paumard} openmaintainer
 supported_archs     noarch
 description         FITS image display and simple analysis

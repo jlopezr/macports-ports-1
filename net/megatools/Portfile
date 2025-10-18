@@ -4,24 +4,24 @@ PortSystem          1.0
 PortGroup           meson 1.0
 
 name                megatools
-version             1.11.0-git-20211030
+version             1.11.5.20250706
 revision            0
-checksums           rmd160  bc6ada2c16cb88eee7e65ddb8423cf7a10a4515b \
-                    sha256  35dd8b3c349ad1c8652b5df8bc69bb44f7455f329bfffc8a51a24db4cd5f99a4 \
-                    size    103637
+checksums           rmd160  da8db58ed0eecdb42934f7a754512ad148a41cf1 \
+                    sha256  51f78a03748a64b1066ce28a2ca75d98dbef5f00fe9789dc894827f9a913b362 \
+                    size    106670
 
 categories          net
 license             GPL-2+
 installs_libs       no
 platforms           darwin
-maintainers         nomaintainer
+maintainers         {i0ntempest @i0ntempest} openmaintainer
 
 description         Command line client application for Mega.
-long_description    Megatools is a collection of programs for accessing Mega \
+long_description    ${name} is a collection of programs for accessing Mega \
                     service from the command line on your desktop or server.
 
 homepage            https://megatools.megous.com
-master_sites        ${homepage}/builds/experimental/
+master_sites        ${homepage}/builds/
 
 depends_build-append \
                     port:asciidoc \

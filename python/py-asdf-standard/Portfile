@@ -5,21 +5,22 @@ PortGroup           python 1.0
 
 name                py-asdf-standard
 python.rootname     asdf_standard
-version             1.0.3
+version             1.4.0
 revision            0
 license             BSD
-platforms           {darwin any}
-supported_archs     noarch
 maintainers         {mps @Schamschula} openmaintainer
 description         This document describes the Advanced Scientific Data Format (ASDF), pronounced AZ-diff.
 long_description    {*}${description}
 homepage            https://github.com/asdf-format/asdf-standard
 
-checksums           rmd160  a5e58389d30572a04852d783111c673a36525c1b \
-                    sha256  afd8ff9a70e7b17f6bcc64eb92a544867d5d4fe1f0076719142fdf62b96cfd44 \
-                    size    113484
+platforms           {darwin any}
+supported_archs     noarch
 
-python.versions     39 310 311
+checksums           rmd160  f5d0e53ed3b1d1ea8cacb0c9da753dc5d7454dfc \
+                    sha256  0c5f121d0db87cb7780d61a087f392c5104ce208016cfb2a130c9cea912cfddc \
+                    size    275426
+
+python.versions     39 310 311 312 313
 
 if {${name} ne ${subport}} {
     depends_build-append \

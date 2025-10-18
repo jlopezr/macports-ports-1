@@ -4,17 +4,17 @@ PortSystem              1.0
 PortGroup               python 1.0
 
 name                    hg-evolve
-version                 11.1.0
-revision                0
-checksums               rmd160  199708a63592b1ae28a29a0014882551a184d52a \
-                        sha256  b0cbc7bc7c0bb8c4f42da1f65c50de3ee78f6f00978ef97ae9019d11147493a8 \
-                        size    858080
+version                 11.1.8
+revision                1
+checksums               rmd160  9cb829330a1ee0ecec7c04a3da375627c45c3c9c \
+                        sha256  2486dead90a2466c4f927d0ff83b29b38da31d686403584b2865cf95b6fe00f5 \
+                        size    899277
 
 categories              devel
 license                 GPL-2
-platforms               darwin
+platforms               {darwin any}
 supported_archs         noarch
-maintainers             nomaintainer
+maintainers             {danchr @danchr} openmaintainer
 
 homepage                https://www.mercurial-scm.org/doc/evolution/
 description             Additional history rewriting commands for Mercurial.
@@ -28,8 +28,8 @@ long_description        Additional history rewriting commands for Mercurial \
                         developers to safely rewrite the same parts of history \
                         in a distributed way.
 
-python.default_version  311
-python.pep517           yes
+python.rootname         [string map {- _} ${name}]
+python.default_version  313
 
 depends_lib-append      port:mercurial
 depends_test-append     port:dash

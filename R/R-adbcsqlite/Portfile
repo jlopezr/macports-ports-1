@@ -3,7 +3,7 @@
 PortSystem          1.0
 PortGroup           R 1.0
 
-R.setup             cran apache adbcsqlite 0.8.0
+R.setup             cran apache adbcsqlite 0.14.0
 revision            0
 categories-append   databases
 maintainers         nomaintainer
@@ -11,9 +11,9 @@ license             Apache-2
 description         Arrow Database Connectivity (ADBC) SQLite driver
 long_description    {*}${description}
 homepage            https://github.com/apache/arrow-adbc
-checksums           rmd160  29bca3f204985c7d0548c6fdadb33c441149b46c \
-                    sha256  c3288325af802e718a1190d7a5bc3c09105e550e6e2330f68471a5ef59bb35a9 \
-                    size    2471216
+checksums           rmd160  2b9ee42d402cda4566c4b5d907ab17e39dc5e29f \
+                    sha256  28383acd5a72bf8a0d10295894549d962cf8816adf4d13d70191d6467e11aaf5 \
+                    size    2855327
 
 depends_lib-append  port:R-adbcdrivermanager \
                     port:sqlite3

@@ -4,13 +4,13 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-numexpr
-version             2.8.7
+version             2.13.1
 revision            0
+
 categories-append   math
 license             MIT
 
-python.versions     27 35 36 37 38 39 310 311
-python.pep517       yes
+python.versions     39 310 311 312 313
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -25,44 +25,35 @@ long_description    The numexpr package evaluates multiple-operator array \
 
 homepage            https://github.com/pydata/numexpr
 
-checksums           rmd160  f8947b6bf090e26b029fa0d5d3fc348d2a41e0f5 \
-                    sha256  596eeb3bbfebc912f4b6eaaf842b61ba722cebdb8bc42dfefa657d3a74953849 \
-                    size    103410
+checksums           rmd160  d7d0bcb8b9d6a5d8276554441518048853754b2c \
+                    sha256  ecb722249c2d6ed7fefe8504bb17e056481a5f31233c23a7ee02085c3d661fa1 \
+                    size    119296
 
 if {${name} ne ${subport}} {
-    depends_lib-append  port:py${python.version}-numpy
-
-    if {${python.version} <= 35} {
-        version             2.7.1
-        revision            0
-        distname            ${python.rootname}-${version}
-        checksums           rmd160  a2d301d01e5148b07eca9fa9e0650d0c986bde36 \
-                            sha256  b0d239d9827e1bcee08344fd05835823bc60aff97232e35a928214d03ff802b1 \
-                            size    99196
-        python.pep517       no
-        depends_build-append \
-                            port:py${python.version}-setuptools
-    } elseif {${python.version} eq 36} {
-        version             2.8.1
-        revision            0
-        distname            ${python.rootname}-${version}
-        checksums           rmd160  a165da0c66334bbfc3ca208d226e314f462afd50 \
-                            sha256  cd779aa44dd986c4ef10163519239602b027be06a527946656207acf1f58113b \
-                            size    94824
-        python.pep517       no
-        depends_build-append \
-                            port:py${python.version}-setuptools
-    } else {
-        post-patch {
-            reinplace "s|oldest-supported-numpy|numpy|g" ${worksrcpath}/pyproject.toml
-        }
+    if {${python.version} == 39} {
+        version     2.10.2
+        revision    1
+        checksums   rmd160  c0cba0564cc8b979d4912bb4e9e6a1982665d292 \
+                    sha256  b0aff6b48ebc99d2f54f27b5f73a58cb92fde650aeff1b397c71c8788b4fff1a \
+                    size    106787
     }
 
+    depends_lib-append  port:py${python.version}-numpy
+
+    # error: no matching function for call to ‘std::complex<double>::real(double&)’
+    compiler.cxx_standard   2011
+
     post-destroot {
-        xinstall -m 755 -d ${destroot}${prefix}/share/doc/${subport}
+        xinstall -d ${destroot}${prefix}/share/doc/${subport}
         xinstall -m 644 -W ${worksrcpath} ANNOUNCE.rst LICENSE.txt README.rst \
             RELEASE_NOTES.rst ${destroot}${prefix}/share/doc/${subport}
     }
+
+    test.run        yes
+    test.env-append PYTHONPATH=${destroot}${python.pkgd}
+    test.dir        ${destroot}${python.pkgd}/numexpr/tests
+    python.test_framework
+    test.cmd        ${python.bin} test_numexpr.py
 
     livecheck.type      none
 }

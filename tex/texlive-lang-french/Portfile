@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           texlive 1.0
 
 name                texlive-lang-french
-version             66581
+version             74301
 revision            0
 
 categories          tex
@@ -13,18 +13,18 @@ license             Copyleft Permissive
 description         TeX Live: French
 long_description    Support for French and Basque.
 
-checksums           texlive-lang-french-66581-run.tar.xz \
-                    rmd160  1ca6cdc2544107fa9ede396bd1d59e14e7e912c9 \
-                    sha256  c2dd00d494af9a5f390c6ae3cdee6aeec68618b0426fb005cf45bf804b7f3443 \
-                    size    84503304 \
-                    texlive-lang-french-66581-doc.tar.xz \
-                    rmd160  4a2470dcc621810ae7157ef68e2c5441f25e90e3 \
-                    sha256  e3e7ec61a2444a25d1e09b603bf135de4cb554c3f601d4d1b2154dfddcf1dc8c \
-                    size    80498932 \
-                    texlive-lang-french-66581-src.tar.xz \
-                    rmd160  0b1a695b4c5c0a167a98908f0e7d74ec845b3886 \
-                    sha256  a1a6239b0841151fb7a1b00e4f5cf9000b04156cc76752b1a7c7f5b546121508 \
-                    size    2559500
+checksums           texlive-lang-french-74301-run.tar.xz \
+                    rmd160  7b9fec96e1914052722797cf9986e00aecbf8a9d \
+                    sha256  0367e736e284fff2544164404d22b1828e2ac3d4f0c695a905e8d799f1f94d6a \
+                    size    2467168 \
+                    texlive-lang-french-74301-doc.tar.xz \
+                    rmd160  ce226bd7e0f134c6345d4b55862d271507f2ae9a \
+                    sha256  71a7055ba53dc776339b71af0b92c48a946f71c4e7bc6bfd853de8e59f9d1300 \
+                    size    134377956 \
+                    texlive-lang-french-74301-src.tar.xz \
+                    rmd160  b01595a948aa49ec8e3bbe286c9d03008a7e7652 \
+                    sha256  ab36049c711c436e48ec0e10f4a0f52eaad4e1325a2e53d9ff43104b28e45d74 \
+                    size    2144260
 
 depends_lib         port:texlive-basic
 

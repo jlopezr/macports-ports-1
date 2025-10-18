@@ -1,10 +1,9 @@
 PortSystem          1.0
 
 name                luit
-version             2.0.20230201
+version             2.0.20250912
 categories          x11
 license             X11
-platforms           darwin
 maintainers         {invisible-island.net:dickey @ThomasDickey} openmaintainer
 description         filter that converts legacy encodings to/from UTF-8
 long_description    ${name} is a filter that converts terminal I/O \
@@ -16,12 +15,11 @@ master_sites        https://invisible-island.net/archives/${name}/current/ \
 
 extract.suffix      .tgz
 
-checksums           rmd160  fce2228878f600df8a5f690184f56d15fa236617 \
-                    sha256  07a066ff9b54c259775dc6af4e4bc53b5870cfcd8a5bdb20d4e441c384e8efae \
-                    size    209814
+checksums           rmd160  c54901d23a11768f052aba0e254827292c0ce609 \
+                    sha256  7c4208326e231f72e1fc98f9c11be895e8ce84cb5888b7c7548834ad730e8404 \
+                    size    213320
 
 installs_libs       no
-use_parallel_build  yes
 
 depends_build \
 	port:pkgconfig

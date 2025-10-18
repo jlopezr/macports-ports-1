@@ -4,7 +4,8 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-wcwidth
-version             0.2.12
+version             0.2.14
+revision            0
 
 license             MIT
 platforms           {darwin any}
@@ -16,11 +17,11 @@ long_description    {*}${description}
 
 homepage            https://github.com/jquast/wcwidth/
 
-checksums           rmd160  e91a2639c93a5dc5dbefb5db814eac0f25574b51 \
-                    sha256  f01c104efdf57971bcb756f054dd58ddec5204dd15fa31d6503ea57947d97c02 \
-                    size    99898
+checksums           rmd160  aa5216ca112ebfa19e78f563007e70dc012e1d4b \
+                    sha256  4d478375d31bc5395a3c55c40ccdf3354688364cd61c4f6adacaa9215d0b3605 \
+                    size    102293
 
-python.versions     27 35 36 37 38 39 310 311 312
+python.versions     27 35 39 310 311 312 313
 
 if {${name} ne ${subport}} {
     depends_build-append \

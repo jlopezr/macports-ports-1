@@ -3,9 +3,9 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/hairyhenderson/gomplate 3.11.6 v
-go.package          github.com/hairyhenderson/gomplate/v3
-github.tarball_from archive
+go.setup            github.com/hairyhenderson/gomplate 4.3.1 v
+go.package          github.com/hairyhenderson/gomplate/v4
+go.offline_build    no
 revision            0
 
 description         \
@@ -23,11 +23,9 @@ license             MIT
 maintainers         {gmail.com:herby.gillot @herbygillot} \
                     openmaintainer
 
-checksums           rmd160  da44f9f2c0b6c4e6297cdb11a4e0e1b8a0256800 \
-                    sha256  fba514c022e8d797a950b43e3d4e47bf5a546ed95492651a22d95cdf2f614bfd \
-                    size    561693
-
-go.offline_build no
+checksums           rmd160  d7cb3501e7df8de33f2e2361369269f245109c80 \
+                    sha256  5e96d8e270c063c4cb273c9528afff90ca2b4c0c563e56ceb19fd41685971c76 \
+                    size    594573
 
 build.cmd           make
 build.pre_args-append \

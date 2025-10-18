@@ -5,24 +5,24 @@ PortSystem      1.0
 PortGroup       github 1.0
 PortGroup       cmake 1.1
 PortGroup       legacysupport 1.1
-PortGroup       compiler_blacklist_versions 1.0
 
-github.setup    ihhub fheroes2 1.0.10
+github.setup    ihhub fheroes2 1.1.11
+github.tarball_from \
+                archive
 
 categories      games
-platforms       darwin
 maintainers     {@oleg-derevenetz gmail.com:oleg.derevenetz} openmaintainer
 license         GPL-2
 
 description     Free implementation of Heroes of Might and Magic II game engine
 long_description \
-                ${description}
+                {*}${description}
 
 homepage        https://ihhub.github.io/fheroes2/
 
-checksums       rmd160  4e3afa5ecd15fd32cefe4bf6b28ec8b9114b6388 \
-                sha256  37fd99204940b4d3658e611566b1f239d17e3b8031f5fbcf5a26a9bf61d32195 \
-                size    11811152
+checksums       rmd160  dcabe36ea3f00512a8db3181ebed1ded8d8eb27c \
+                sha256  e9a70f4cc831231010354cc599c84b626a18e15de1252bc35e4ced720857236c \
+                size    12502123
 
 depends_build-append \
                 port:gettext
@@ -30,6 +30,8 @@ depends_build-append \
 depends_lib     port:libsdl2 \
                 port:libsdl2_mixer \
                 port:zlib
+
+depends_run     port:innoextract
 
 patchfiles      patch-readme-txt.diff
 

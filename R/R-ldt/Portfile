@@ -3,7 +3,7 @@
 PortSystem          1.0
 PortGroup           R 1.0
 
-R.setup             cran rmojab63 ldt 0.5.1
+R.setup             cran rmojab63 ldt 0.5.3
 revision            0
 categories-append   math
 maintainers         {@barracuda156 gmail.com:vital.had} openmaintainer
@@ -11,9 +11,9 @@ license             GPL-3+
 description         Automated model sensitivity analysis
 long_description    {*}${description}
 homepage            https://github.com/rmojab63/LDT
-checksums           rmd160  08483caf7df4355a46bc2c80eaafcf2e8077ab49 \
-                    sha256  1ed62a965e9e186a53e642581f91a7767b782ba16716ed37940177a04de3fa06 \
-                    size    1142839
+checksums           rmd160  580e29996f48911299d9ded38a79c0f3bf82b8ba \
+                    sha256  231262aa73fee5ba876f37ac4b27258ef6f76dbf60ef72089a9ae1887a2ed8d0 \
+                    size    1143862
 
 depends_lib-append  port:R-BH \
                     port:R-Rcpp \

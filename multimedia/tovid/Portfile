@@ -5,6 +5,8 @@ PortGroup           github 1.0
 PortGroup           python 1.0
 
 github.setup        tovid-suite tovid 0.35.2
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 revision            2
 categories          multimedia
 maintainers         nomaintainer
@@ -13,12 +15,12 @@ supported_archs     noarch
 license             GPL-2
 
 description         a collection of GPL video disc authoring tools
-long_description    ${description}, tovid can help you create your own DVDs, \
+long_description    {*}${description}, tovid can help you create your own DVDs, \
                     VCDs, and SVCDs for playback on your home DVD player.
 
 homepage            http://tovid.wikia.com/
 
-platforms           darwin
+platforms           {darwin any}
 
 python.default_version 27
 

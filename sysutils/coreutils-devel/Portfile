@@ -1,13 +1,13 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:filetype=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem      1.0
-PortGroup       compiler_blacklist_versions 1.0
+PortGroup       gnulib 1.0
 
 name            coreutils-devel
 conflicts       gexpr coreutils
 set my_name     coreutils
 
-version         9.4
+version         9.7
 revision        0
 
 categories      sysutils
@@ -32,14 +32,9 @@ use_xz          yes
 
 installs_libs   no
 
-checksums       rmd160  106c893c5a595873ec84a55cf1db5fb3a8a077fc \
-                sha256  ea613a4cf44612326e917201bbbcdfbd301de21ffc3b59b6e5c07e040b275e52 \
-                size    5979200
-
-if {${os.platform} eq "darwin" && ${os.major} < 10} {
-    # See: https://trac.macports.org/ticket/62994
-    configure.args-append   gl_cv_func_getcwd_path_max=yes
-}
+checksums       rmd160  99c2e4f2a7832ffae87ea770023d29e596bbcaec \
+                sha256  e8bb26ad0293f9b5a1fc43fb42ba970e312c66ce92c1b0b16713d7500db251bf \
+                size    6158960
 
 depends_build-append \
                 port:gettext
@@ -55,7 +50,8 @@ compiler.blacklist-append \
 
 configure.args-append \
                 --disable-silent-rules \
-                --program-prefix=g
+                --program-prefix=g \
+                --with-openssl=no
 
 # Bypass year 2038 awareness code, which causes failures for 32-bit/universal.
 configure.args-append \
@@ -105,8 +101,8 @@ post-destroot {
 
 }
 
-# Set the RUN_EXPENSIVE_TESTS environmental variable to 'yes' to run more
-# expensive tests.  Set the RUN_VERY_EXPENSIVE_TESTS environmental variable
+# Set the RUN_EXPENSIVE_TESTS environment variable to 'yes' to run more
+# expensive tests.  Set the RUN_VERY_EXPENSIVE_TESTS environment variable
 # to 'yes' to run even more expensive tests.
 test.run        yes
 test.target     check

@@ -9,10 +9,10 @@ license         Permissive
 maintainers     {devans @dbevans} openmaintainer
 description     The Core GNOME 3 User Experience module set
 long_description \
-                ${description}
+                {*}${description}
 homepage        https://help.gnome.org/misc/release-notes/3.16/
 master_sites
-platforms       darwin
+platforms       any
 distfiles
 
 #
@@ -77,7 +77,7 @@ supported_archs noarch
 # gnome-system-monitor (builds but segfaults on processes/resources due to g_free error in libgtop-server #41542)
 #
 
-depends_lib     port:adwaita-icon-theme \
+depends_run     port:adwaita-icon-theme \
                 port:at-spi2-atk \
                 port:at-spi2-core \
                 port:atk \
@@ -103,7 +103,7 @@ depends_lib     port:adwaita-icon-theme \
                 path:lib/pkgconfig/gjs-1.0.pc:gjs \
                 path:lib/pkgconfig/glib-2.0.pc:glib2 \
                 port:glib-networking \
-                port:glibmm \
+                path:lib/pkgconfig/glibmm-2.68.pc:glibmm \
                 port:gmime \
                 port:gmime3 \
                 port:gnome-backgrounds \
@@ -156,20 +156,21 @@ depends_lib     port:adwaita-icon-theme \
                 port:libhttpseverywhere \
                 port:libmediaart \
                 port:libnotify \
-                port:libpeas \
+                port:libpeas1 \
                 port:rest \
                 path:lib/pkgconfig/librsvg-2.0.pc:librsvg \
                 port:libsecret \
                 port:libsigcxx2 \
                 port:libsigcxx3 \
-                path:lib/pkgconfig/libsoup-2.4.pc:libsoup \
+                path:lib/pkgconfig/libsoup-3.0.pc:libsoup \
+                port:libsoup-2.4 \
                 port:libwnck3 \
                 port:libxml2 \
                 port:libxslt \
                 port:mm-common \
                 port:nautilus \
                 path:lib/pkgconfig/pango.pc:pango \
-                port:pangomm \
+                path:lib/pkgconfig/pangomm-2.48.pc:pangomm \
                 port:totem \
                 port:totem-pl-parser \
                 port:tracker \
@@ -185,7 +186,7 @@ depends_lib     port:adwaita-icon-theme \
 # forced python variant conflicts on dependencies
 # for now, just depend on current preferred subports of py-gobject3
 
-    depends_lib-append \
+    depends_run-append \
                 port:py27-gobject3 \
                 port:py36-gobject3
 
@@ -194,7 +195,7 @@ depends_lib     port:adwaita-icon-theme \
 
 platform darwin {
     if {${configure.cxx_stdlib} eq "libc++"} {
-        depends_lib-append  \
+        depends_run-append  \
                 port:gnome-online-miners
     }
 }
@@ -203,7 +204,7 @@ use_configure   no
 build           { }
 
 variant broken description {Build ports that are broken or need work} {
-    depends_lib-append \
+    depends_run-append \
         port:gdm \
         port:gnome-system-monitor
 }

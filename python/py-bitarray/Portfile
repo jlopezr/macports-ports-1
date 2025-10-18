@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-bitarray
-version             2.8.5
+version             3.0.0
 revision            0
 
 categories-append   math
@@ -22,11 +22,11 @@ long_description    \
 
 homepage            https://github.com/ilanschnell/bitarray
 
-checksums           rmd160  19a1a1a4769227ecde7984bdddf06cf530ce9356 \
-                    sha256  b7564fd218cc4479f7f0106d341e096f78907b47865aeeff702c807df1927c01 \
-                    size    129895
+checksums           rmd160  b9c0aac79b8241230a927028d14c6df5253087f4 \
+                    sha256  a2083dc20f0d828a7cdf7a16b20dae56aab0f43dc4f347a3b3039f6577992b03 \
+                    size    126627
 
-python.versions     37 38 39 310 311 312
+python.versions     39 310 311 312 313
 
 python.test_framework
 

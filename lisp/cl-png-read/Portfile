@@ -5,6 +5,8 @@ PortGroup           github 1.0
 PortGroup           common_lisp 1.0
 
 github.setup        Ramarren png-read ec29f38a689972b9f1373f13bbbcd6b05deada88
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 name                cl-png-read
 version             20170815
 revision            0
@@ -14,7 +16,7 @@ checksums           rmd160  b6894dcd20396348160dc63eda370d48afa368f1 \
                     size    8798
 
 categories-append   devel
-maintainers         {@catap korins.ky:kirill} openmaintainer
+maintainers         nomaintainer
 license             BSD
 
 description         A PNG decoder for Common Lisp

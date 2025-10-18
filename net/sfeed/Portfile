@@ -5,7 +5,7 @@ PortGroup           legacysupport 1.1
 PortGroup           makefile 1.0
 
 name                sfeed
-version             1.9
+version             2.2
 revision            0
 license             ISC
 
@@ -18,9 +18,9 @@ homepage            https://git.codemadness.org/${name}/
 
 master_sites        https://codemadness.org/releases/${name}/
 
-checksums           rmd160  337b9ab719bf4b63fd6867e6912856cccce61246 \
-                    sha256  7261dada0e4010ea09f67d1fd737404d691b9c7e5e7362334228c117d98a5646 \
-                    size    67718
+checksums           rmd160  561df214e587fc5e77f68bb8aba32905d3f55219 \
+                    sha256  4270389c3cfa474caa3892271c3171a751490328cc52e502d8435de3c2e41cc5 \
+                    size    68969
 
 depends_lib-append  port:ncurses
 

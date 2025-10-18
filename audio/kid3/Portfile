@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                kid3
-version             3.9.4
+version             3.9.6
 revision            0
 
 categories          audio
@@ -24,9 +24,9 @@ master_sites        sourceforge:kid3
 distname            ${name}-${version}-Darwin-amd64
 use_dmg             yes
 
-checksums           rmd160  09823b61ee0defa500fc9171d501d84ddfe6fcc0 \
-                    sha256  b8668c493982bcbeade9b17244d440158b24f17149ac7f5988e086f65063207d \
-                    size    32071213
+checksums           rmd160  d9e3d0e58014abcb837e6dc851bf673aeb3c5fd2 \
+                    sha256  34ef3f1f157be232f7c4c59468081266f9cd3c99be499d82c1d32e858a7bb0e4 \
+                    size    33214441
 
 use_configure       no
 build {}

@@ -5,6 +5,8 @@ PortGroup           github 1.0
 PortGroup           common_lisp 1.0
 
 github.setup        slyrus opticl-core b7cd13d26df6b824b216fbc360dc27bfadf04999
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 name                cl-opticl-core
 version             20170906
 revision            0
@@ -14,7 +16,7 @@ checksums           rmd160  5c64a8b9bb0eb48a02b2fd615c247d76bbddbb70 \
                     size    4564
 
 categories-append   devel
-maintainers         {@catap korins.ky:kirill} openmaintainer
+maintainers         nomaintainer
 license             BSD
 
 description         Core classes and pixel access macros from opticl

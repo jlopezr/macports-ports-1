@@ -5,6 +5,8 @@ PortGroup           github 1.0
 PortGroup           cmake 1.1
 
 github.setup        discord discord-rpc 3.4.0 v
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 categories          games devel
 license             MIT
 maintainers         nomaintainer
@@ -19,7 +21,7 @@ checksums           rmd160  5162c62ba2484098f683c1bb82ef1a2704f61b19 \
 
 compiler.cxx_standard 2014
 
-depends_lib-append  port:rapidjson
+depends_lib-append  path:lib/pkgconfig/RapidJSON.pc:rapidjson
 
 # Patch the CMakeLists.txt file to add a CMake find module
 # and a pkg-config file to the final output products.

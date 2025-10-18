@@ -5,6 +5,8 @@ PortGroup               github 1.0
 PortGroup               common_lisp 1.0
 
 github.setup            bufferswap pngload e9ea54f095ac7b4d25ab53a58b4303331f5b8e4b
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from     tarball
 name                    cl-pngload
 version                 20220402
 revision                0
@@ -14,7 +16,7 @@ checksums               rmd160  48c68173e8dcfc0e8a5716541fb8196f79494341 \
                         size    91735
 
 categories-append       devel
-maintainers             {@catap korins.ky:kirill} openmaintainer
+maintainers             nomaintainer
 license                 MIT
 
 description             A PNG (Portable Network Graphics) image format decoder.

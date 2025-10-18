@@ -1,15 +1,17 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem          1.0
+PortGroup           legacysupport 1.1
+
+# CLOCK_REALTIME
+legacysupport.newest_darwin_requires_legacy 15
 
 name                wolfssl
-version             5.6.4
-revision            0
+version             5.8.2
 categories          devel security
-platforms           darwin
 maintainers         {wolfssl.com:facts @JacobBarthelmeh} openmaintainer
 homepage            https://wolfssl.com/wolfSSL/Products-wolfssl.html
-license             GPL-2
+license             GPL-3
 description         wolfSSL Embedded SSL Library
 
 long_description    \
@@ -25,13 +27,22 @@ long_description    \
 master_sites        https://www.wolfssl.com/
 use_zip             yes
 
-checksums           rmd160  f04b5bc63ad26b6cfa3b9b0dbd07d261c8104a9a \
-                    sha256  3700dd2006f7833d926be9d786f28f22db195b09b8de8c4f3e6c5201f0843475 \
-                    size    24103922
+checksums           rmd160  0498376b28ee28bf2b19ffe862f802b798270c91 \
+                    sha256  92a290732cfa8e34fc31dbd0623b9d9efcb75aa92ea593041d450989e3d2433d \
+                    size    26861005
 
 configure.args      --enable-all \
                     --disable-jobserver \
                     --disable-silent-rules
+
+# Enabling this option does not work at least on 10.6:
+# src/internal.c:41288: error: 'errSecSuccess' undeclared (first use in this function)
+# Arguably we do not need archaic system certificates anyway.
+# OS version threshold is set according to system git being functional.
+if {${os.platform} eq "darwin" && ${os.major} < 14} {
+    configure.args-append \
+                    --disable-sys-ca-certs
+}
 
 variant debug description {Enable wolfSSL debugging support} {
     configure.args-append \
@@ -60,7 +71,7 @@ livecheck.url   https://www.wolfssl.com/wolfSSL/download/downloadForm.php
 livecheck.regex "${name}-((?!.*${name}.*|\\${extract.suffix}).*)\\${extract.suffix}"
 
 test.run    yes
-test.env    TMPDIR=/tmp RANDFILE=/tmp/wolfssl-unittest-rnd DYLD_LIBRARY_PATH=${worksrcpath}/src/.libs
+test.env    TMPDIR=/tmp RANDFILE=/tmp/wolfssl-unittest-rnd DYLD_LIBRARY_PATH=${worksrcpath}/src/.libs WOLFSSL_EXTERNAL_TEST=0
 test.target check
 test.args   -j${build.jobs}
 

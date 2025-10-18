@@ -3,15 +3,18 @@
 PortSystem          1.0
 PortGroup           R 1.0
 
-R.setup             github gdemin maditr 0.8.3
+R.setup             cran gdemin maditr 0.8.5
 revision            0
+platforms           {darwin any}
 maintainers         nomaintainer
 license             GPL-2
-description         Fast data aggregation, modification and filtering with pipes and R-data.table
+description         Fast data aggregation, modification and filtering \
+                    with pipes and R-data.table
 long_description    {*}${description}
-checksums           rmd160  2d3be2fac35f5721cc606b773245f23e07364074 \
-                    sha256  8f3eb75229a807033f74eece0ce3df43707deec075a23ae3e0b5f78842f70a27 \
-                    size    319590
+homepage            https://github.com/gdemin/maditr
+checksums           rmd160  834587c411e9a89609f78e1558fcdab30ae4bc43 \
+                    sha256  21221fcdaf11c3dc95c58d88bb91cecfdc2c0bed0fcc55b99e8a203968111438 \
+                    size    290657
 supported_archs     noarch
 
 depends_lib-append  port:R-data.table \

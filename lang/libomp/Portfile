@@ -6,7 +6,6 @@ if {${os.major} <= 17} {
     PortGroup           muniversal 1.0
 }
 PortGroup               clang_dependency 1.0
-PortGroup               compiler_blacklist_versions 1.0
 
 name                    libomp
 maintainers             {eborisch @eborisch} openmaintainer
@@ -19,46 +18,49 @@ long_description        {*}${description} is intended to contain all of the\
                         with +openmp variant for clang-3.7.)
 
 categories              lang
-platforms               darwin
 supported_archs         arm64 i386 x86_64
 license                 {MIT NCSA}
 
 # Moved to epoch 1 for svn # -> version # change.
 epoch                   1
 
-subport                 libomp-devel {}
-
 if {${os.platform} eq "darwin" && ${configure.cxx_stdlib} ne "libstdc++"} {
 
-    version             17.0.3
+    version             21.1.1
     revision            0
 
-    if { ${subport} eq "libomp-devel" } {
-        # Marked obsolete 10/25/2022
-        PortGroup       obsolete 1.0
-        replaced_by     libomp
-    } else {
-        livecheck.regex {"llvmorg-([0-9.]+)".*}
-    }
+    livecheck.regex {"llvmorg-([0-9.]+)".*}
 
     distname        openmp-${version}.src
     distfiles       ${distname}.tar.xz cmake-${version}.src.tar.xz
 
-    checksums \
-        openmp-${version}.src.tar.xz \
-                    rmd160  a79350f38202f4e9819373a433b1b19cef631eb2 \
-                    sha256  e04172c067f256d06cd8112abb49bc65f4e1d986a4b49b36cd837dfee3cdd274 \
-                    size    1273276 \
-        cmake-${version}.src.tar.xz \
-                    rmd160  2f419efae4d3f8c9d87943cf1873031468a19bd7 \
-                    sha256  54fc534f0da09088adbaa6c3bfc9899a500153b96e60c2fb9322a7aa37b1027a \
-                    size    8712
+    checksums       openmp-${version}.src.tar.xz \
+                    rmd160  f6017af171c1b247b0d421ec1dbc72acf38f8d4b \
+                    sha256  eb10379045844c2d2f1b89a15fd1beaf9cd0de524180c6648e9ea17a0661ece2 \
+                    size    1101460 \
+                    cmake-${version}.src.tar.xz \
+                    rmd160  e43184d51ef380acfd2844820a33492d6d247e31 \
+                    sha256  9c0b9064b7d0f2a3004f1d034aadf84d2af4e5dca2135ebf697b0a1eb85ef769 \
+                    size    8972
 
     if {${os.major} <= 12} {
         # kmp_alloc.c includes <atomic> but libc++ is not the default on
         # these systems. https://trac.macports.org/ticket/52554
         configure.cflags-append -stdlib=libc++
     }
+
+    if {${os.platform} eq "darwin" && ${os.major} < 13} {
+        # Last python version to not require C11 (and thus a clang
+        # dependency on some OS versions). Used by libpsl (which is a
+        # dependency of cmake) for the same reason.
+        set python_branch   3.10
+    } else {
+        set python_branch   3.13
+    }
+    set python_ver          [string map {. ""} ${python_branch}]
+    depends_build-append    port:python${python_ver}
+    depends_skip_archcheck-append python${python_ver}
+    configure.args-append   -DPython3_EXECUTABLE=${prefix}/bin/python${python_branch}
 
     # Build requires std::atomic
     configure.cxxflags-append -std=c++11
@@ -74,31 +76,29 @@ if {${os.platform} eq "darwin" && ${configure.cxx_stdlib} ne "libstdc++"} {
 
     livecheck.url       https://api.github.com/repos/llvm/llvm-project/tags
 } else {
-    if { ${subport} eq "libomp-devel" } {
-        version         291764
-        replaced_by     libomp
-    } else {
-        PortGroup       github 1.0
-        # Last version working on libstdc++
-        github.setup    llvm-mirror openmp 381 svn-tags/RELEASE_
-        name            libomp
+    PortGroup       github 1.0
+    # Last version working on libstdc++
+    github.setup    llvm-mirror openmp 381 svn-tags/RELEASE_
+    # Change github.tarball_from to 'releases' or 'archive' next update
+    github.tarball_from tarball
+    name            libomp
 
-        worksrcdir      openmp-${version}/final/runtime
-        version         3.8.1
-        checksums       rmd160  a41054068a127ef84610afef8090109078cb6c46 \
-                        sha256  4c46b5946fe9b2a701661746d11c7c85c51a7f18673194a7ebd2a43470948a34 \
-                        size    5587986
-        set rtpath      "./"
+    worksrcdir      openmp-${version}/final/runtime
+    version         3.8.1
+    checksums       rmd160  a41054068a127ef84610afef8090109078cb6c46 \
+                    sha256  4c46b5946fe9b2a701661746d11c7c85c51a7f18673194a7ebd2a43470948a34 \
+                    size    5587986
+    set rtpath      "./"
 
-        # use cmake-bootstrap to minimize dependencies.
-        depends_build-replace  \
-                        path:bin/cmake:cmake port:cmake-bootstrap
-        configure.cmd   ${prefix}/libexec/cmake-bootstrap/bin/cmake
-    }
+    # use cmake-bootstrap to minimize dependencies.
+    depends_build-replace  \
+                    path:bin/cmake:cmake port:cmake-bootstrap
+    configure.cmd   ${prefix}/libexec/cmake-bootstrap/bin/cmake
+
+    depends_build-append    port:perl5
     livecheck.type      none
 }
 
-depends_build-append    port:perl5
 cmake.out_of_source     yes
 
 # According to documentation builds with clang >= 3.3
@@ -139,16 +139,16 @@ if {${os.major} <= 10} {
     set hnames              {omp.h}
     configure.args-append   -DLIBOMP_OMPT_SUPPORT=FALSE
 } else {
-    set hnames              {omp-tools.h omp.h ompt.h}
+    set hnames              {omp-tools.h omp.h ompt.h ompx.h}
 }
+
+set lnames {libiomp5.dylib libomp.dylib libgomp.dylib libgomp.1.dylib}
 
 variant top_level description \
     "Install (links to) omp.h and libs into ${prefix}/(include|lib)" {}
 
 post-extract {
     # Patch tool for build with CMAKE_INSTALL_PREFIX
-    reinplace "/bulk.*compatibility/s/s\+/s+.*/" \
-        ${rtpath}tools/check-depends.pl
     if {[vercmp ${version} 15.0.0] >= 0} {
         system -W ${workpath} "mv cmake*.src/Modules/* openmp*/cmake/"
     }
@@ -164,18 +164,16 @@ post-destroot {
     }
 
     xinstall -d ${instdest}/lib/libomp
-    foreach p {libiomp5.dylib libomp.dylib libgomp.dylib} {
+    foreach p ${lnames} {
         move ${instdest}/tmp/lib/${p} ${instdest}/lib/libomp/
     }
 
     if {[variant_isset top_level]} {
         foreach h ${hnames} {
-            system -W ${instdest}/include \
-              "ln -s libomp/${h}"
+            ln -s libomp/${h} ${instdest}/include/${h}
         }
-        foreach p {libiomp5.dylib libomp.dylib libgomp.dylib} {
-            system -W ${instdest}/lib/ \
-              "ln -s libomp/${p}"
+        foreach p ${lnames} {
+            ln -s libomp/${p} ${instdest}/lib/${p}
         }
     }
 
@@ -195,4 +193,3 @@ notes "
 
 test.run                yes
 test.target             libomp-micro-tests
-

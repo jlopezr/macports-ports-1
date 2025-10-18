@@ -7,7 +7,7 @@ To use this patch, run these commands for a successful build:
     ./configure                         (optional if already run)
     make
 
-based-on: 6b5ae825db985e9d1c98576651b50c8e490ddb97
+based-on: 3305a7a063ab0167cab5bf7029da53abaa9fdb6e
 diff --git a/compat.c b/compat.c
 --- a/compat.c
 +++ b/compat.c
@@ -280,7 +280,7 @@ diff --git a/generator.c b/generator.c
  
  #ifdef SUPPORT_HARD_LINKS
  	if (preserve_hard_links && F_HLINK_NOT_FIRST(file)
-@@ -2107,17 +2131,25 @@ static void touch_up_dirs(struct file_list *flist, int ndx)
+@@ -2111,17 +2135,25 @@ static void touch_up_dirs(struct file_list *flist, int ndx)
  			continue;
  		fname = f_name(file, NULL);
  		if (fix_dir_perms)
@@ -341,7 +341,7 @@ diff --git a/main.c b/main.c
  extern int msgs2stderr;
  extern int module_id;
  extern int read_only;
-@@ -975,6 +979,22 @@ static int do_recv(int f_in, int f_out, char *local_name)
+@@ -977,6 +981,22 @@ static int do_recv(int f_in, int f_out, char *local_name)
  	 * points to an identical file won't be replaced by the referent. */
  	copy_links = copy_dirlinks = copy_unsafe_links = 0;
  
@@ -383,7 +383,7 @@ diff --git a/options.c b/options.c
  int io_timeout = 0;
  int prune_empty_dirs = 0;
  int use_qsort = 0;
-@@ -622,6 +624,8 @@ static struct poptOption long_options[] = {
+@@ -623,6 +625,8 @@ static struct poptOption long_options[] = {
    {"perms",           'p', POPT_ARG_VAL,    &preserve_perms, 1, 0, 0 },
    {"no-perms",         0,  POPT_ARG_VAL,    &preserve_perms, 0, 0, 0 },
    {"no-p",             0,  POPT_ARG_VAL,    &preserve_perms, 0, 0, 0 },
@@ -392,7 +392,7 @@ diff --git a/options.c b/options.c
    {"executability",   'E', POPT_ARG_NONE,   &preserve_executability, 0, 0, 0 },
    {"acls",            'A', POPT_ARG_NONE,   0, 'A', 0, 0 },
    {"no-acls",          0,  POPT_ARG_VAL,    &preserve_acls, 0, 0, 0 },
-@@ -720,6 +724,12 @@ static struct poptOption long_options[] = {
+@@ -721,6 +725,12 @@ static struct poptOption long_options[] = {
    {"remove-source-files",0,POPT_ARG_VAL,    &remove_source_files, 1, 0, 0 },
    {"force",            0,  POPT_ARG_VAL,    &force_delete, 1, 0, 0 },
    {"no-force",         0,  POPT_ARG_VAL,    &force_delete, 0, 0, 0 },
@@ -405,7 +405,7 @@ diff --git a/options.c b/options.c
    {"ignore-errors",    0,  POPT_ARG_VAL,    &ignore_errors, 1, 0, 0 },
    {"no-ignore-errors", 0,  POPT_ARG_VAL,    &ignore_errors, 0, 0, 0 },
    {"max-delete",       0,  POPT_ARG_INT,    &max_delete, 0, 0, 0 },
-@@ -1015,6 +1025,14 @@ static void set_refuse_options(void)
+@@ -1016,6 +1026,14 @@ static void set_refuse_options(void)
  #ifndef SUPPORT_CRTIMES
  	parse_one_refuse_match(0, "crtimes", list_end);
  #endif
@@ -420,7 +420,7 @@ diff --git a/options.c b/options.c
  
  	/* Now we use the descrip values to actually mark the options for refusal. */
  	for (op = long_options; op != list_end; op++) {
-@@ -2712,6 +2730,9 @@ void server_options(char **args, int *argc_p)
+@@ -2734,6 +2752,9 @@ void server_options(char **args, int *argc_p)
  	if (xfer_dirs && !recurse && delete_mode && am_sender)
  		args[ac++] = "--no-r";
  
@@ -430,7 +430,7 @@ diff --git a/options.c b/options.c
  	if (do_compression && do_compression_level != CLVL_NOT_SPECIFIED) {
  		if (asprintf(&arg, "--compress-level=%d", do_compression_level) < 0)
  			goto oom;
-@@ -2807,6 +2828,16 @@ void server_options(char **args, int *argc_p)
+@@ -2829,6 +2850,16 @@ void server_options(char **args, int *argc_p)
  			args[ac++] = "--delete-excluded";
  		if (force_delete)
  			args[ac++] = "--force";
@@ -525,7 +525,7 @@ diff --git a/rsync.1.md b/rsync.1.md
  0.  `--chmod=CHMOD`
  
      This option tells rsync to apply one or more comma-separated "chmod" modes
-@@ -2017,8 +2053,8 @@ expand it.
+@@ -2019,8 +2055,8 @@ expand it.
      [`--ignore-missing-args`](#opt) option a step farther: each missing arg
      will become a deletion request of the corresponding destination file on the
      receiving side (should it exist).  If the destination file is a non-empty
@@ -536,7 +536,7 @@ diff --git a/rsync.1.md b/rsync.1.md
      independent of any other type of delete processing.
  
      The missing source files are represented by special file-list entries which
-@@ -2029,14 +2065,14 @@ expand it.
+@@ -2031,14 +2067,14 @@ expand it.
      Tells [`--delete`](#opt) to go ahead and delete files even when there are
      I/O errors.
  
@@ -554,7 +554,7 @@ diff --git a/rsync.1.md b/rsync.1.md
      [`--recursive`](#opt) option was also enabled.
  
  0.  `--max-delete=NUM`
-@@ -3096,7 +3132,7 @@ expand it.
+@@ -3099,7 +3135,7 @@ expand it.
      also turns on the output of other verbose messages).
  
      The "%i" escape has a cryptic output that is 11 letters long.  The general
@@ -574,7 +574,7 @@ diff --git a/rsync.c b/rsync.c
  extern int preserve_executability;
  extern int preserve_mtimes;
  extern int omit_dir_times;
-@@ -468,6 +469,39 @@ mode_t dest_mode(mode_t flist_mode, mode_t stat_mode, int dflt_perms,
+@@ -471,6 +472,39 @@ mode_t dest_mode(mode_t flist_mode, mode_t stat_mode, int dflt_perms,
  	return new_mode;
  }
  
@@ -614,7 +614,7 @@ diff --git a/rsync.c b/rsync.c
  static int same_mtime(struct file_struct *file, STRUCT_STAT *st, int extra_accuracy)
  {
  #ifdef ST_MTIME_NSEC
-@@ -544,7 +578,7 @@ int set_file_attrs(const char *fname, struct file_struct *file, stat_x *sxp,
+@@ -547,7 +581,7 @@ int set_file_attrs(const char *fname, struct file_struct *file, stat_x *sxp,
  		if (am_root >= 0) {
  			uid_t uid = change_uid ? (uid_t)F_OWNER(file) : sxp->st.st_uid;
  			gid_t gid = change_gid ? (gid_t)F_GROUP(file) : sxp->st.st_gid;
@@ -623,7 +623,7 @@ diff --git a/rsync.c b/rsync.c
  				/* We shouldn't have attempted to change uid
  				 * or gid unless have the privilege. */
  				rsyserr(FERROR_XFER, errno, "%s %s failed",
-@@ -654,7 +688,7 @@ int set_file_attrs(const char *fname, struct file_struct *file, stat_x *sxp,
+@@ -657,7 +691,7 @@ int set_file_attrs(const char *fname, struct file_struct *file, stat_x *sxp,
  
  #ifdef HAVE_CHMOD
  	if (!BITS_EQUAL(sxp->st.st_mode, new_mode, CHMOD_BITS)) {
@@ -632,7 +632,7 @@ diff --git a/rsync.c b/rsync.c
  		if (ret < 0) {
  			rsyserr(FERROR_XFER, errno,
  				"failed to set permissions on %s",
-@@ -666,6 +700,19 @@ int set_file_attrs(const char *fname, struct file_struct *file, stat_x *sxp,
+@@ -669,6 +703,19 @@ int set_file_attrs(const char *fname, struct file_struct *file, stat_x *sxp,
  	}
  #endif
  
@@ -652,7 +652,7 @@ diff --git a/rsync.c b/rsync.c
  	if (INFO_GTE(NAME, 2) && flags & ATTRS_REPORT) {
  		if (updated)
  			rprintf(FCLIENT, "%s\n", fname);
-@@ -743,7 +790,8 @@ int finish_transfer(const char *fname, const char *fnametmp,
+@@ -746,7 +793,8 @@ int finish_transfer(const char *fname, const char *fnametmp,
  
  	/* Change permissions before putting the file into place. */
  	set_file_attrs(fnametmp, file, NULL, fnamecmp,
@@ -662,7 +662,7 @@ diff --git a/rsync.c b/rsync.c
  
  	/* move tmp file over real file */
  	if (DEBUG_GTE(RECV, 1))
-@@ -760,6 +808,10 @@ int finish_transfer(const char *fname, const char *fnametmp,
+@@ -763,6 +811,10 @@ int finish_transfer(const char *fname, const char *fnametmp,
  	}
  	if (ret == 0) {
  		/* The file was moved into place (not copied), so it's done. */
@@ -685,7 +685,7 @@ diff --git a/rsync.h b/rsync.h
  #define XMIT_CRTIME_EQ_MTIME (1<<17)	/* any protocol - restricted by command-line option */
  
  /* These flags are used in the live flist data. */
-@@ -192,6 +192,7 @@
+@@ -193,6 +193,7 @@
  #define ATTRS_SKIP_MTIME	(1<<1)
  #define ATTRS_ACCURATE_TIME	(1<<2)
  #define ATTRS_SKIP_ATIME	(1<<3)
@@ -693,7 +693,7 @@ diff --git a/rsync.h b/rsync.h
  #define ATTRS_SKIP_CRTIME	(1<<5)
  
  #define MSG_FLUSH	2
-@@ -220,6 +221,7 @@
+@@ -221,6 +222,7 @@
  #define ITEM_REPORT_GROUP (1<<6)
  #define ITEM_REPORT_ACL (1<<7)
  #define ITEM_REPORT_XATTR (1<<8)
@@ -701,7 +701,7 @@ diff --git a/rsync.h b/rsync.h
  #define ITEM_REPORT_CRTIME (1<<10)
  #define ITEM_BASIS_TYPE_FOLLOWS (1<<11)
  #define ITEM_XNAME_FOLLOWS (1<<12)
-@@ -587,6 +589,31 @@ typedef unsigned int size_t;
+@@ -588,6 +590,31 @@ typedef unsigned int size_t;
  #define SUPPORT_CRTIMES 1
  #endif
  
@@ -733,7 +733,7 @@ diff --git a/rsync.h b/rsync.h
  /* Find a variable that is either exactly 32-bits or longer.
   * If some code depends on 32-bit truncation, it will need to
   * take special action in a "#if SIZEOF_INT32 > 4" section. */
-@@ -818,6 +845,7 @@ extern int pathname_ndx;
+@@ -819,6 +846,7 @@ extern int pathname_ndx;
  extern int depth_ndx;
  extern int uid_ndx;
  extern int gid_ndx;
@@ -741,7 +741,7 @@ diff --git a/rsync.h b/rsync.h
  extern int acls_ndx;
  extern int xattrs_ndx;
  extern int file_sum_extra_cnt;
-@@ -873,6 +901,11 @@ extern int file_sum_extra_cnt;
+@@ -874,6 +902,11 @@ extern int file_sum_extra_cnt;
  /* When the associated option is on, all entries will have these present: */
  #define F_OWNER(f) REQ_EXTRA(f, uid_ndx)->unum
  #define F_GROUP(f) REQ_EXTRA(f, gid_ndx)->unum
@@ -756,7 +756,7 @@ diff --git a/rsync.h b/rsync.h
 diff --git a/syscall.c b/syscall.c
 --- a/syscall.c
 +++ b/syscall.c
-@@ -38,6 +38,7 @@ extern int am_root;
+@@ -40,6 +40,7 @@ extern int am_root;
  extern int am_sender;
  extern int read_only;
  extern int list_only;
@@ -764,7 +764,7 @@ diff --git a/syscall.c b/syscall.c
  extern int inplace;
  extern int preallocate_files;
  extern int preserve_perms;
-@@ -81,7 +82,23 @@ int do_unlink(const char *path)
+@@ -85,7 +86,23 @@ int do_unlink(const char *path)
  {
  	if (dry_run) return 0;
  	RETURN_ERROR_IF_RO_OR_LO;
@@ -789,7 +789,7 @@ diff --git a/syscall.c b/syscall.c
  }
  
  #ifdef SUPPORT_LINKS
-@@ -146,14 +163,35 @@ int do_link(const char *old_path, const char *new_path)
+@@ -150,14 +167,35 @@ int do_link(const char *old_path, const char *new_path)
  }
  #endif
  
@@ -827,7 +827,7 @@ diff --git a/syscall.c b/syscall.c
  }
  
  int do_mknod(const char *pathname, mode_t mode, dev_t dev)
-@@ -193,7 +231,7 @@ int do_mknod(const char *pathname, mode_t mode, dev_t dev)
+@@ -197,7 +235,7 @@ int do_mknod(const char *pathname, mode_t mode, dev_t dev)
  			return -1;
  		close(sock);
  #ifdef HAVE_CHMOD
@@ -836,7 +836,7 @@ diff --git a/syscall.c b/syscall.c
  #else
  		return 0;
  #endif
-@@ -210,7 +248,22 @@ int do_rmdir(const char *pathname)
+@@ -214,7 +252,22 @@ int do_rmdir(const char *pathname)
  {
  	if (dry_run) return 0;
  	RETURN_ERROR_IF_RO_OR_LO;
@@ -860,7 +860,7 @@ diff --git a/syscall.c b/syscall.c
  }
  
  int do_open(const char *pathname, int flags, mode_t mode)
-@@ -229,7 +282,7 @@ int do_open(const char *pathname, int flags, mode_t mode)
+@@ -233,7 +286,7 @@ int do_open(const char *pathname, int flags, mode_t mode)
  }
  
  #ifdef HAVE_CHMOD
@@ -869,7 +869,7 @@ diff --git a/syscall.c b/syscall.c
  {
  	static int switch_step = 0;
  	int code;
-@@ -268,17 +321,72 @@ int do_chmod(const char *path, mode_t mode)
+@@ -272,17 +325,72 @@ int do_chmod(const char *path, mode_t mode)
  			code = chmod(path, mode & CHMOD_BITS); /* DISCOURAGED FUNCTION */
  		break;
  	}
@@ -946,10 +946,10 @@ diff --git a/syscall.c b/syscall.c
 diff --git a/t_stub.c b/t_stub.c
 --- a/t_stub.c
 +++ b/t_stub.c
-@@ -29,6 +29,8 @@ int protect_args = 0;
+@@ -28,6 +28,8 @@ int protect_args = 0;
  int module_id = -1;
  int relative_paths = 0;
- int module_dirlen = 0;
+ unsigned int module_dirlen = 0;
 +int force_change = 0;
 +int preserve_acls = 0;
  int preserve_xattrs = 0;
@@ -1118,23 +1118,10 @@ diff --git a/xattrs.c b/xattrs.c
  	if (!IS_DEVICE(fst.st_mode))
  		fst.st_rdev = 0; /* just in case */
  
-diff -Nurp a/aclocal.m4 b/aclocal.m4
---- a/aclocal.m4
-+++ b/aclocal.m4
-@@ -12,6 +12,6 @@
- # PARTICULAR PURPOSE.
- 
- m4_ifndef([AC_CONFIG_MACRO_DIRS], [m4_defun([_AM_CONFIG_MACRO_DIRS], [])m4_defun([AC_CONFIG_MACRO_DIRS], [_AM_CONFIG_MACRO_DIRS($@)])])
--m4_include([../m4/have_type.m4])
--m4_include([../m4/header_major_fixed.m4])
--m4_include([../m4/socklen_t.m4])
-+m4_include([m4/have_type.m4])
-+m4_include([m4/header_major_fixed.m4])
-+m4_include([m4/socklen_t.m4])
 diff -Nurp a/rsync.1 b/rsync.1
 --- a/rsync.1
 +++ b/rsync.1
-@@ -543,6 +543,7 @@ has its own detailed description later i
+@@ -545,6 +545,7 @@ has its own detailed description later i
  --keep-dirlinks, -K      treat symlinked dir on receiver as dir
  --hard-links, -H         preserve hard links
  --perms, -p              preserve permissions
@@ -1142,7 +1129,7 @@ diff -Nurp a/rsync.1 b/rsync.1
  --executability, -E      preserve executability
  --chmod=CHMOD            affect file and/or directory permissions
  --acls, -A               preserve ACLs (implies --perms)
-@@ -584,7 +585,10 @@ has its own detailed description later i
+@@ -586,7 +587,10 @@ has its own detailed description later i
  --ignore-missing-args    ignore missing source args without error
  --delete-missing-args    delete missing source args from destination
  --ignore-errors          delete even if there are I/O errors
@@ -1154,7 +1141,7 @@ diff -Nurp a/rsync.1 b/rsync.1
  --max-delete=NUM         don't delete more than NUM files
  --max-size=SIZE          don't transfer any file larger than SIZE
  --min-size=SIZE          don't transfer any file smaller than SIZE
-@@ -915,6 +919,7 @@ This is equivalent to \fB\-rlptgoD\fP.
+@@ -917,6 +921,7 @@ This is equivalent to \fB\-rlptgoD\fP.
  recursion and want to preserve almost everything.  Be aware that it does
  \fBnot\fP include preserving ACLs (\fB\-A\fP), xattrs (\fB\-X\fP), atimes (\fB\-U\fP),
  crtimes (\fB\-N\fP), nor the finding and preserving of hardlinks (\fB\-H\fP).
@@ -1162,7 +1149,7 @@ diff -Nurp a/rsync.1 b/rsync.1
  .IP
  The only exception to the above equivalence is when \fB\-\-files-from\fP
  is specified, in which case \fB\-r\fP is not implied.
-@@ -1379,7 +1384,7 @@ to non-directories to be affected, as th
+@@ -1381,7 +1386,7 @@ to non-directories to be affected, as th
  Without this option, if the sending side has replaced a directory with a
  symlink to a directory, the receiving side will delete anything that is in
  the way of the new symlink, including a directory hierarchy (as long as
@@ -1171,7 +1158,7 @@ diff -Nurp a/rsync.1 b/rsync.1
  .IP
  See also \fB\-\-keep-dirlinks\fP for an analogous option for the
  receiving side.
-@@ -1597,6 +1602,29 @@ receiver-only rule that excludes all nam
+@@ -1599,6 +1604,29 @@ receiver-only rule that excludes all nam
  Note that the \fB\-X\fP option does not copy rsync's special xattr values (e.g.
  those used by \fB\-\-fake-super\fP) unless you repeat the option (e.g. \fB\-XX\fP).
  This "copy all xattrs" mode cannot be used with \fB\-\-fake-super\fP.
@@ -1201,7 +1188,7 @@ diff -Nurp a/rsync.1 b/rsync.1
  .IP "\fB\-\-chmod=CHMOD\fP"
  This option tells rsync to apply one or more comma-separated "chmod" modes
  to the permission of the files in the transfer.  The resulting value is
-@@ -2078,8 +2106,8 @@ This option takes the behavior of the (i
+@@ -2082,8 +2110,8 @@ This option takes the behavior of the (i
  \fB\-\-ignore-missing-args\fP option a step farther: each missing arg
  will become a deletion request of the corresponding destination file on the
  receiving side (should it exist).  If the destination file is a non-empty
@@ -1212,7 +1199,7 @@ diff -Nurp a/rsync.1 b/rsync.1
  independent of any other type of delete processing.
  .IP
  The missing source files are represented by special file-list entries which
-@@ -2087,13 +2115,13 @@ display as a "\fB*missing\fP" entry in t
+@@ -2091,13 +2119,13 @@ display as a "\fB*missing\fP" entry in t
  .IP "\fB\-\-ignore-errors\fP"
  Tells \fB\-\-delete\fP to go ahead and delete files even when there are
  I/O errors.
@@ -1229,7 +1216,7 @@ diff -Nurp a/rsync.1 b/rsync.1
  \fB\-\-recursive\fP option was also enabled.
  .IP "\fB\-\-max-delete=NUM\fP"
  This tells rsync not to delete more than NUM files or directories.  If that
-@@ -3154,7 +3182,7 @@ version 2.6.7 (you can use \fB\-vv\fP wi
+@@ -3159,7 +3187,7 @@ version 2.6.7 (you can use \fB\-vv\fP wi
  also turns on the output of other verbose messages).
  .IP
  The "%i" escape has a cryptic output that is 11 letters long.  The general
@@ -1318,7 +1305,7 @@ diff -Nurp a/rsync.1.html b/rsync.1.html
  <dt id="opt--chmod"><code>--chmod=CHMOD</code><a href="#opt--chmod" class="tgt"></a></dt><dd>
  <p>This option tells rsync to apply one or more comma-separated &quot;chmod&quot; modes
  to the permission of the files in the transfer.  The resulting value is
-@@ -1902,8 +1938,8 @@ is no longer there.</p>
+@@ -1904,8 +1940,8 @@ is no longer there.</p>
  <a href="#opt--ignore-missing-args"><code>--ignore-missing-args</code></a> option a step farther: each missing arg
  will become a deletion request of the corresponding destination file on the
  receiving side (should it exist).  If the destination file is a non-empty
@@ -1329,7 +1316,7 @@ diff -Nurp a/rsync.1.html b/rsync.1.html
  independent of any other type of delete processing.</p>
  <p>The missing source files are represented by special file-list entries which
  display as a &quot;<code>*missing</code>&quot; entry in the <a href="#opt--list-only"><code>--list-only</code></a> output.</p>
-@@ -1914,12 +1950,12 @@ display as a &quot;<code>*missing</code>
+@@ -1916,12 +1952,12 @@ display as a &quot;<code>*missing</code>
  I/O errors.</p>
  </dd>
  
@@ -1345,7 +1332,7 @@ diff -Nurp a/rsync.1.html b/rsync.1.html
  <a href="#opt--recursive"><code>--recursive</code></a> option was also enabled.</p>
  </dd>
  
-@@ -2891,7 +2927,7 @@ files will also be output, but only if t
+@@ -2894,7 +2930,7 @@ files will also be output, but only if t
  version 2.6.7 (you can use <code>-vv</code> with older versions of rsync, but that
  also turns on the output of other verbose messages).</p>
  <p>The &quot;%i&quot; escape has a cryptic output that is 11 letters long.  The general

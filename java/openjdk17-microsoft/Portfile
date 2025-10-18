@@ -2,47 +2,58 @@
 
 PortSystem       1.0
 
-name             openjdk17-microsoft
+set feature 17
+name             openjdk${feature}-microsoft
 categories       java devel
-maintainers      {breun.nl:nils @breun} openmaintainer
-platforms        {darwin any}
+maintainers      {breun @breun} openmaintainer
+
+# JVMMinimumSystemVersion in Contents/Info.plist is set to macOS 10.12 for x86_64:
+# /usr/libexec/PlistBuddy -c "Print :JavaVM:JVMMinimumSystemVersion" Contents/Info.plist
+# Mapping to Darwin version: https://trac.macports.org/wiki/PortfileRecipes#compare-osx-darwin-version
+platforms        {darwin any >= 16 }
+
 # This port uses prebuilt binaries; 'NoMirror' makes sure MacPorts doesn't mirror/distribute these third-party binaries
 license          GPL-2 NoMirror
 # This port uses prebuilt binaries for a particular architecture; they are not universal binaries
 universal_variant no
 
-# https://docs.microsoft.com/en-us/java/openjdk/download#openjdk-17
+# https://learn.microsoft.com/java/openjdk/download#openjdk-17
 supported_archs  x86_64 arm64
 
-version      17.0.9
+version      ${feature}.0.16
 set build    8
 revision     0
 
-description  Microsoft Build of OpenJDK 17 (Long Term Support)
-long_description The Microsoft Build of OpenJDK is a no-cost distribution of OpenJDK that's open source \
-    and available for free for anyone to deploy anywhere.
+# End of life date: https://learn.microsoft.com/en-us/java/openjdk/support#release-and-servicing-roadmap
+description  Microsoft Build of OpenJDK ${feature} (Long Term Support until at least September 2027)
+long_description {*}${description} \
+\n\nOpenJDK ${feature} distribution from Microsoft
 
 master_sites https://aka.ms/download-jdk/
 
 if {${configure.build_arch} eq "x86_64"} {
-    distname     microsoft-jdk-${version}-macOS-x64
-    checksums    rmd160  057e9f5b04239844584e48d7c6e05b1b0a0b1095 \
-                 sha256  36050e3a2457c970ebc74c53ccd2cf116f9306c1649520fe3f31ad9cf63fbe62 \
-                 size    187921151
+    set arch_classifier x64
+    checksums    rmd160  8eea281d5b19260e6c2aba7b810f656070f4ddfa \
+                 sha256  2d59937eff1d00b495566c0d39d7ba7a52281b82ed717b8497d04ab7f48a2298 \
+                 size    187783835
 } elseif {${configure.build_arch} eq "arm64"} {
-    distname     microsoft-jdk-${version}-macOS-aarch64
-    checksums    rmd160  b6e3315ae3d7fd5a00463bcfe32cebd08aa9eda8 \
-                 sha256  fe3c923b35dbc47177debc551dbadcd50c9c336c697b324ea8958af3ad8905b0 \
-                 size    178408153
+    set arch_classifier aarch64
+    checksums    rmd160  0f7b6f5334e882be18c598ada222b7e941d394ef \
+                 sha256  112b5ef5f4295e78571a70c6d229077512ef584e51c344af7cdbc2aedc9871b3 \
+                 size    185662211
+} else {
+    set arch_classifier unsupported_arch
 }
+
+distname     microsoft-jdk-${version}-macOS-${arch_classifier}
 
 worksrcdir   jdk-${version}+${build}
 
 homepage     https://www.microsoft.com/openjdk
 
 livecheck.type      regex
-livecheck.url       https://docs.microsoft.com/en-us/java/openjdk/download
-livecheck.regex     microsoft-jdk-(17\.\[0-9\.\]+)-macOS-.*\.tar\.gz
+livecheck.url       https://learn.microsoft.com/java/openjdk/download
+livecheck.regex     microsoft-jdk-(${feature}\.\[0-9\.\]+)-macOS-.*\.tar\.gz
 
 use_configure    no
 build {}

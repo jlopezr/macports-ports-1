@@ -156,7 +156,7 @@ array set modules {
         {"Qt Core" "Qt GUI" "Qt Network" "Qt SQL" "Qt Test" "Qt Widgets" "Qt Concurrent" "Qt D-Bus" "Qt OpenGL" "Qt Platform Headers" "Qt Print Support" "Qt XML"}
         ""
         "variant overrides: "
-        "revision 13"
+        "revision 14"
         "License: "
     }
     qtcanvas3d {
@@ -591,7 +591,7 @@ array set modules {
         {"Qt WebKit" "Qt WebKit Widgets"}
         "community support only (use Qt WebEngine)"
         "variant overrides: "
-        "revision 8"
+        "revision 9"
         "License: "
     }
     qtwebkit-examples {
@@ -681,34 +681,10 @@ array set sql_plugins {
     }
     {psql PostgreSQL "revision 0"} {
         {
-            "postgresql96"
-            "port:postgresql96"
-            "${prefix}/include/postgresql96"
-            "${prefix}/lib/postgresql96"
-            "-lpq"
-            ""
-        }
-        {
-            "postgresql95"
-            "port:postgresql95"
-            "${prefix}/include/postgresql95"
-            "${prefix}/lib/postgresql95"
-            "-lpq"
-            ""
-        }
-        {
-            "postgresql94"
-            "port:postgresql94"
-            "${prefix}/include/postgresql94"
-            "${prefix}/lib/postgresql94"
-            "-lpq"
-            ""
-        }
-        {
-            "postgresql84"
-            "port:postgresql84"
-            "${prefix}/include/postgresql84"
-            "${prefix}/lib/postgresql84"
+            "postgresql16"
+            "port:postgresql16"
+            "${prefix}/include/postgresql16"
+            "${prefix}/lib/postgresql16"
             "-lpq"
             ""
         }
@@ -1231,7 +1207,7 @@ foreach {module module_info} [array get modules] {
 
             if { [lsearch -exact [lindex ${module_info} 6] "noarch"] != -1 } {
                 supported_archs   noarch
-                universal_variant no
+                platforms         any
             }
 
             if { [lsearch -exact [lindex ${module_info} 6] "~debug"] != -1 } {
@@ -1581,7 +1557,7 @@ foreach {module module_info} [array get modules] {
 
             supported_archs   noarch
             installs_libs     no
-            universal_variant no
+            platforms         any
 
             distname        ${module}-opensource-src-${version}
 
@@ -1740,7 +1716,7 @@ subport ${name}-docs {
     use_configure     no
     supported_archs   noarch
     installs_libs     no
-    universal_variant no
+    platforms         any
 
     build {}
 
@@ -1777,7 +1753,7 @@ if { ${subport} eq ${name} } {
     use_configure     no
     supported_archs   noarch
     installs_libs     no
-    universal_variant no
+    platforms         any
 
     build {}
 

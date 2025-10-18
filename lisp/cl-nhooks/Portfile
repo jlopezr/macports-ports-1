@@ -5,6 +5,8 @@ PortGroup           github 1.0
 PortGroup           common_lisp 1.0
 
 github.setup        atlas-engineer nhooks 1.2.2
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 name                cl-nhooks
 revision            0
 
@@ -13,7 +15,7 @@ checksums           rmd160  b7102ac84ba684cb38738766c6907dc9659540f6 \
                     size    10749
 
 categories-append   devel
-maintainers         {@catap korins.ky:kirill} openmaintainer
+maintainers         nomaintainer
 license             MIT
 
 description         Improved hooks facility inspired by Serapeum.

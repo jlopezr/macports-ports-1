@@ -4,11 +4,12 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                podman-compose
-version             1.0.6
+version             1.3.0
 revision            0
 
 categories-append   devel
 supported_archs     noarch
+platforms           {darwin any}
 license             GPL-2
 maintainers         {judaew @judaew} openmaintainer
 
@@ -18,31 +19,29 @@ description         a script to run docker-compose.yml using podman
 long_description    {*}${description}
 homepage            https://github.com/containers/podman-compose
 
-checksums           rmd160  2730804231d82eaba1f03bb9717fda8669896a02 \
-                    sha256  2db235049fca50a5a4ffd511a917808c960dacb8defd5481dd8b36a77d4da2e5 \
-                    size    34063
+distname            podman_compose-${version}
 
-python.default_version 311
+checksums           rmd160  171d0d322fc877cbc9b3eae52951d551d6fd3f45 \
+                    sha256  e65a70e8fa26bd195d2017ac5893149b40c0df5a0c20d480a338c4f60218b1fa \
+                    size    42258
 
-depends_build-append \
-                port:py${python.version}-setuptools
+python.default_version 313
 
-depends_run-append \
-                port:podman \
-                port:py${python.version}-python-dotenv \
-                port:py${python.version}-yaml
+depends_run-append  port:podman \
+                    port:py${python.version}-python-dotenv \
+                    port:py${python.version}-yaml
 
 subport podman-compose-devel {
     PortGroup           github 1.0
 
-    github.setup        containers podman-compose bce40c2db30fb0ffb9264b5f51535c26f48fe983
-    name                podman-compose-devel
-    version             2023-08-11
+    github.setup        containers podman-compose 342a39dcfe6944932561bf12150deeb687fb6c52
+    github.tarball_from archive
+    version             2025-04-14
     revision            0
 
     conflicts           podman-compose
 
-    checksums           rmd160  4aa0a73cd2a350d5564e219d91741be704e638c0 \
-                        sha256  13e5a1f15aaef0ee7af7bdabecf45556de79acac65d6663e1acdb1896b0c74c1 \
-                        size    65515
+    checksums           rmd160  71bea4ff4271f64c2af97570d95c3a438b7235a8 \
+                        sha256  556dcb559cb656e44a4ab8aa59d3eee2b00ea66cf030318988969640680a7bcb \
+                        size    115839
 }

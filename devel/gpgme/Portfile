@@ -3,12 +3,12 @@
 PortSystem          1.0
 
 name                gpgme
-version             1.23.1
+version             1.24.3
 revision            0
 
-checksums           rmd160  57b266764dee2784b30b2668439c40bb2d121ea8 \
-                    sha256  a0c316f7ab7d3bfb01a8753c3370dc906e5b61436021f3b54ff1483b513769bd \
-                    size    1716825
+checksums           rmd160  a9e8d59365659008f968e99d910fda387c33c35b \
+                    sha256  bfc17f5bd1b178c8649fdd918956d277080f33df006a2dc40acdecdce68c50dd \
+                    size    1892862
 
 categories          devel security crypto
 license             {LGPL-2.1+ GPL-3+}
@@ -25,7 +25,7 @@ homepage            https://www.gnupg.org/related_software/gpgme/
 master_sites        gnupg
 use_bzip2           yes
 
-depends_build       port:pkgconfig
+depends_build       path:bin/pkg-config:pkgconfig
 
 depends_lib         port:pth \
                     port:libgpg-error \
@@ -34,10 +34,6 @@ depends_lib         port:pth \
 
 patchfiles          patch-configure.ac.diff \
                     patch-tests-gpg-Makefile.am.diff
-
-# the <sys/select.h> header is not pulled on Tiger like it is on newer systems,
-# ticket 65877. cf libassuan port which has similar issue
-patchfiles-append   patch-src-tiger-needs-sys-select.diff
 
 post-patch {
     reinplace "s|@GPG@|${prefix}/bin/gpg2|" ${worksrcpath}/src/gpgme-config.in
@@ -65,7 +61,8 @@ lappend languages cl
 # This has to be enabled, otherwise CMake config files are not installed,
 # which breaks some dependents, like Poppler.
 # Contrary to the earlier situation, it does build now against libstdc++.
-platform darwin {
+# FIXME: on 10.4 it does not build: https://trac.macports.org/ticket/69279
+if {${os.platform} eq "darwin" && ${os.major} > 8} {
     lappend languages cpp
 }
 

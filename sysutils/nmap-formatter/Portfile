@@ -1,0 +1,31 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           golang 1.0
+
+go.setup            github.com/vdjagilev/nmap-formatter 3.0.5 v
+go.package          github.com/vdjagilev/nmap-formatter/v3
+go.offline_build    no
+revision            0
+
+description         \
+    A tool that allows you to convert NMAP results to html, csv, json, \
+    markdown, graphviz \(dot\) or sqlite. Simply put it's nmap converter.
+
+long_description    {*}${description}
+
+categories          sysutils net
+installs_libs       no
+license             MIT
+maintainers         {gmail.com:herby.gillot @herbygillot} \
+                    openmaintainer
+
+checksums           rmd160  da357b51941cee8be2baed5f88d61fe0622ad447 \
+                    sha256  fc48c53448f7475ea9f8822f2d425158794a8eb5af4f3769907eb47dcf86f819 \
+                    size    248550
+
+build.args-append   -o nmap-formatter
+
+destroot {
+    xinstall -m 0755 ${worksrcpath}/${name} ${destroot}${prefix}/bin/
+}

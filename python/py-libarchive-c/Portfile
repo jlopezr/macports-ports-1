@@ -4,38 +4,30 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-libarchive-c
-version             4.0
+version             5.3
+revision            0
+
 supported_archs     noarch
 platforms           {darwin any}
 license             public-domain
-maintainers         {raimue @raimue} \
-                    openmaintainer
+maintainers         nomaintainer
 
 description         Python interface to libarchive
 long_description    {*}${description}.
 
 homepage            https://github.com/Changaco/python-libarchive-c
 
-checksums           rmd160  e6373f24a142912b80c3832ad5b9432a06e7d749 \
-                    sha256  a5b41ade94ba58b198d778e68000f6b7de41da768de7140c984f71d7fa8416e5 \
-                    size    51171
+distname            libarchive_c-${version}
 
-python.versions     37 38 39 310
+checksums           md5 0f6b2d96b936c9b7f26dfec3255f7aaf \
+                    rmd160 b03aa77529d6cd66ae486c992cb4cae3cb6cefbb \
+                    sha256 5ddb42f1a245c927e7686545da77159859d5d4c6d00163c59daff4df314dae82 \
+                    size   54349
+
+python.versions     39 310 311 312 313
 
 if {${name} ne ${subport}} {
-    depends_build-append \
-                        port:py${python.version}-setuptools
-
     depends_run-append  port:libarchive
 
-    post-extract {
-        # Fix permissions
-        fs-traverse item ${worksrcpath} {
-            if {[file isdirectory ${item}]} {
-                file attributes ${item} -permissions a+rx
-            } elseif {[file isfile ${item}]} {
-                file attributes ${item} -permissions a+r
-            }
-        }
-    }
+    test.run        yes
 }

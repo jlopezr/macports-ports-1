@@ -5,6 +5,8 @@ PortGroup           github 1.0
 PortGroup           common_lisp 1.0
 
 github.setup        Shinmera trivial-main-thread ebcb7b70f69cc93cefa18d6be436aa202d7f8b5e
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 name                cl-trivial-main-thread
 version             20230603
 revision            0
@@ -14,7 +16,7 @@ checksums           rmd160  5ac30276dd5f14deb4161b41b9904e4b21faa645 \
                     size    6214
 
 categories-append   devel
-maintainers         {@catap korins.ky:kirill} openmaintainer
+maintainers         nomaintainer
 license             zlib
 
 description         Compatibility library to run things in the main thread.

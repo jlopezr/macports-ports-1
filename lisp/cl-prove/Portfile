@@ -5,6 +5,8 @@ PortGroup           github 1.0
 PortGroup           common_lisp 1.0
 
 github.setup        fukamachi prove 5d71f02795b89e36f34e8c7d50e69b67ec6ca2de
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 name                cl-prove
 version             20191231
 revision            0
@@ -14,7 +16,7 @@ checksums           rmd160  e3bf95db362ef33a1dcf01b1173cfa575f228a88 \
                     size    879574
 
 categories-append   devel
-maintainers         {@catap korins.ky:kirill} openmaintainer
+maintainers         nomaintainer
 license             MIT
 
 description         Yet another unit testing framework for Common Lisp

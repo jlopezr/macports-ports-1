@@ -5,6 +5,8 @@ PortGroup           github 1.0
 PortGroup           common_lisp 1.0
 
 github.setup        orthecreedence vom 1aeafeb5b74c53741b79497e0ef4acf85c92ff24
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 name                cl-vom
 version             20160810
 revision            0
@@ -14,7 +16,7 @@ checksums           rmd160  9f70b0a9cd4c54fcbbbd03eeac5c8399283040da \
                     size    4312
 
 categories-append   devel
-maintainers         {@catap korins.ky:kirill} openmaintainer
+maintainers         nomaintainer
 license             MIT
 
 description         A tiny logging library for Common Lisp

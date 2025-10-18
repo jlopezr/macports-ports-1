@@ -24,7 +24,7 @@
 PortSystem          1.0
 
 name                dotnet-cli
-version             8.0.0
+version             9.0.9
 revision            0
 categories          dotnet
 license             MIT
@@ -44,23 +44,23 @@ long_description    .NET is a free, cross-platform, open source developer platfo
                     whichever is latest.
 
 homepage            https://dotnet.microsoft.com/
-platforms           darwin
+platforms           {darwin any} {darwin >= 19}
 supported_archs     x86_64 arm64
 
-master_sites        https://dotnetcli.azureedge.net/dotnet/Runtime/${version}/
+master_sites        https://builds.dotnet.microsoft.com/dotnet/Runtime/${version}/
 
 switch ${build_arch} {
     x86_64 {
         distname            dotnet-runtime-${version}-osx-x64
-        checksums           rmd160  7808f1b8264dd809f3356e3c4416710dbab507f4 \
-                            sha256  ac54851b166c1df0a8726ff1649c0c118ea9c38d4c8b26268215c2282a6fbf0c \
-                            size    30890194
+        checksums           rmd160  f0605a621137524a97754d424d636d9f039699db \
+                            sha256  711fd9624821c311af2443968ed6bb9480499f014cc8a492512b262dbb49b869 \
+                            size    32730737
     }
     arm64 {
         distname            dotnet-runtime-${version}-osx-arm64
-        checksums           rmd160  ee0df181fefd87d08a15e20ec2f0349645361ec8 \
-                            sha256  60d6cb60ae1aab439188f1a7b0b6d62f3f7c25ca71de29e6cef62769a16b2daa \
-                            size    29224894
+        checksums           rmd160  601ff544618c2ce6c1d33f74da8b818863d2ce94 \
+                            sha256  2af186b0b071430c9f29d7ff1cce666553049ee1c70209ad34782784758e3466 \
+                            size    30786190
     }
     default {
         known_fail yes
@@ -97,5 +97,5 @@ destroot {
 
 set major_ver       [join [lrange [split ${version} .] 0 1] .]
 livecheck.type      regex
-livecheck.url       https://dotnet.microsoft.com/en-us/download/dotnet/${major_ver}
+livecheck.url       https://dotnet.microsoft.com/download/dotnet/${major_ver}
 livecheck.regex     ".NET Runtime (\\d+(?:\\.\\d+)*)"

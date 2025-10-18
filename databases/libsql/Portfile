@@ -3,7 +3,7 @@
 PortSystem          1.0
 PortGroup           github  1.0
 
-github.setup        libsql libsql 0.2.1 libsql-
+github.setup        tursodatabase libsql 0.5.0 libsql-rs-v
 github.tarball_from archive
 revision            0
 
@@ -31,12 +31,21 @@ maintainers         {gmail.com:herby.gillot @herbygillot} \
 
 conflicts           sqlite3
 
-checksums           rmd160  590bc16d350c53c45ec3eda8ad6e8150c5f10f4b \
-                    sha256  fab46735702e5e059c2cdf53e24dbdc985ee12eb2148d6227ac21615bf060e0c \
-                    size    12608209
+checksums           rmd160  2962147a64cba57928c02157eb3761fea54bd4ca \
+                    sha256  cd0703768f821d8ead45069c7b1c8fb1f925d730facd57da75acec4bf36d08bb \
+                    size    29020412
+
+worksrcdir          ${worksrcpath}/libsql-sqlite3
+
+# Use 8-byte pointer on ppc64:
+# https://github.com/tursodatabase/libsql/pull/1861
+patchfiles          0001-sqliteInt.h-fix-pointer-size-for-ppc64.patch
 
 depends_lib-append  port:libedit \
                     port:ncurses \
                     port:zlib
+
+# sqlite3.h:13483: error: redefinition of typedef ‘sqlite3_pcache_page’
+compiler.c_standard 2011
 
 test.run            yes

@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           cmake   1.1
 PortGroup           github  1.0
 
-github.setup        recp cglm 0.9.1 v
+github.setup        recp cglm 0.9.6 v
 github.tarball_from archive
 revision            0
 
@@ -14,9 +14,9 @@ long_description    Highly optimized 2D|3D math library, also known as OpenGL \
                     Mathematics (glm) for `C`. cglm provides lot of utils to \
                     help math operations to be fast and quick to write.
 
-checksums           rmd160  21a1a49a76021dc8c251b133adc8e676be39f5a0 \
-                    sha256  ba16ee484c9d5e808ef01e55008a156831e8ff5297f10bbca307adeb827a0913 \
-                    size    657554
+checksums           rmd160  6009071bd09bdb206d16259b95f68a7c0c1327a3 \
+                    sha256  be5e7d384561eb0fca59724a92b7fb44bf03e588a7eae5123a7d796002928184 \
+                    size    707102
 
 categories          devel math
 license             MIT

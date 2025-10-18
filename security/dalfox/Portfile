@@ -3,9 +3,8 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/hahwul/dalfox 2.9.1 v
+go.setup            github.com/hahwul/dalfox 2.9.3 v
 go.package          github.com/hahwul/dalfox/v2
-github.tarball_from archive
 revision            0
 
 homepage            https://dalfox.hahwul.com
@@ -25,9 +24,9 @@ license             MIT
 maintainers         {gmail.com:herby.gillot @herbygillot} \
                     openmaintainer
 
-checksums           rmd160  d1f8bdaa9adf629fc69d3752eb42b2d9857cc734 \
-                    sha256  aaeac4663757b1c0a1477d78cc6c793023ac01c154ec79f6a1746db7d0cf1b2d \
-                    size    3371631
+checksums           rmd160  80bce751fb3cb91c945923e5328745be949d6e00 \
+                    sha256  4f0d746e887a42132ccbcea73450748a4f025d81faaa6817ce617bb0372105fd \
+                    size    4380075
 
 # Allow Go to fetch deps while building
 go.offline_build no

@@ -8,8 +8,8 @@ version         0.5.2
 revision        1
 
 categories      java
-platforms       darwin
-maintainers     {breun.nl:nils @breun} openmaintainer
+platforms       any
+maintainers     {breun @breun} openmaintainer
 license         Apache-2
 supported_archs noarch
 

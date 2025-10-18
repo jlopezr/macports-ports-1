@@ -3,17 +3,18 @@
 PortSystem              1.0
 PortGroup               github 1.0
 PortGroup               meson 1.0
-PortGroup               compiler_blacklist_versions 1.0
 PortGroup               legacysupport 1.1
 PortGroup               active_variants 1.1
 
-# Please revbump mpv whenever ffmpeg{,-devel} is updated!
-github.setup            mpv-player mpv 0.37.0 v
-revision                0
+# Please revbump mpv whenever linked ffmpeg is updated!
+github.setup            mpv-player mpv 0.40.0 v
+github.tarball_from     archive
+conflicts               mpv-legacy
+revision                3
 categories              multimedia
 license                 GPL-2+
 maintainers             {ionic @Ionic} {i0ntempest @i0ntempest} openmaintainer
-platforms               darwin
+platforms               {darwin >= 19}
 
 description             mpv is a movie player based on MPlayer and mplayer2.
 long_description        {*}${description} It plays most MPEG/VOB, AVI, Ogg/OGM, \
@@ -22,37 +23,36 @@ long_description        {*}${description} It plays most MPEG/VOB, AVI, Ogg/OGM, 
                         supported by many native, XAnim, and Win32 DLL codecs. \
                         You can watch VideoCD, SVCD, DVD, 3ivx, DivX 3/4/5, WMV \
                         and even H.264 movies.
-homepage                http://www.mpv.io/
+homepage                https://www.mpv.io
 
-checksums               rmd160  9cd4ada6decf8ca7a82c3e462fbc8a7b6859406a \
-                        sha256  26c9007c655483438d83f17070190fc4b6bccb8ff5efc30fcedbb7d162681a7f \
-                        size    3384587
+checksums               rmd160  104f8b309b77f111e297f1c461fad09a9fdedb16 \
+                        sha256  10a0f4654f62140a6dd4d380dcf0bbdbdcf6e697556863dc499c296182f081a3 \
+                        size    3561474
 
 installs_libs           no
 
+set ffmpeg_ver          7
 depends_build-append    port:pkgconfig
-depends_lib             path:lib/libavcodec.dylib:ffmpeg \
+depends_lib             port:ffmpeg${ffmpeg_ver} \
                         path:bin/perl:perl5 \
                         port:libiconv \
                         port:zlib \
-                        port:libass \
+                        path:lib/pkgconfig/libass.pc:libass \
                         port:lcms2 \
-                        port:libplacebo
+                        port:libplacebo \
+                        port:libsixel
 
 universal_variant       no
 
-default_variants        +network +osd +opengl +bluray +dvd +audiocd +libarchive
-
-if {${os.platform} eq "darwin" && ${os.major} > 10} {
-    # current macOS bundle errors on < 10.7 due to unhandled -psn_* argument
-    default_variants-append +bundle
+default_variants        +osd +opengl +bluray +dvd +audiocd +libarchive +libmpv
+if {![variant_isset network]} {
+    default_variants-append \
+                        +network_ytdlp
 }
 
-# at this moment in time (20190127) rubberband does not build on PPC
 platform darwin {
-    if {${configure.build_arch} ne "ppc"} {
-        default_variants-append +rubberband
-    }
+    default_variants-append \
+                        +bundle +rubberband
 }
 
 configure.args-append   --buildtype=release \
@@ -61,9 +61,10 @@ configure.args-append   --buildtype=release \
                         -Dcocoa=enabled \
                         -Dcplugins=enabled \
                         -Dzlib=enabled \
+                        -Dshaderc=disabled \
+                        -Dsixel=enabled \
                         -Dswift-build=enabled \
                         -Dhtml-build=disabled \
-                        -Dvideotoolbox-gl=disabled \
                         -Dcuda-hwaccel=disabled \
                         -Dopensles=disabled \
                         -Degl-drm=disabled \
@@ -73,14 +74,13 @@ configure.args-append   --buildtype=release \
                         -Dios-gl=disabled \
                         -Ddirect3d=disabled \
                         -Dandroid-media-ndk=disabled \
-                        -Drpi=disabled \
                         -Ddvbin=disabled \
                         -Dlibmpv=false
 
 # mpv autodetects many support libs. To prevent undeclared
 # dependencies, explicitly disable everything optional first.
-# This list should be expanded each time the port is updated to a
-# new version, disabling any newly added options.
+# This list should be expanded each time the port is updated
+# to a new version, disabling any newly added options.
 configure.args-append   -Dcaca=disabled \
                         -Dcdda=disabled \
                         -Dpthread-debug=disabled \
@@ -88,6 +88,7 @@ configure.args-append   -Dcaca=disabled \
                         -Degl-x11=disabled \
                         -Dgl=disabled \
                         -Dgl-cocoa=disabled \
+                        -Dvideotoolbox-gl=disabled \
                         -Dvulkan=disabled \
                         -Dgl-x11=disabled \
                         -Djack=disabled \
@@ -105,13 +106,18 @@ configure.args-append   -Dcaca=disabled \
                         -Dx11=disabled \
                         -Dxv=disabled
 
+configure.pkg_config_path-prepend \
+                        ${prefix}/libexec/ffmpeg${ffmpeg_ver}/lib/pkgconfig
+
 # Fix picking up the correct talloc version.
 # -isystem has the added benefit of moving the include
 # directory specified to the end of the include path list.
 # This will help the build system respect custom include
 # paths correctly (i.e., searching them before the MP include
 # directory.)
-configure.cppflags-replace  -I${prefix}/include -isystem${prefix}/include
+configure.cppflags-replace \
+                        -I${prefix}/include \
+                        -isystem${prefix}/include
 
 # Clear CPATH and LIBRARY_PATH because a ncurses include file
 # conflicts with the one in MacPorts. It doesn't matter much anyway
@@ -121,37 +127,14 @@ compiler.cpath
 compiler.library_path
 
 platform macosx {
-    if {${os.major} > 10} {
-        # Force recent enough Xcode.
-        # We have to compile with the compiler provided by Xcode/CLT
-        # due to only it shipping libarclite on 10.7 and knowing where
-        # it is.
-        # Could "emulate" the same behavior by using MacPorts' clang
-        # and appending -L/usr/lib/arc/ to CFLAGS/CXXFLAGS on 10.7,
-        # but I don't particularly like that idea (yet.)
-        # Keep using the "system compiler" for now. Also means one less
-        # dependency on recent systems, so yay.
-        PortGroup                   xcodeversion 1.0
+    # Force recent enough Xcode.
+    # Keep using the "system compiler" for now. Also means one less
+    # dependency on recent systems, so yay.
+    PortGroup                   xcodeversion 1.0
 
-        minimum_xcodeversions       {11 4.4}
+    minimum_xcodeversions       {11 4.4}
 
-        # Force recent enough SDK.
-        if {[vercmp ${configure.sdk_version} 10.8] < 0} {
-            configure.sdk_version   10.8
-        }
-
-        # Force clang compiler as installed by Xcode's CLT's... hopefully.
-        compiler.blacklist-append   *gcc* cc macports-*
-    }
-
-    if {${os.major} <= 14 || ${configure.build_arch} ni [list x86_64 arm64]} {
-        # Disable Cocoa output.
-        # Users on old systems will need to embrace X11.
-        configure.args-replace      -Dcocoa=enabled \
-                                    -Dcocoa=disabled
-
-        default_variants-append     +x11
-    }
+    use_xcode yes
 }
 
 platform darwin {
@@ -161,87 +144,35 @@ platform darwin {
 
                     You are strongly encouraged to copy this file to either
                     * ${prefix}/etc/${name}/${name}.conf (globally for all users of the system) or
-                    * ~/.config/${name}/config (only for your current user)
+                    * ~/.config/${name}/mpv.conf (only for your current user)
                     and adjust it to your needs.
 
                     If you previously had your configuration file in
-                    * ~/.${name}/config
+                    * ~/.${name}/config or ~/.config/${name}/config
                     please migrate it to
-                    * ~/.config/${name}/config
+                    * ~/.config/${name}/mpv.conf
                     which is the location preferred by upstream.
     }]
 
-    # cocoa-cb backend requires Swift 5 or 4 support, which is only available
-    # in Xcode 9.1 onwards.
-    # From version 0.34.0 Swift 4.1 (Xcode 9.3+) or later is required
-    if {[vercmp ${xcodeversion} 9.3] < 0} {
-        configure.args-replace  -Dswift-build=enabled \
-                                -Dswift-build=disabled
-    }
-
-    # VideotoolBox, a new hardware acceleration framework, is supported on 10.8+ and "here to stay".
-    # It provides support for H265, H264, H263, MPEG1, MPEG2 and MPEG4.
-    if {${os.major} > 14} {
-        configure.args-replace  -Dvideotoolbox-gl=disabled \
-                                -Dvideotoolbox-gl=enabled
-    }
-
-    if {${os.major} > 11} {
-        notes-append {
-                        This config file already defines the necessary video output settings to make\
-                        use of the hardware acceleration features provided by your operating system.
-        }
-    } else {
-        notes-append {
-                        Sadly, your system is incapable of utilizing mpv's hardware decoding features.
-
-                        The example config file will not include a hardware decoding option.\
-                        Consult ``man mpv'' for further information.
-        }
+    notes-append {
+                    This config file already defines the necessary video output settings to make\
+                    use of the hardware acceleration features provided by your operating system.
     }
 
     # C11 atomics is mandatory from version 0.33.0
     compiler.c_standard 2011
     compiler.blacklist-append \
-                        {clang < 700}
-
-    # Should eliminate most swift (module) related problems
-    if {[vercmp ${xcodeversion} 9.1] >= 0 || ${os.major} >= 16} {
-        use_xcode yes
-    }
-
-    # Shared build fixes for 10.6 and 10.7.
-    if {${os.major} < 12} {
-        patchfiles-append   patch-misc-import-CoreVideo.diff
-    }
-
-    # Make mpv work as good as possible on 10.6 and below. No Cocoa support, instead concentrate
-    # on getting the OpenGL output to work via X11.
-    # Also fix some other minor compile issues only manifesting on 10.6 and below along the way.
-    if {${os.major} < 11} {
-        patchfiles-append   patch-audio_out_ao_coreaudio_utils.c-add-missing-header-for-getpid.diff
-
-        notes-append {
-                        On systems older than Lion (10.7) or on architectures other than x86_64, Cocoa output support is not available.
-
-                        The X11 backend should have been enabled automatically.
-        }
-    }
+                    {clang < 700} *gcc* cc macports-*
 
     # Fix youtube-dl hook for streaming youtube videos
-    patchfiles   patch-youtubedl-edl-track-error.diff
+    patchfiles-append \
+                    patch-youtubedl-edl-track-error.diff
 
-    # coreaudio does not build on < 10.6 so use pulseaudio instead (tested and works).
-    if {${os.major} < 10} {
-        configure.args-replace  -Dcoreaudio=enabled \
-                                -Dcoreaudio=disabled
-
-        default_variants-append +pulseaudio
-        notes-append {
-                        On systems older than SnowLeopard (10.6), coreaudio output support is not available.
-
-                        The pulseaudio backend should have been enabled automatically.
-        }
+    # revert swift compiler to `swift` for Xcode or CLT v14-
+    # See https://github.com/mpv-player/mpv/issues/15591
+    if {(${use_xcode} && [vercmp ${xcodeversion} 15] < 0) || [vercmp ${xcodecltversion} 15] < 0} {
+        patchfiles-append \
+                    patch-8d20b72653-revert.patch
     }
 
     post-extract {
@@ -250,11 +181,7 @@ platform darwin {
 
     pre-configure {
         if {${use_xcode}} {
-            if {[vercmp ${xcodeversion} 4.3] < 0} {
-                set sdks_dir ${developer_dir}/SDKs
-            } else {
-                set sdks_dir ${developer_dir}/Platforms/MacOSX.platform/Developer/SDKs
-            }
+            set sdks_dir ${developer_dir}/Platforms/MacOSX.platform/Developer/SDKs
             set sdks [glob -directory ${sdks_dir} MacOSX*.sdk]
             configure.sdkroot [lindex [lsort -command vercmp ${sdks}] end]
         }
@@ -298,14 +225,14 @@ platform darwin {
 
 
 # Shameless copy from ipe-tools.
-set python.versions         {39 310 311 312}
+set python.versions         {39 310 311 312 313}
 dict set python.legacy_versions 38 39
 # After Python 3.9 is released, and mpv can be built with it,
 # replace with the above lines with the following:
 #set python.versions         {27 39}
 #dict set python.legacy_versions 38 39
 
-set python.default_version  311
+set python.default_version  313
 set python.version          ""
 
 # Create python variants.
@@ -375,10 +302,9 @@ if {[string length ${python.version}] == 0} {
 }
 
 
-post-patch {
-    set python_ver_dot [string index ${python.version} 0].[string range ${python.version} 1 end]
-    reinplace "s|'rst2man.py'|'rst2man-${python_ver_dot}.py'|" ${worksrcpath}/meson.build
-}
+set python_ver_dot [string index ${python.version} 0].[string range ${python.version} 1 end]
+meson.native.binaries-append \
+                        rst2man=${prefix}/bin/rst2man-${python_ver_dot}
 
 post-destroot {
     # Since we don't have conffiles handling, install mpv.conf as mpv.conf.example
@@ -414,11 +340,11 @@ variant screenshot description {Enable optional screenshot support} {
                             -Djpeg=enabled
 }
 
-variant network conflicts ytdlp description {Enable networking support via youtube-dl (supports wide variety of pages)} {
+variant network conflicts network_ytdlp description {Enable networking support via youtube-dl (supports wide variety of pages)} {
     depends_run-append      port:youtube-dl
 }
 
-variant ytdlp conflicts network description {Enable networking support via yt-dlp instead of youtube-dl (supports wide variety of pages)} {
+variant network_ytdlp conflicts network description {Enable networking support via yt-dlp instead of youtube-dl (supports wide variety of pages)} {
     depends_run-append      port:yt-dlp
 }
 
@@ -446,8 +372,8 @@ variant dvd description {Enable DVD and DeCSS support} {
 
 variant audiocd description {Enable Audio CD support via libcdio-paranoia} {
     depends_lib-append      port:libcdio-paranoia
-    configure.args-replace   -Dcdda=disabled \
-                             -Dcdda=enabled
+    configure.args-replace  -Dcdda=disabled \
+                            -Dcdda=enabled
 }
 
 variant libarchive description {Enable transparent handling of Zip files and other compressed formats} {
@@ -458,8 +384,14 @@ variant libarchive description {Enable transparent handling of Zip files and oth
 
 variant rubberband description {Enable support for the Rubber Band library, adding audio pitch and speed control} {
     depends_lib-append      port:rubberband
-    configure.args-replace  -Drubberband-disabled \
-                            -Drubberband-enabled
+    configure.args-replace  -Drubberband=disabled \
+                            -Drubberband=enabled
+}
+
+variant vapoursynth description {} {
+    depends_lib-append      port:vapoursynth
+    configure.args-replace  -Dvapoursynth=disabled \
+                            -Dvapoursynth=enabled
 }
 
 variant pulseaudio description {Enable PulseAudio support} {
@@ -496,9 +428,11 @@ variant x11 {
 }
 
 variant opengl description {Enable OpenGL output support. Both the CoreVideo and X11 (GLX) outputs are supported} {
-    if {${os.platform} eq "darwin" && ${os.major} > 14} {
+    platform darwin {
         configure.args-replace  -Dgl-cocoa=disabled \
                                 -Dgl-cocoa=enabled
+        configure.args-replace  -Dvideotoolbox-gl=disabled \
+                                -Dvideotoolbox-gl=enabled
     }
 
     configure.args-replace  -Dgl=disabled \
@@ -524,14 +458,6 @@ variant vulkan description {Enable Vulkan output support} {
                         -Dvulkan=disabled \
                         -Dvulkan=enabled
     require_active_variants libplacebo vulkan
-    
-    # The following are needed as no .pc files are available from Vulkan ports above
-    post-patch {
-        reinplace "s|'vulkan', version: '>= 1.1.70'|'vulkan'|" ${worksrcpath}/meson.build
-    }
-    post-build {
-        system -W ${build.dir} "/usr/bin/install_name_tool -change @rpath/libvulkan.1.dylib ${prefix}/lib/libvulkan.1.dylib mpv"
-    }
 }
 
 variant caca description {Enable animated ASCII art video output} {
@@ -581,7 +507,9 @@ variant libmpv description {Enable the libmpv library} {
 
 variant bundle description {Enable the optional macOS bundle of mpv} {
     post-build {
-        system -W "${worksrcpath}" "${prefix}/bin/python${python_branch} TOOLS/osxbundle.py -s ${build.dir}/mpv"
+        # Avoid Game Mode auto activation on macOS 14
+        system -W ${worksrcpath}/TOOLS/osxbundle/mpv.app/Contents/ "/usr/libexec/PlistBuddy -c \"Delete :LSApplicationCategoryType\" Info.plist"
+        system -W ${worksrcpath} "${prefix}/bin/python${python_branch} TOOLS/osxbundle.py -s ${build.dir}/mpv"
     }
 
     post-destroot {

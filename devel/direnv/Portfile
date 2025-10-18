@@ -5,7 +5,6 @@ PortGroup           golang 1.0
 
 name                direnv
 categories          devel sysutils
-platforms           darwin
 license             MIT
 
 maintainers         {michaelld @michaelld} openmaintainer
@@ -20,7 +19,7 @@ long_description    \
 
 homepage            https://direnv.net/
 
-go.setup            github.com/direnv/direnv 2.32.3 v
+go.setup            github.com/direnv/direnv 2.37.1 v
 revision            0
 
 destroot {
@@ -28,29 +27,30 @@ destroot {
 }
 
 checksums           ${distname}${extract.suffix} \
-                        rmd160  fadec9d9295ca2da1dfdb492de15b9b3b5e4797f \
-                        sha256  7f38ae29982baf02e4f265e438e18123fd87197ca382cc2b06587add2c082e36 \
-                        size    87684
+                        rmd160  d253e68494aae826ae7be29e8ba74a65e2ad196c \
+                        sha256  4142fbb661f3218913fac08d327c415e87b3e66bd0953185294ff8f3228ead24 \
+                        size    102836
 
 # see ${WORKSRCPATH}/gopath/src/github.com/direnv/direnv/go.sum
 # pick the most recent version of each and verify downloading and building
+
 go.vendors          golang.org/x/sys \
-                        lock    bc2c85ada10a \
-                        rmd160  c4b2c26618cd3f02fe04653b3a4fbe6707de5716 \
-                        sha256  b2526b52942c803a1687e16f87942bd0f0701b5d260fbaa35d53231e0a520577 \
-                        size    1303117 \
+                        lock    v0.30.0 \
+                        rmd160  4cd711df5da2e159b6efbb7fa42ae0a3a3f6eb53 \
+                        sha256  76cfe40018bfa5418c1d19d47d8353c3375594013e2b2feea49f06018d2a3102 \
+                        size    1523466 \
                     golang.org/x/mod \
-                        lock    v0.5.1 \
-                        rmd160  6aac73c99cc5111f9b4675fbfeee0871ecea71a7 \
-                        sha256  1c5e2438581c6755be6c984375c51f93cee56b00de0898cdd61ce3d64c938d38 \
-                        size    112675 \
+                        lock    v0.25.0 \
+                        rmd160  5936bc27463b64e63518d170478bd0725f2772f7 \
+                        sha256  b1f05d8f05987cdcc622ff2c8a5c12a4161563ee793ad07527a0cc718b8ce4f3 \
+                        size    126567 \
                     github.com/mattn/go-isatty \
-                        lock    v0.0.14 \
-                        rmd160  8ebfd3a6f2898a729e41dff6b5359e88959c46e1 \
-                        sha256  dc141c207a7f4eb83992df90ca087841a0a3aab5a4f2b528bf81d42a186bcc1e \
-                        size    4705 \
+                        lock    v0.0.20 \
+                        rmd160  ef20ccdf87de8b704c0c7118625b2beb31d8f1b4 \
+                        sha256  397549e98cf5d40df585f31dc7902f017c37be88c64311dd2b4aeccab4009949 \
+                        size    4717 \
                     github.com/BurntSushi/toml \
-                        lock    v1.2.0 \
-                        rmd160  b6af60be88cbeac8ed5e5124d187cf5e1a98864d \
-                        sha256  7cc755999d3c804cfeee6e464cc800cee299a33877dfd901671f3574e2eb80fd \
-                        size    96599
+                        lock    v1.5.0 \
+                        rmd160  49d05b71280b608decff341422e418dde7d3eb5a \
+                        sha256  fa1ef74a26dbc3ffa82643fa9b51e99f54a19dd42a97d39e0ee20c2750bd2d94 \
+                        size    118627

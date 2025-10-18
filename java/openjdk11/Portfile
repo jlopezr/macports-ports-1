@@ -2,37 +2,50 @@
 
 PortSystem          1.0
 
-name                openjdk11
-# See https://github.com/openjdk/jdk11u/tags for the version and build number that matches the latest tag that ends with '-ga'
-version             11.0.21
-set build 9
+set feature 11
+name                openjdk${feature}
+# See https://openjdk-sources.osci.io/openjdk11/ for the version and build number that matches the latest '-ga' version
+version             ${feature}.0.28
+set build 6
 revision            0
 categories          java devel
 supported_archs     x86_64 arm64
 license             GPL-2+
-maintainers         {outlook.com:usersword123 @usersxx} openmaintainer
-description         OpenJDK 11
-long_description    JDK 11 builds of OpenJDK, the Open-Source implementation \
+maintainers         nomaintainer
+description         OpenJDK ${feature}
+long_description    JDK ${feature} builds of OpenJDK, the Open-Source implementation \
                     of the Java Platform, Standard Edition, and related projects.
-homepage            https://openjdk.java.net/
-master_sites        https://git.openjdk.java.net/jdk11u/archive/refs/tags
-distname            jdk-${version}-ga
-worksrcdir          jdk11u-${distname}
+homepage            https://openjdk.org/projects/jdk/${feature}/
+master_sites        https://openjdk-sources.osci.io/openjdk${feature}/
+distname            openjdk-${version}-ga
+use_xz              yes
+worksrcdir          jdk-${version}+${build}
 
-checksums           rmd160  e7dfdc7ff99070622fe746304623c503bf4a2292 \
-                    sha256  b89e87c38640c586857ae6108b3f9c3211337e4cd5d8913c8d56d66bdccab014 \
-                    size    116292058
+checksums           rmd160  e1d4a0fcd64978c022f8ba2798f8320288c0e948 \
+                    sha256  712334ebfe8ad2acb8befee7ec7e57aec7205356b3696e7f181e342a771dbaa9 \
+                    size    72419936
 
-depends_lib         port:freetype
+depends_lib         port:freetype \
+                    port:libiconv
 depends_build       port:autoconf \
                     port:gmake \
                     port:bash \
-                    port:openjdk11-bootstrap
+                    port:openjdk${feature}-bootstrap
 
 pre-patch {
     reinplace "s|libffi.so.?|libffi.?.dylib|g" ${worksrcpath}/make/autoconf/lib-ffi.m4
     reinplace "s|xmacosx|xwindows|g" ${worksrcpath}/make/autoconf/lib-freetype.m4
     reinplace "s|assert|vmassert|g" ${worksrcpath}/src/hotspot/share/jfr/periodic/jfrNetworkUtilization.cpp
+}
+
+# Workaround for clang 16.0-16.1: https://trac.macports.org/ticket/70819
+patchfiles          JDK-8340341-clang-16-workaround.patch
+
+# Workaround for 'expression is not an integral constant expression' on macOS 15+
+# See https://lists.macports.org/pipermail/macports-dev/2025-April/046226.html
+# Mapping to Darwin version: https://trac.macports.org/wiki/PortfileRecipes#compare-osx-darwin-version
+if {${os.platform} eq "darwin" && ${os.major} >= 24} {
+    patchfiles-append expression-is-not-an-integral-constant-expression.patch
 }
 
 set tpath ${prefix}/Library/Java
@@ -49,7 +62,7 @@ configure.args      --with-debug-level=release \
                     --with-extra-cflags="${configure.cflags}" \
                     --with-extra-cxxflags="${configure.cxxflags}" \
                     --with-extra-ldflags="${configure.ldflags}" \
-                    --with-boot-jdk=/Library/Java/JavaVirtualMachines/openjdk11-bootstrap/Contents/Home \
+                    --with-boot-jdk=/Library/Java/JavaVirtualMachines/openjdk${feature}-bootstrap/Contents/Home \
                     --with-freetype=system \
                     --with-freetype-include=${prefix}/include/freetype2 \
                     --with-freetype-lib=${prefix}/lib \
@@ -59,7 +72,7 @@ configure.args      --with-debug-level=release \
                     --with-vendor-url="https://www.macports.org" \
                     --with-vendor-bug-url="${bug_url}" \
                     --with-vendor-vm-bug-url="${bug_url}" \
-                    --with-conf-name=openjdk11
+                    --with-conf-name=openjdk${feature}
 
 if {[option configure.ccache]} {
     # replace MacPorts ccache integration into JDK
@@ -143,7 +156,7 @@ build.type          gnu
 build.target        images
 use_parallel_build  no
 set jdkn jdk-${version}.jdk
-set bundle_dir build/openjdk11/images/jdk-bundle/${jdkn}/Contents
+set bundle_dir build/openjdk${feature}/images/jdk-bundle/${jdkn}/Contents
 
 test.run            yes
 test.cmd            ${bundle_dir}/Home/bin/java
@@ -173,6 +186,6 @@ export JAVA_HOME=${jdk}/Contents/Home
 "
 
 livecheck.type      regex
-livecheck.url       https://github.com/openjdk/jdk11u/tags
-livecheck.regex     jdk-(\[0-9.\]+)-ga
+livecheck.url       https://openjdk-sources.osci.io/openjdk${feature}/
+livecheck.regex     openjdk-(\[0-9.\]+)-ga
 

@@ -1,24 +1,25 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem          1.0
-PortGroup           github 1.0
 PortGroup           common_lisp 1.0
+PortGroup           github 1.0
 
-github.setup        fukamachi rove 77abf72cae0046e863c2daeaccc6c6ac749f1083
+github.setup        fukamachi rove cacea7331c10fe9d8398d104b2dfd579bf7ea353
 name                cl-rove
-version             20231024
+version             20240620
 revision            0
 
-checksums           rmd160  78130f0ca98cd5c74d451d4801a93f9dc3e833ba \
-                    sha256  4fd1eb12a6d2c9e8a376a04a0aeeb498e6ac40edf52b2850d9e22169fb8501b8 \
-                    size    17895
+checksums           rmd160  3a61fe5f1dcd889f81f733fb7d31cbcea524c853 \
+                    sha256  9d1aa2d96199f8e7611af9bd248a0a32ba0404f3689b92a20698aedea859ee0d \
+                    size    17975
+github.tarball_from archive
 
 categories-append   devel
-maintainers         {@catap korins.ky:kirill} openmaintainer
+maintainers         nomaintainer
 license             BSD
 
-description         Yet another testing framework intended to be a successor of Prove
-
+description         Yet another testing framework intended to be \
+                    a successor of Prove
 long_description    {*}${description}
 
 depends_lib-append  port:cl-bordeaux-threads \

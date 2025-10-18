@@ -3,8 +3,8 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/vmware-tanzu/carvel-kapp 0.59.2 v
-github.tarball_from archive
+go.setup            github.com/vmware-tanzu/carvel-kapp 0.64.1 v
+go.offline_build    no
 name                kapp
 revision            0
 
@@ -29,12 +29,9 @@ license             Apache-2
 maintainers         {gmail.com:herby.gillot @herbygillot} \
                     openmaintainer
 
-checksums           rmd160  31a4d7c2595a549e6df823f283d5a5ac05e61e89 \
-                    sha256  579aa54c9a9ef22cc5b3f68579e0d2b51bf7975b994eba0b463b93ff316f8bc2 \
-                    size    7466656
-
-# Allow Go modules (needed for -mod=vendor)
-build.env-delete    GO111MODULE=off
+checksums           rmd160  ca994271611179ab5aaa3f052effc0a6cb081e2e \
+                    sha256  32f79f2e25a8b67e2f8456e1446acaa8bd9a6593680a1afadd33179a87f95d67 \
+                    size    8312750
 
 build.env-append    CGO_ENABLED=0
 

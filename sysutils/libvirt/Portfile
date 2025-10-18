@@ -1,8 +1,7 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem          1.0
-PortGroup           compiler_blacklist_versions 1.0
-PortGroup           legacysupport 1.0
+PortGroup           legacysupport 1.1
 PortGroup           meson 1.0
 
 # darwin <= 10: define O_CLOEXEC
@@ -11,11 +10,11 @@ legacysupport.newest_darwin_requires_legacy 12
 
 # Remember to update libvirt and py-libvirt at the same time.
 name                libvirt
-version             9.10.0
+version             11.8.0
 revision            0
-checksums           rmd160  e6ae4e4fd3f243be57cdb74c1dd91698f36c4f42 \
-                    sha256  1060afc0e85a84c579bcdc91cfaf6d471918f97a780f04c5260a034ff7db7519 \
-                    size    9350372
+checksums           rmd160  798d45f3a961467456e19d0c3e40789a355080d8 \
+                    sha256  f7882fe65302bbcf804b573e0128c4fc6bfc52c9c3f44852a04de2391d858e34 \
+                    size    10093332
 
 categories          sysutils
 license             LGPL-2.1+
@@ -27,30 +26,43 @@ long_description    A toolkit to interact with the virtualization \
                     capabilities of modern hypervisors.
 
 homepage            https://libvirt.org
-master_sites        ${homepage}/sources/
+master_sites        https://download.libvirt.org
 use_xz              yes
 
-set python_branch   3.11
+set python_branch   3.13
 set python_version  [string map {. {}} ${python_branch}]
 
 depends_build-append \
+                    port:gettext \
                     port:gmake \
                     port:gsed \
                     port:grep \
                     port:bash-completion \
-                    port:pkgconfig \
+                    path:bin/pkg-config:pkgconfig \
                     port:python${python_version} \
                     port:py${python_version}-docutils \
                     port:perl5
 
 depends_lib         port:curl \
+                    port:gettext-runtime \
+                    port:json-c \
                     path:lib/pkgconfig/glib-2.0.pc:glib2 \
                     path:lib/pkgconfig/gnutls.pc:gnutls \
                     port:libiconv \
                     port:libxml2 \
                     port:readline \
-                    port:yajl \
                     port:zlib
+
+patchfiles          uint64_t.patch
+
+# error: 'struct stat' has no member named 'st_birthtimespec'; did you mean 'st_atimespec'?
+patchfiles-append   patch-st_birthtimespec.diff
+
+# Undefined symbols: "___gcc_personality_v0", "__Unwind_Resume"
+if {${os.platform} eq "darwin" && ${os.major} < 11} {
+    patchfiles-append \
+                    patch-fix-linking.diff
+}
 
 # error: You need at least XCode Clang v10.0 to compile libvirt
 # error: You need at least Clang v6.0 to compile libvirt
@@ -95,6 +107,7 @@ configure.args      -Dapparmor=disabled \
                     -Dfuse=disabled \
                     -Dglusterfs=disabled \
                     -Dinit_script=none \
+                    -Djson_c=enabled \
                     -Dlibpcap=disabled \
                     -Dlibssh=disabled \
                     -Dlibssh2=disabled \
@@ -109,8 +122,7 @@ configure.args      -Dapparmor=disabled \
                     -Dselinux=disabled \
                     -Dsysctl_config=disabled \
                     -Dudev=disabled \
-                    -Dwireshark_dissector=disabled \
-                    -Dyajl=enabled
+                    -Dwireshark_dissector=disabled
 
 variant fuse description {FUSE support} {
     depends_lib-append      port:osxfuse
@@ -128,7 +140,7 @@ variant sasl description {Use Cyrus SASL for authentication} {
 }
 
 variant qemu description {Enable the QEMU virtualization driver} {
-    depends_lib-append      port:qemu
+    depends_run-append      port:qemu
     configure.args-replace  -Ddriver_qemu=disabled -Ddriver_qemu=enabled
 }
 

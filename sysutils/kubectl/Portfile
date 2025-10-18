@@ -21,60 +21,130 @@ set source_build        no
 set offline_build       yes
 
 # *NOTE* Remember to update `latestVersion` on a version upgrade.
-set latestVersion       kubectl-1.29
+set latestVersion       kubectl-1.34
 
 # When source_build is yes, the checksum should be the one for the
 # kubernetes source tarball, instead of the zipped pre-built binary.
+
+subport kubectl-1.34 {
+    set source_build    yes
+    set offline_build   no
+    supported_archs     x86_64 arm64
+    platforms           {darwin >= 17}
+
+    set patchNumber     1
+    revision            0
+    checksums           rmd160  6b1763a7e113617f11a544b6e66b980155d46978 \
+                        sha256  b6054e61e26ca400e5afaa63defafb7dfcbbfad66356dd6d2598adec865a7685 \
+                        size    38057175
+}
+
+subport kubectl-1.33 {
+    set source_build    yes
+    set offline_build   no
+    supported_archs     x86_64 arm64
+    platforms           {darwin >= 17}
+
+    set patchNumber     5
+    revision            0
+    checksums           rmd160  e479aa6dfa9737941d01ef8d8c98e1b6d27e3c53 \
+                        sha256  8a028550a3dab0bb36bd5b691f483542cb6f7fa8e330d8198ec2251e32abcf88 \
+                        size    37091266
+}
+
+subport kubectl-1.32 {
+    set source_build    yes
+    set offline_build   no
+    supported_archs     x86_64 arm64
+    platforms           {darwin >= 17}
+
+    set patchNumber     9
+    revision            0
+    checksums           rmd160  2d0c7dc147403b20d3fdf2c518ee90e96eeb7e1b \
+                        sha256  ed1acbbba2ee2003ea033c8a5289629776c562ca957a0a96b5a3ddd077bd16e2 \
+                        size    36381108
+}
+
+subport kubectl-1.31 {
+    set source_build    yes
+    set offline_build   no
+    supported_archs     x86_64 arm64
+    platforms           {darwin >= 17}
+
+    set patchNumber     13
+    revision            0
+    checksums           rmd160  af6cbecba9c12b577748638c91489fb05eaef4d2 \
+                        sha256  bd2ceb15e65b5d835d55e0629c51de61d30d29908d5d8f2a31f545d679cf5233 \
+                        size    36604087
+}
+
+subport kubectl-1.30 {
+    set source_build    yes
+    set offline_build   no
+    supported_archs     x86_64 arm64
+    platforms           {darwin >= 17}
+
+    set patchNumber     14
+    revision            0
+    checksums           rmd160  d0a81f509c0a71f5addbd0e141b18e532af1b491 \
+                        sha256  ad003cc133346d20ae091a540a42bf9adbcf124ec2959004a636fd1e9694f534 \
+                        size    39640438
+}
 
 subport kubectl-1.29 {
     set source_build    yes
     set offline_build   no
     supported_archs     x86_64 arm64
+    platforms           {darwin >= 17}
 
-    set patchNumber     0
+    set patchNumber     15
     revision            0
-    checksums           rmd160  645e31039568bd00df4fd63bc480f351de81861c \
-                        sha256  2b95526e6727acdf096e47f74b5ee60c15601e6fcdd6875f56c4b5928012636e \
-                        size    43612738
+    checksums           rmd160  fbd20875ebf4ac2a1d31ad18032001812b7b1aa7 \
+                        sha256  306214328ebdc42b274e7e80a5f6850e95f5b8da05123e3f92041caead0880d1 \
+                        size    41223042
 }
 
 subport kubectl-1.28 {
     set source_build    yes
     set offline_build   no
     supported_archs     x86_64 arm64
+    platforms           {darwin >= 17}
 
-    set patchNumber     4
+    set patchNumber     15
     revision            0
-    checksums           rmd160  3686af0d8c0a8a25ae87b5b544ebae6296bce1fb \
-                        sha256  6543c6a7fc60828ef4816ebf5425efbf5fdf9e9785d0193b98e3fb833e1145f0 \
-                        size    39955274
+    checksums           rmd160  66f7671f9b665e1f8f8aa5bdf4f697abf418b147 \
+                        sha256  2d6d0a2a9e1cf207ac3090f9ad37a8f12d061b568973fcee91af9ba7c0292cb3 \
+                        size    40046030
 }
 
 subport kubectl-1.27 {
     set source_build    yes
     supported_archs     x86_64 arm64
+    platforms           {darwin >= 17}
 
-    set patchNumber     8
+    set patchNumber     16
     revision            0
-    checksums           rmd160  f5351c5d8d3d7e4bb3334c9dea15f795da6c9e04 \
-                        sha256  db1d6b0067a666b188f14e6354438540b34257128d13aa259c437c9298e290ba \
-                        size    39174989
+    checksums           rmd160  11d99ae884f611b8cec2098eb523bafd8233f6aa \
+                        sha256  e1d9d96de9103e0982727acfb3d59172c7f67fa8e5371a627eaa15cd1236fe5d \
+                        size    39231976
 }
 
 subport kubectl-1.26 {
     set source_build    yes
     supported_archs     x86_64 arm64
+    platforms           {darwin >= 17}
 
-    set patchNumber     11
+    set patchNumber     15
     revision            0
-    checksums           rmd160  95d56e7c4f29a6c8e02a342f26b59ca914fa472a \
-                        sha256  9fa573ebe606fd8e7ca9da1ad31110b199a983368aada234c6ff94e0e590405e \
-                        size    39443009
+    checksums           rmd160  52a005df44f39f10d57fb10ecf606e867d1f90de \
+                        sha256  10ab7b287996c04dd584e781808be52a090987f893bc34008ca5321e8c414aa2 \
+                        size    41444383
 }
 
 subport kubectl-1.25 {
     set source_build    yes
     supported_archs     x86_64 arm64
+    platforms           {darwin >= 17}
 
     set patchNumber     16
     revision            0
@@ -86,6 +156,7 @@ subport kubectl-1.25 {
 subport kubectl-1.24 {
     set source_build    yes
     supported_archs     x86_64 arm64
+    platforms           {darwin >= 17}
 
     set patchNumber     17
     revision            0
@@ -130,6 +201,7 @@ subport kubectl-1.21 {
 subport kubectl-1.20 {
     set source_build    yes
     supported_archs     x86_64
+    platforms           {darwin < 22}
 
     set patchNumber     15
     revision            0
@@ -144,6 +216,7 @@ subport kubectl-1.20 {
 subport kubectl-1.19 {
     set source_build    yes
     supported_archs     x86_64
+    platforms           {darwin < 22}
 
     set patchNumber     16
     revision            0
@@ -200,6 +273,7 @@ subport kubectl-1.13 {
 }
 
 subport kubectl-1.12 {
+    platforms           {darwin < 21}
     set patchNumber     10
     checksums           rmd160  4212a9f7709ef6a7d36f3ebd477140a7d0ef8e50 \
                         sha256  67acf17bf77b0a9729d17ad5c058a358c0cbd12dbf46478c37111cdd97a0828c \
@@ -207,6 +281,7 @@ subport kubectl-1.12 {
 }
 
 subport kubectl-1.11 {
+    platforms           {darwin < 21}
     set patchNumber     10
     checksums           rmd160  8c3f3121088f745bb9eb279f5531b8b61ff84bc7 \
                         sha256  cf27dd3e8d5a13439de2214b7a07e2371cdbeaf151ee4c7d63e7e7c34ebbf117 \
@@ -214,6 +289,7 @@ subport kubectl-1.11 {
 }
 
 subport kubectl-1.10 {
+    platforms           {darwin < 21}
     set patchNumber     13
     checksums           rmd160  fe455ab0eb7c862c8dbce970632a9e66c8987cb1 \
                         sha256  94ec5409ac6715dfec11309795da9b30254b9d818f8b1d38d1ca2e914945868d \
@@ -224,7 +300,7 @@ if {${subport} == ${name}} {
     PortGroup           obsolete 1.0
 
     replaced_by         ${latestVersion}
-    version             1.29.0
+    version             1.34.1
     revision            0
 
 } elseif {${subport} == "kubectl_select"} {
@@ -270,8 +346,6 @@ if {${subport} == ${name}} {
 
         build.cmd           make
         build.target        kubectl
-
-        github.tarball_from archive
 
         use_parallel_build  no
 

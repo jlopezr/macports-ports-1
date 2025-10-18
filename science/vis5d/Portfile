@@ -4,7 +4,7 @@ PortSystem      1.0
 
 name            vis5d
 version         1.3.0-beta
-revision        17
+revision        18
 distname        ${name}+-${version}
 categories      science graphics
 license         {GPL-2 Restrictive}
@@ -19,7 +19,6 @@ long_description \
     trajectory tracing, a way to make text anotations for publications,   \
     support for interactive data analysis, etc.
 homepage        http://vis5d.sourceforge.net/
-platforms       darwin
 master_sites    sourceforge:vis5d
 use_bzip2       yes
 
@@ -67,6 +66,12 @@ post-configure {
 }
 
 #configure.env-append        PTHREAD_LIBS=-lpthread
+configure.cflags-append     -std=c89
+configure.cflags-append     -Wno-error=uninitialized
+configure.cflags-append     -Wno-error=implicit-function-declaration
+configure.cflags-append     -Wno-error=implicit-int 
+configure.cflags-append     -Wno-error=int-conversion
+configure.cflags-append     -Wno-error=incompatible-pointer-types
 configure.env-append        RANLIB=/usr/bin/ranlib
 configure.cppflags          -DUSE_INTERP_RESULT
 configure.args              -disable-fortran            \

@@ -4,7 +4,9 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-sphinxcontrib-applehelp
-version             1.0.7
+version             2.0.0
+revision            0
+
 categories-append   textproc devel
 platforms           {darwin any}
 supported_archs     noarch
@@ -16,11 +18,11 @@ long_description    sphinxcontrib-applehelp is a sphinx extension which outputs 
 
 homepage            http://sphinx-doc.org/
 
-checksums           md5 660ede87eb89408a9989a740faab1675 \
-                    rmd160 dd23b33bbb45195c09d4ef4c29f1eccba26d2208 \
-                    sha256 39fdc8d762d33b01a7d8f026a3b7d71563ea3b72787d5f00ad8465bd9d6dfbfa
+checksums           rmd160  44702e7ba718c8f04f7dc8fda2e8d92b2f2f1a6a \
+                    sha256  2f29ef331735ce958efa4734873f084941970894c6090408b079c61b2e1c06d1 \
+                    size    20053
 
-python.versions     36 37 38 39 310 311 312
+python.versions     36 37 38 39 310 311 312 313
 python.pep517       yes
 python.pep517_backend   flit
 

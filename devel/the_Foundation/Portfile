@@ -2,7 +2,6 @@
 
 PortSystem          1.0
 PortGroup           cmake 1.1
-PortGroup           compiler_blacklist_versions 1.0
 PortGroup           gitea 1.0
 PortGroup           legacysupport 1.1
 
@@ -10,7 +9,7 @@ PortGroup           legacysupport 1.1
 legacysupport.newest_darwin_requires_legacy 15
 
 gitea.domain        git.skyjake.fi
-gitea.setup         skyjake the_Foundation 1.7.0 v
+gitea.setup         skyjake the_Foundation 1.10.1 v
 revision            0
 categories          devel
 license             BSD
@@ -19,16 +18,16 @@ maintainers         {@sikmir disroot.org:sikmir} openmaintainer
 description         Opinionated C11 library for low-level functionality
 long_description    {*}${description}
 
-checksums           rmd160  ef510b94deb04e1f06e4856579eab2ce1e9acc64 \
-                    sha256  c0b4b8b8ec583419d3fdec98a0850385deced9bfa3a7b39474ef06600bfb9dc8 \
-                    size    218322
+checksums           rmd160  846c85cc8abbb89a7c21776cbb4586c77c7630bf \
+                    sha256  ea726c390df1e1f17bc057976075225b218af3c89defed85bc628a1ff4615657 \
+                    size    223167
 
 depends_build-append \
                     port:pkgconfig
 depends_lib-append  port:curl \
                     port:libunistring \
                     path:lib/libssl.dylib:openssl \
-                    port:pcre \
+                    port:pcre2 \
                     port:zlib
 
 worksrcdir          the_foundation

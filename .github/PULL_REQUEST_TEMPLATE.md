@@ -22,8 +22,8 @@ Have you
 - [ ] followed our [Commit Message Guidelines](https://trac.macports.org/wiki/CommitMessages)?
 - [ ] squashed and [minimized your commits](https://guide.macports.org/#project.github)?
 - [ ] checked that there aren't other open [pull requests](https://github.com/macports/macports-ports/pulls) for the same change?
-- [ ] referenced existing tickets on [Trac](https://trac.macports.org/wiki/Tickets) with full URL? <!-- Please don't open a new Trac ticket if you are submitting a pull request. -->
-- [ ] checked your Portfile with `port lint --nitpick`?
+- [ ] referenced existing tickets on [Trac](https://trac.macports.org/wiki/Tickets) with full URL in commit message? <!-- Please don't open a new Trac ticket if you are submitting a pull request. -->
+- [ ] checked your Portfile with `port lint`?
 - [ ] tried existing tests with `sudo port test`?
 - [ ] tried a full install with `sudo port -vst install`?
 - [ ] tested basic functionality of all binary files?

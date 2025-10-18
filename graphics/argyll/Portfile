@@ -3,11 +3,11 @@
 PortSystem              1.0
 
 name                    argyll
-version                 3.1.0
+version                 3.4.1
 revision                0
-checksums               rmd160  33d3ca28d2aa3cbce292f25a6c472c6a6a6ffa9c \
-                        sha256  4fdd5a1d7bc6dde79a54e350ec9374f6ef00b53903ee0d184cdfa4a11f0ecdcb \
-                        size    14671869
+checksums               rmd160  9b3f2e6223bac14df6ae5c9ba33f6e420775481e \
+                        sha256  41ad51e02a3ec6981611be473221a3877fd359d3c1fa2172b4265dbe55f8b746 \
+                        size    14810106
 
 categories              graphics
 maintainers             nomaintainer
@@ -64,7 +64,7 @@ post-destroot {
     # Install documentation.
     xinstall -m 755 -d ${destroot}${prefix}/share/doc/${name}
     xinstall -m 644 -W ${worksrcpath} \
-        License.txt License2.txt License3.txt log.txt Readme.txt \
+        License.txt License2.txt License3.txt log.txt ReadMe.txt \
         ${destroot}${prefix}/share/doc/${name}
     system "cp -r ${worksrcpath}/doc/* \
         ${destroot}${prefix}/share/doc/${name} && \

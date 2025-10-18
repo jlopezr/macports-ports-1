@@ -3,8 +3,8 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/argoproj/argo-cd 2.8.3 v
-github.tarball_from archive
+go.setup            github.com/argoproj/argo-cd 3.1.8 v
+go.offline_build    no
 name                argocd
 revision            0
 
@@ -24,12 +24,9 @@ license             Apache-2
 maintainers         {gmail.com:herby.gillot @herbygillot} \
                     openmaintainer
 
-checksums           rmd160  5d9e0846e42189184ee7f3d2eff5f0ed055fddb3 \
-                    sha256  0c6e158715b63c2fef320a3edab7996e29e2aa625adf699bddf7ace45e841d69 \
-                    size    17995172
-
-# Allow fetching dependencies at build time
-go.offline_build no
+checksums           rmd160  9988efc5a100d4ab9c312f5b90f57995a045a709 \
+                    sha256  20d5101209936040cdd7311b3545632aba84711498c15596816dd00c8dc83e79 \
+                    size    22723550
 
 build.cmd               make
 build.pre_args-append   GOPATH=${gopath}

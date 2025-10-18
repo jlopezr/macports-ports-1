@@ -5,6 +5,8 @@ PortGroup           github 1.0
 PortGroup           common_lisp 1.0
 
 github.setup        AccelerationNet arnesi 1e7dc4cb2cad8599113c7492c78f4925e839522e
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
 name                cl-arnesi
 version             20170330
 revision            0
@@ -14,7 +16,7 @@ checksums           rmd160  fe198869485e3a3ef3d1651330b3036024a569c4 \
                     size    85255
 
 categories-append   www devel
-maintainers         {@catap korins.ky:kirill} openmaintainer
+maintainers         nomaintainer
 license             BSD
 
 description         arnesi is a Common Lisp utility suite

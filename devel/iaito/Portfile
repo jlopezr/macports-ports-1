@@ -2,9 +2,10 @@
 
 PortSystem          1.0
 PortGroup           github 1.0
-PortGroup           qmake5 1.0
+PortGroup           qt6 1.0
 
-github.setup        radareorg iaito 5.8.8
+github.setup        radareorg iaito 6.0.4
+github.tarball_from archive
 revision            0
 
 categories          devel aqua
@@ -20,26 +21,33 @@ long_description    iaito (formerly Cutter) is a free and open-source reverse en
 
 homepage            https://www.radare.org/n/iaito.html
 
-checksums           rmd160  77aac413cd3d2dd63b1fee188f3149f8087dd913 \
-                    sha256  c6541404b0eb8fddf4a34093c2f4c0507a51e4e6d9e90bf5ed09a3ce96d4b4d4 \
-                    size    2345342
+checksums           rmd160  9b165af2a01526601d08e3c0108851ff40c7026a \
+                    sha256  badb6e250da3fce75f956f9a2d216ad12523d955bedf64f5396483f5b9304d3e \
+                    size    2956580
 # port prone to stealth upgrade after release, consider waiting for a few days before updating to a new version
 
-depends_lib-append  port:radare2
+depends_build-append \
+                    port:pkgconfig
+depends_lib-append  port:radare2 \
+                    port:capstone
 depends_run-append  path:bin/dot:graphviz
-qt5.depends_component \
-                    qtsvg
 
-                    
+qt6.depends_build   qttools
+qt6.depends_lib     qtsvg
+
 compiler.cxx_standard \
-                    2017
-configure.args-append \
-                    src/Iaito.pro \
-                    INCLUDEPATH+=${prefix}/include/libr
+                    2020
 
-# Workaround xcrun: error: SDK "macosx12" cannot be located
-configure.sdk_version
-
-destroot {
-    copy ${worksrcpath}/iaito.app ${destroot}${applications_dir}
+post-patch {
+    reinplace "s|/Applications|${applications_dir}|g" Makefile
+    system -W ${worksrcpath}/src "sed -i '' '1i\\\nQMAKE_MACOSX_DEPLOYMENT_TARGET = ${macosx_deployment_target}\\\n' Iaito.pro"
+    reinplace -E "s|-mmacosx-version-min=\[0-9\]+\\.\[0-9\]+|-mmacosx-version-min=${macosx_deployment_target}|g" src/Iaito.pro
 }
+
+configure.args-append \
+                    --with-qmake6 \
+                    QMAKE6=${qt6.dir}/bin/qmake6
+
+# Workaround possible bug in project file starting from 6.0.4 causing undefined symbols
+# See https://github.com/radareorg/iaito/pull/233#issuecomment-3360966321
+build.args-append   R2_LIBDIR=${prefix}/lib

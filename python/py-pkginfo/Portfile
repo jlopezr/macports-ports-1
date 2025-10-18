@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-pkginfo
-version             1.9.6
+version             1.12.1.2
 revision            0
 
 license             MIT
@@ -20,16 +20,8 @@ long_description \
 
 homepage            https://pypi.python.org/pypi/pkginfo
 
-checksums           rmd160  e6494e4c3f712b6feea26c942aac375ce73eae4c \
-                    sha256  8fd5896e8718a4372f0ea9cc9d96f6417c9b986e23a4d116dda26b62cc29d046 \
-                    size    379307
+checksums           rmd160  6321d10565293476e9192040660f6750d1e897b7 \
+                    sha256  5cd957824ac36f140260964eba3c6be6442a8359b8c48f4adf90210f33a04b7b \
+                    size    451828
 
-python.versions     38 39 310 311 312
-
-if {${name} ne ${subport}} {
-    depends_build-append    port:py${python.version}-setuptools
-
-    if {${python.version} < 38} {
-        depends_run-append  port:py${python.version}-importlib-metadata
-    }
-}
+python.versions     39 310 311 312 313 314

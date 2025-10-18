@@ -9,14 +9,14 @@ name                py-pyflakes
 # CAUTION: Updates tend to break port `py-flake8` due to strict version caps.
 # Please DO NOT update without cross-checking version compatibility and
 # perform updates in a coordinated way.
-version             3.0.1
+version             3.4.0
 revision            0
 categories-append   devel
 license             MIT
 supported_archs     noarch
 platforms           {darwin any}
 
-python.versions     36 37 38 39 310 311 312
+python.versions     39 310 311 312 313 314
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -28,9 +28,9 @@ long_description    Pyflakes is program to analyze Python programs and \
 
 homepage            https://github.com/pycqa/pyflakes
 
-checksums           rmd160  3d724f03408688d21927d9c75d68e552fd416c3f \
-                    sha256  ec8b276a6b60bd80defed25add7e439881c19e64850afd9b346283d4165fd0fd \
-                    size    63554
+checksums           rmd160  63d92d689b4af96a4023228c3d890e8d3adb46b8 \
+                    sha256  b24f96fafb7d2ab0ec5075b7350b3d2d2218eab42003821c06344973d3ea2f58 \
+                    size    64669
 
 if {${name} ne ${subport}} {
     depends_lib-append  port:py${python.version}-setuptools

@@ -4,25 +4,23 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-lazy_object_proxy
-python.rootname     lazy-object-proxy
-version             1.9.0
+version             1.11.0
 revision            0
 license             BSD
 platforms           darwin
 
-python.versions     37 38 39 310 311 312
-python.pep517       yes
+python.versions     39 310 311 312 313
 
 maintainers         {stromnov @stromnov} openmaintainer
 
 description         A fast and thorough lazy object proxy.
-long_description    ${description}
+long_description    {*}${description}
 
 homepage            https://github.com/ionelmc/python-lazy-object-proxy
 
-checksums           rmd160  18d45f8a07833db38dccd955c288e0c7c1f14b69 \
-                    sha256  659fb5809fa4629b8a1ac5106f669cfc7bef26fbb389dda53b3e010d1ac4ebae \
-                    size    42830
+checksums           rmd160  ad1fd9cfd63aa521004110e249b8646829d9d72c \
+                    sha256  18874411864c9fbbbaa47f9fc1dd7aea754c86cfde21278ef427639d1dd78e9c \
+                    size    44736
 
 if {${name} ne ${subport}} {
     depends_build-append \
